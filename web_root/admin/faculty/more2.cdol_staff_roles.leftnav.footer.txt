@@ -1,5 +1,5 @@
 <div id="cdolLinkDiv">
-<li><a href="cdol_staff_roles.html?frn=~(frn)">CDOL Staff Roles</a></li>
+<li><a href="/admin/faculty/cdol_staff_roles.html?frn=~(frn)">CDOL Staff Roles</a></li>
 </div>
 <script type="text/javascript">
 $j(document).ready( function() {
