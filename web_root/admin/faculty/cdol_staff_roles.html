@@ -3,12 +3,17 @@
 
     <head>
 
-        <title>CDOL Staff Information
-        </title>
+        <title>CDOL Staff Roles</title>
         ~[wc:commonscripts]
         <link href="/images/css/screen.css" rel="stylesheet" media="screen">
         <link href="/images/css/print.css" rel="stylesheet" media="print">
-
+        <style>
+            .text-muted {
+                opacity: 0.75;
+                font-style: oblique;
+                padding-left: 20px;
+            }
+        </style>
     </head>
 
     <body id="cdolRolesAppDiv" ng-controller="cdolRolesAppCtrl as mainController"
@@ -24,13 +29,13 @@
         <!-- breadcrumb end -->~[wc:admin_navigation_frame_css]
 
         <span class="account-photo">~[facultytitlephoto]</span>
-        <h1>CDOL Staff Roles: ~(lastfirst) - ~(schoolname)</h1>
+        <h1>CDOL Staff Roles: ~(first_name) ~(last_name) - ~(schoolabbr)</h1>
 
         <div class="fluid-form">
             <div>
                 <div>
-                    <label>Type of Staff Change</label>
-                    <select name="" type="text" value="" ng-model="newStaff.name_change">
+                    <label>Add Staff Role:</label>
+                    <select name="" type="text" value="" ng-model="cdolRole.cdolrole">
                         <option></option>
                         <option value="Powerschool Admin">Powerschool Admin</option>
                         <option value="Tech Contact">Tech Contact</option>
@@ -38,8 +43,9 @@
                         <option value="CAO">CAO</option>
                         <option value="Counselor">Counselor</option>
 
-                    </select>
-                </div><button type="button">Add Role</button>
+                    </select><button id="btnAddRole" type="button" style="font-size: 1.05rem; font-weight:bold;"
+                        ng-click="submitStaffRole()">+</button>
+                </div>
             </div>
         </div>
         <div id="staffRoleGrid" data-pss-grid-widget data-data="roleList" data-filtered-data="roleListFilt"
@@ -47,7 +53,8 @@
             <table class="grid">
                 <thead>
                     <tr>
-                        <th data-pss-sort-fields="last_name|text" class="nowrap">CDOL Role</th>
+                        <th data-pss-sort-fields="cdolRole|text" class="nowrap" style="text-align:left;">~(first_name)'s
+                            Role(s)</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -56,6 +63,11 @@
                         <td>{{role.cdolrole}}</td>
                         <td><button type="button">Remove Role</button></td>
                     </tr>
+                    <tr ng-show="getExistingRoles.length === 0">
+                        <td colspan="2" class="text-muted">~(first_name) has not been assigned any roles</td>
+
+                    </tr>
+                    <!--<tr ng-if="roleList.length === 0">Hi!</tr>-->
                 </tbody>
             </table>
         </div>
