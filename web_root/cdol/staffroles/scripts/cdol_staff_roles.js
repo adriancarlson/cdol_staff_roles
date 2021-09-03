@@ -6,9 +6,9 @@ define(['angular', 'components/shared/index'], function (angular) {
 		'$attrs',
 		function ($scope, $http, $attrs) {
 			$scope.cdolRole = {
-				udcid: $attrs.ngCurUserId,
+				users_dcid: $attrs.ngCurUserId,
 				schoolid: $attrs.ngCurSchoolId,
-				cdolrole: '',
+				cdol_role: '',
 				priority: 1,
 			};
 
