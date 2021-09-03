@@ -8,46 +8,12 @@
         ~[wc:commonscripts]
         <link href="/images/css/screen.css" rel="stylesheet" media="screen">
         <link href="/images/css/print.css" rel="stylesheet" media="print">
-        <script>
-            $j(document).ready(function () {
-                // If they don't select any of the visible options for ethnicity, choose "-1" for them ...
-                var defaultEthnicity = document.getElementById("defaultEthnicity");
-                if (defaultEthnicity) {
-                    defaultEthnicity.value = "-1";
-                }
-                if ($j('#homeschoolSelect option:selected').text() === "*****")
-                    $j('#homeschool').html("<font size='-1' face='Verdana,Geneva,Arial,Helvetica,sans-serif'>*****</font>");
-                else
-                    $j('#homeschool').html($j('#homeschoolSelect option:selected').text());
 
-                var statusColumnValue = document.getElementById("statusColumn");
-
-                switch (statusColumnValue.value) {
-                    case "*": $j('#statusCheckbox').hide();//Read only and true
-                        $j('#statusColumn').replaceWith("(X)");
-                        break;
-                    case "**": $j('#statusCheckbox').hide();//Read only and false
-                        $j('#statusColumn').replaceWith("( )");
-                        break;
-                    case "***": $j('#statusCheckbox').hide();//No access
-                        $j('#statusColumn').replaceWith("(*)");
-                        break;
-                    case "1": $j('#statusCheckbox').prop('checked', true);
-                        break;
-                    default: $j('#statusCheckbox').prop('checked', false);
-                }
-
-                ~[if.isrestrictedbyerp]
-                $j("[id^='race_']").prop('disabled', 'disabled');
-                [/if]
-        			
-        		});
-            //SR pages may provide 'onload' functionality - this is here to not cause js errors
-            function onload() { }
-        </script>
     </head>
 
-    <body onload="onload();">
+    <body id="cdolRolesAppDiv" ng-controller="cdolRolesAppCtrl as mainController"
+        data-require-path="/cdol/staffroles/scripts/cdol_staff_roles.js?~[time]" data-module-name="cdolRolesApp"
+        ng-init="getExistingRoles()" ng-cur-user-id="~[x:userid]" ng-cur-school-id="~(curschoolid)" ng-cloak>
         ~[wc:admin_header_frame_css]
         <!-- breadcrumb start -->
         <a href="/admin/home.html" target="_top">~[text:psx.html.admin_faculty.edit.start_page]</a> &gt;
@@ -58,182 +24,42 @@
         <!-- breadcrumb end -->~[wc:admin_navigation_frame_css]
 
         <span class="account-photo">~[facultytitlephoto]</span>
-        <h1>CDOL Staff Information: ~(lastfirst) - ~(schoolname)</h1>
+        <h1>CDOL Staff Roles: ~(lastfirst) - ~(schoolname)</h1>
 
-        <form action="/~[self.page]?frn=~(frn)" method="POST">
-            <input type="hidden" name="frn" value="~(frn)" />
-            ~[if#pageSubmitted.~(gpv.saved;encodehtml)=true]
-            <p class="feedback-confirm">Changes saved.</p>
-            [/if#pageSubmitted]
-            <!-- start of content and bounding box -->
-            <div class="box-round">
-                <h4>Demographics</h4>
-                <div class="fluid-form no-border">
-                    <div>
-                        <label>ID:</label>
-                        <input type="text" name="[05]teachernumber" value="" size="20" id="teachernumber"></td>
-                    </div>
-                    <div>
-                        <div>
-                            <label>Title</label>
-                            <select name="[05]title"
-                                id="selectTitle">~[x:codesetoptions;codetype=Title;includeblank;value=~([05]title)]</select>
-                        </div>
-                        <div>
-                            <label>First Name</label>
-                            <input name="[05]First_Name" type="text" value="">
-                        </div>
-                        <div>
-                            <label>Middle Name</label>
-                            <input name="[05]middle_name" type="text" value="">
-                        </div>
-                        <div>
-                            <label>Last Name</label>
-                            <input name="[05]Last_Name" type="text" value="">
-                        </div>
-                    </div>
-                    <div>
-                        <div>
-                            <label>Preferred Name<span class="notation">(chosen name that may differ from legal
-                                    name)</span></label>
-                            <input type="text" name="[05]preferredname" value="" size="20" id="preferred_name"
-                                maxlength="20">
-                        </div>
-                    </div>
-                    <div>
-                        <div>
-                            <label>Gender</label>
-                            <select name="[05]gender"
-                                id="selectgender">~[x:codesetoptions;codetype=Gender;includeblank;value=~([05]gender)]</select>
-                        </div>
-                        <div>
-                            <label>Date of Birth</label>
-                            <input type="text" class="psDateWidget" name="[05]dob" value="" size="10" maxlength="10"
-                                id="dob" data-auto-calculate-min-max=80>
-                        </div>
-                    </div>
-                    <div>
-                        <label>Email Address</label>
-                        <input type="text" name="[05]email_addr" value="" size="50" id="email_address">
-                    </div>
-                    <div>
-                        <label class="req">Staff Type</label>
-                        <select name="[05]StaffStatus" id="staff_status">
-                            <option value="0">~[text:psx.html.admin_faculty.edit.not_assigned]
-                            <option value="1">~[text:psx.html.admin_faculty.edit.teacher]
-                            <option value="2">~[text:psx.html.admin_faculty.edit.staff1]
-                            <option value="3">~[text:psx.html.admin_faculty.edit.lunch_staff]
-                            <option value="4">~[text:psx.html.admin_faculty.edit.substitute]
-                        </select>
-                    </div>
-                    <div>
-                        <div>
-                            <label>~[text:psx.html.admin_faculty.edit.is_the_staff_member_hispanic_or_latino]</label>
-                            <input id="defaultEthnicity" type="hidden" name="[05]FedEthnicity" value="-1">~[Comment:Note
-                            that the onload
-                            javascript will revert this back to -1 after it's been changed to whatever is currently in
-                            the DB.]
-                            ~[if#OUTER.isrestrictedbyerp]
-                            <div class="choicefloat"><input type="radio" id="yes_FedEthnicity" name="[05]FedEthnicity"
-                                    value="1" disabled="disabled"><label for="yes_FedEthnicity"
-                                    class="normal">~[text:psx.html.admin_faculty.edit.yes]</label></div>
-                            <div class="choicefloat"><input type="radio" id="no_FedEthnicity" name="[05]FedEthnicity"
-                                    value="0" disabled="disabled"><label for="no_FedEthnicity"
-                                    class="normal">~[text:psx.html.admin_faculty.edit.no]</label></div>
-                            ~[if#INNER1.pref.FRE_AllowDeclineEthnicity=1]<div class="choicefloat"><span
-                                    class="declined"><input type="radio" id="decline_FedEthnicity"
-                                        name="[05]FedEthnicity" value="2" disabled="disabled"><label
-                                        for="decline_FedEthnicity"
-                                        class="normal">~[pref:FRE_DeclineEthnicityText]</label></span></div>
-                            [/if#INNER1]
-                            [else#OUTER]
-                            <div class="choicefloat"><input type="radio" id="yes_FedEth_NoRestrict"
-                                    name="[05]FedEthnicity" value="1"><label for="yes_FedEth_NoRestrict"
-                                    class="normal">~[text:psx.html.admin_faculty.edit.yes]</label></div>
-                            <div class="choicefloat"><input type="radio" id="no_FedEthn_NoRestrict"
-                                    name="[05]FedEthnicity" value="0"><label for="no_FedEthn_NoRestrict"
-                                    class="normal">~[text:psx.html.admin_faculty.edit.no]</label></div>
-                            ~[if#INNER2.pref.FRE_AllowDeclineEthnicity=1]<div class="choicefloat"><span
-                                    class="declined"><input type="radio" id="decline_FedEth_NoRestrict"
-                                        name="[05]FedEthnicity" value="2"><label for="decline_FedEth_NoRestrict"
-                                        class="normal">~[pref:FRE_DeclineEthnicityText]</label></span></div>[/if#INNER2]
-                            [/if#OUTER]
-                            <div class=clearit>
-                                <!-- -->
-                            </div>
-                        </div>
-                        <div>
-                            <label>Race</label>
-                            <input type="hidden" name="SaveRace" value="1">
-                            <input type="hidden" name="[05]FedRaceDecline" id="r_none_storage" value="0">
-                            <!-- See 'decline_race' function in raceselection_block.ftl -->
-                            ~[SetPostValue:subjectid=~([05]id)]
-                            ~[if.isrestrictedbyerp]
-                            ~[SetPostValue:erpManaged=true]
-                            [else]
-                            ~[SetPostValue:erpManaged=false]
-                            [/if]
-                            ~[brij_renderform:federalrace;:GetTeacherRaceSelectionBlock]
-                        </div>
-                    </div>
+        <div class="fluid-form">
+            <div>
+                <div>
+                    <label>Type of Staff Change</label>
+                    <select name="" type="text" value="" ng-model="newStaff.name_change">
+                        <option></option>
+                        <option value="Powerschool Admin">Powerschool Admin</option>
+                        <option value="Tech Contact">Tech Contact</option>
+                        <option value="Principal">Principal</option>
+                        <option value="CAO">CAO</option>
+                        <option value="Counselor">Counselor</option>
 
-                    <div class="button-row">
-                        <input type="hidden" name="ac" value="prim">
-                        <input type="hidden" name="saved" value="true">
-                        ~[submitbutton]
-                    </div>
-                </div>
-                <h4>NCEA</h4>
-                <div class="fluid-form no-border">
-                    <div>
-                        <label>Exclude staff member from NCEA reporting (this school only)</label>
-                        <input type="checkbox" name="[SchoolStaff.S_SSF_NCEA_X]ExcludeFromNCEA_TF" value="0" />
-                    </div>
-                    <div>
-                        <label>Teacher FTE (this school only)</label>
-                        <select name="[SchoolStaff.S_SSF_NCEA_X]FTE_Code">
-                            <option value="">Select FTE (this school only)</option>
-                            <option value="FT">FT - Full-time</option>
-                            <option value="PT">PT - Part-time</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label>Religious affiliation</label>
-                        <select name="[Users.S_USR_NCEA_X]ReligiousAffiliation">
-                            <option value="">Select affiliation</option>
-                            <option value="C">C - Catholic</option>
-                            <option value="N">N - Non-Catholic</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label>Religious, clergy or lay</label>
-                        <select name="[Users.S_USR_NCEA_X]ReligiousClergyLay">
-                            <option value="">Select</option>
-                            <option value="R">R - Religious</option>
-                            <option value="C">C - Clergy</option>
-                            <option value="L">L - Lay</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="button-row">
-                    <input type="hidden" name="ac" value="prim">
-                    <input type="hidden" name="saved" value="true">
-                    ~[submitbutton]
-                </div>
+                    </select>
+                </div><button type="button">Add Role</button>
             </div>
-
-            ~[wc:admin_footer_frame_css]
-        </form>
-        <script>
-            function setStatusColumnValue() {
-
-                if ($j("#statusCheckbox").is(":checked")) {
-                    $j("#statusColumn").val("1");
-                } else {
-                    $j("#statusColumn").val("2");
-                }
-            }
-        </script>
+        </div>
+        <div id="staffRoleGrid" data-pss-grid-widget data-data="roleList" data-filtered-data="roleListFilt"
+            data-client-side-pagination="false" data-filter-constraint="no-filters">
+            <table class="grid">
+                <thead>
+                    <tr>
+                        <th data-pss-sort-fields="last_name|text" class="nowrap">CDOL Role</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="role in roleListFilt">
+                        <td>{{role.cdolrole}}</td>
+                        <td><button type="button">Remove Role</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        </div>
     </body>
 
 </html>
