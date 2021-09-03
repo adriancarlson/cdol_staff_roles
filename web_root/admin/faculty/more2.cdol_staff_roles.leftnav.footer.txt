@@ -1,0 +1,10 @@
+<div id="cdolLinkDiv">
+<li><a href="cdol_staff_roles.html?frn=~(frn)">CDOL Staff Roles</a></li>
+</div>
+<script type="text/javascript">
+$j(document).ready( function() {
+	$j('a[href*="edit.html"]:first').closest('li').after($j('#cdolLinkDiv').html());
+	$j("#cdolLinkDiv").remove();
+})
+</script>
+
