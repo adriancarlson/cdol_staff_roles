@@ -1,21 +1,21 @@
 [
 ~[tlist_sql;
     SELECT 
-    U_CDOL_STAFF_ROLES.users_dcid,
+    U_CDOL_STAFF_ROLES.SchoolStaffDCID,
     U_CDOL_STAFF_ROLES.schoolid,
     U_CDOL_STAFF_ROLES.cdol_role,
     U_CDOL_STAFF_ROLES.priority
     FROM U_CDOL_STAFF_ROLES
     WHERE  0 =0 
     ~[if#curSchoolID.~(gpv.curSchoolID)#] AND U_CDOL_STAFF_ROLES.schoolid = '~(gpv.curSchoolID)'[/if#curSchoolID]
-    ~[if#udcid.~(gpv.udcid)#] AND U_CDOL_STAFF_ROLES.users_dcid = '~(gpv.udcid)'[/if#udcid]
+    ~[if#SchoolStaffDCID.~(gpv.SchoolStaffDCID)#] AND U_CDOL_STAFF_ROLES.SchoolStaffDCID = '~(gpv.SchoolStaffDCID)'[/if#SchoolStaffDCID]
 
 ;]
     {
-        "udcid": ~(1),
-        "schoolid":~(2),
-        "cdolrole":"~(3;JSON)"
-        "priority":~(4)
+        "SchoolStaffDCID": "~(1;JSON)",
+        "schoolid":"~(2;JSON)",
+        "cdol_role":"~(3;JSON)",
+        "priority":"~(4;JSON)"
     },
 [/tlist_sql]
 {}]

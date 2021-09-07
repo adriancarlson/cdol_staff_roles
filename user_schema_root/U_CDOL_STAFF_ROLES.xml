@@ -2,7 +2,6 @@
 <psExtension xmlns="http://www.powerschool.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.powerschool.com psextension.xsd">
     <extensionname>U_CDOL_STAFF_ROLES</extensionname>
     <extendedTable coreTable="SchoolStaff" dbTableName="U_CDOL_STAFF_ROLES" childName="U_CDOL_STAFF_ROLES" comment="Custom CDOL Staff Roles">
-        <field name="users_dcid" type="Integer" />
         <field name="schoolid" type="Integer" />
         <field name="cdol_role" type="String" length="100" />
         <field name="priority" type="Integer" />

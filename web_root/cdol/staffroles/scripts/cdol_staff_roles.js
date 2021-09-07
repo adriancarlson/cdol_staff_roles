@@ -6,17 +6,17 @@ define(['angular', 'components/shared/index'], function (angular) {
 		'$attrs',
 		function ($scope, $http, $attrs) {
 			$scope.cdolRole = {
-				users_dcid: $attrs.ngCurUserId,
+				SchoolStaffDCID: $attrs.ngCurUserId,
 				schoolid: $attrs.ngCurSchoolId,
 				cdol_role: '',
-				priority: 1,
+				priority: '1',
 			};
 
 			$scope.getExistingRoles = function () {
 				$http({
 					url: '/admin/cdol/staffroles/data/getExistingRoles.json',
 					method: 'GET',
-					params: { udcid: $attrs.ngCurUserId, curSchoolID: $attrs.ngCurSchoolId },
+					params: { SchoolStaffDCID: $attrs.ngCurUserId, curSchoolID: $attrs.ngCurSchoolId },
 				}).then(function (response) {
 					roleList = response.data;
 					roleList.pop();
@@ -41,7 +41,7 @@ define(['angular', 'components/shared/index'], function (angular) {
 				}).then(function (response) {
 					if (response.data.result[0].status == 'SUCCESS') {
 						console.log('sucess');
-						$scope.getExistingRoles();
+						getExistingRoles();
 					} else {
 						psAlert({ message: 'There was an error submitting the record. Changes were not saved', title: 'Error Submitting Record' });
 					}

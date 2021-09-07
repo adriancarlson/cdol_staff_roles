@@ -35,7 +35,7 @@
             <div>
                 <div>
                     <label>Add Staff Role:</label>
-                    <select name="" type="text" value="" ng-model="cdolRole.cdolrole">
+                    <select name="" type="text" value="" ng-model="cdolRole.cdol_role">
                         <option></option>
                         <option value="Powerschool Admin">Powerschool Admin</option>
                         <option value="Tech Contact">Tech Contact</option>
@@ -53,14 +53,15 @@
             <table class="grid">
                 <thead>
                     <tr>
-                        <th data-pss-sort-fields="cdolRole|text" class="nowrap" style="text-align:left;">~(first_name)'s
+                        <th data-pss-sort-fields="cdol_role|text" class="nowrap" style="text-align:left;">
+                            ~(first_name)'s
                             Role(s)</th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr ng-repeat="role in roleListFilt">
-                        <td>{{role.cdolrole}}</td>
+                        <td>{{role.cdol_role}}</td>
                         <td><button type="button">Remove Role</button></td>
                     </tr>
                     <tr ng-show="getExistingRoles.length === 0">
