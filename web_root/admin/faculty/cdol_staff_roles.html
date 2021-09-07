@@ -18,7 +18,7 @@
 
     <body id="cdolRolesAppDiv" ng-controller="cdolRolesAppCtrl as mainController"
         data-require-path="/cdol/staffroles/scripts/cdol_staff_roles.js?~[time]" data-module-name="cdolRolesApp"
-        ng-init="getExistingRoles()" ng-cur-user-id="~[x:userid]" ng-cur-school-id="~(curschoolid)" ng-cloak>
+        ng-init="getExistingRoles()" ng-user-id="~(rn)" ng-cur-school-id="~(curschoolid)" ng-cloak>
         ~[wc:admin_header_frame_css]
         <!-- breadcrumb start -->
         <a href="/admin/home.html" target="_top">~[text:psx.html.admin_faculty.edit.start_page]</a> &gt;
@@ -29,7 +29,7 @@
         <!-- breadcrumb end -->~[wc:admin_navigation_frame_css]
 
         <span class="account-photo">~[facultytitlephoto]</span>
-        <h1>CDOL Staff Roles: ~(first_name) ~(last_name) - ~(schoolabbr)</h1>
+        <h1>CDOL Staff Roles: ~(first_name) ~(last_name) - ~(schoolabbr) </h1>
 
         <div class="fluid-form">
             <div>
@@ -42,7 +42,6 @@
                         <option value="Principal">Principal</option>
                         <option value="CAO">CAO</option>
                         <option value="Counselor">Counselor</option>
-
                     </select><button id="btnAddRole" type="button" style="font-size: 1.05rem; font-weight:bold;"
                         ng-click="submitStaffRole()">+</button>
                 </div>
@@ -64,14 +63,13 @@
                         <td>{{role.cdol_role}}</td>
                         <td><button type="button">Remove Role</button></td>
                     </tr>
-                    <tr ng-show="getExistingRoles.length === 0">
+                    <tr ng-show="roleList.length === 0">
                         <td colspan="2" class="text-muted">~(first_name) has not been assigned any roles</td>
 
                     </tr>
                     <!--<tr ng-if="roleList.length === 0">Hi!</tr>-->
                 </tbody>
             </table>
-        </div>
         </div>
     </body>
 
