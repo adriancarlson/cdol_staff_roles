@@ -1,6 +1,7 @@
 [
 ~[tlist_sql;
     SELECT 
+    U_CDOL_STAFF_ROLES.id,
     U_CDOL_STAFF_ROLES.SchoolStaffDCID,
     U_CDOL_STAFF_ROLES.schoolid,
     U_CDOL_STAFF_ROLES.cdol_role,
@@ -12,6 +13,7 @@
 
 ;]
     {
+        "id": "~(id;JSON)",
         "SchoolStaffDCID": "~(1;JSON)",
         "schoolid":"~(2;JSON)",
         "cdol_role":"~(3;JSON)",

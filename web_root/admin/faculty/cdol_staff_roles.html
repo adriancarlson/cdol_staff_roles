@@ -13,6 +13,18 @@
                 font-style: oblique;
                 padding-left: 20px;
             }
+
+            #removeBtn {
+                margin-left: 10px;
+                padding-left: 10px;
+                padding-right: 10px;
+                background-color: #a94442;
+            }
+
+            .custBtn {
+                font-size: 1.05rem;
+                font-weight: bold;
+            }
         </style>
     </head>
 
@@ -42,7 +54,7 @@
                         <option value="Principal">Principal</option>
                         <option value="CAO">CAO</option>
                         <option value="Counselor">Counselor</option>
-                    </select><button id="btnAddRole" type="button" style="font-size: 1.05rem; font-weight:bold;"
+                    </select><button id="btnAddRole" type="button" class="custBtn"
                         ng-click="submitStaffRole()">+</button>
                 </div>
             </div>
@@ -55,17 +67,15 @@
                         <th data-pss-sort-fields="cdol_role|text" class="nowrap" style="text-align:left;">
                             ~(first_name)'s
                             Role(s)</th>
-                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr ng-repeat="role in roleListFilt">
-                        <td>{{role.cdol_role}}</td>
-                        <td><button type="button">Remove Role</button></td>
+                        <td data-id="{{role.id}}">{{role.cdol_role}}<button class="custBtn" id="removeBtn" type="button"
+                                ng-click="removeStaffRole(role.id)"> - </button></td>
                     </tr>
                     <tr ng-show="roleList.length === 0">
                         <td colspan="2" class="text-muted">~(first_name) has not been assigned any roles</td>
-
                     </tr>
                     <!--<tr ng-if="roleList.length === 0">Hi!</tr>-->
                 </tbody>
