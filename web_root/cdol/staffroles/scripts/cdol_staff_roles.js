@@ -50,7 +50,7 @@ define(['angular', 'components/shared/index'], function (angular) {
 
 			$scope.removeStaffRole = function (id) {
 				$http({
-					url: '/ws/schema/table/U_CDOL_STAFF_ROLES' + id,
+					url: '/ws/schema/table/U_CDOL_STAFF_ROLES/' + id,
 					method: 'DELETE',
 					headers: {
 						Accept: 'application/json',
