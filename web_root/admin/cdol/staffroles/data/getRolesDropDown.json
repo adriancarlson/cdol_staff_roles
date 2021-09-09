@@ -1,0 +1,25 @@
+[
+~[tlist_sql;
+    SELECT 
+        codeset.code, 
+        codeset.displayvalue, 
+        codeset.uidisplayorder
+    FROM codeset
+    ~[if#SchoolStaffDCID.~(gpv.SchoolStaffDCID)#]
+    WHERE 
+        codetype ='CDOL Staff Roles'
+        AND codeset.displayvalue not in 
+            (SELECT DISTINCT 
+                U_CDOL_STAFF_ROLES.cdol_role
+            FROM U_CDOL_STAFF_ROLES
+            WHERE 
+                U_CDOL_STAFF_ROLES.SchoolStaffDCID = '~(gpv.SchoolStaffDCID)')
+    [/if#SchoolStaffDCID]
+;]
+    {
+        "code": "~(code;JSON)",
+        "displayvalue": "~(displayvalue;JSON)",
+        "uidisplayorder":"~(uidisplayorder;JSON)"
+    },
+[/tlist_sql]
+{}]

@@ -12,6 +12,24 @@ define(['angular', 'components/shared/index'], function (angular) {
 				priority: '1',
 			};
 			$scope.roleList = [];
+			$scope.rolesDropDownList = [];
+
+			$scope.invalidNew = function () {
+				if ($scope.cdolRole.cdol_role === '') {
+					return true;
+				}
+			};
+
+			$scope.getRolesDropDown = function () {
+				$http({
+					url: '/admin/cdol/staffroles/data/getRolesDropDown.json',
+					method: 'GET',
+					params: { SchoolStaffDCID: $attrs.ngUserId, curSchoolID: $attrs.ngCurSchoolId },
+				}).then(function (response) {
+					$scope.rolesDropDownList = response.data;
+					$scope.rolesDropDownList.pop();
+				});
+			};
 
 			$scope.getExistingRoles = function () {
 				$http({
@@ -21,6 +39,7 @@ define(['angular', 'components/shared/index'], function (angular) {
 				}).then(function (response) {
 					$scope.roleList = response.data;
 					$scope.roleList.pop();
+					$scope.getRolesDropDown();
 				});
 			};
 
@@ -56,6 +75,8 @@ define(['angular', 'components/shared/index'], function (angular) {
 						Accept: 'application/json',
 						'Content-Type': 'application/json',
 					},
+				}).then(function mySuccess(response) {
+					$scope.getExistingRoles();
 				});
 			};
 		},
