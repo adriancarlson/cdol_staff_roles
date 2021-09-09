@@ -5,8 +5,14 @@
     U_CDOL_STAFF_ROLES.SchoolStaffDCID,
     U_CDOL_STAFF_ROLES.schoolid,
     U_CDOL_STAFF_ROLES.cdol_role,
-    U_CDOL_STAFF_ROLES.priority
+    U_CDOL_STAFF_ROLES.priority,
+    users.lastfirst,
+    users.email_addr
     FROM U_CDOL_STAFF_ROLES
+    INNER JOIN schoolstaff 
+        ON U_CDOL_STAFF_ROLES.SchoolStaffDCID = schoolstaff.DCID
+    INNER JOIN users 
+        ON schoolstaff.users_dcid = users.dcid
     WHERE  0 =0 
     ~[if#curSchoolID.~(gpv.curSchoolID)#] AND U_CDOL_STAFF_ROLES.schoolid = '~(gpv.curSchoolID)'[/if#curSchoolID]
     ~[if#SchoolStaffDCID.~(gpv.SchoolStaffDCID)#] AND U_CDOL_STAFF_ROLES.SchoolStaffDCID = '~(gpv.SchoolStaffDCID)'[/if#SchoolStaffDCID]
@@ -18,6 +24,8 @@
         "schoolid":"~(2;JSON)",
         "cdol_role":"~(3;JSON)",
         "priority":"~(4;JSON)"
+        "lastfirst":"~(5;JSON)"
+        "email_addr":"~(6;JSON)"
     },
 [/tlist_sql]
 {}]

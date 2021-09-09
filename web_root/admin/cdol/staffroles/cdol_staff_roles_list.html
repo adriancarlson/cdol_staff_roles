@@ -26,7 +26,7 @@
         </style>
     </head>
 
-    <<body id="cdolRolesAppDiv" ng-controller="cdolRolesAppCtrl as mainController"
+    <body id="cdolRolesAppDiv" ng-controller="cdolRolesAppCtrl as mainController"
         data-require-path="/cdol/staffroles/scripts/cdol_staff_roles.js?~[time]" data-module-name="cdolRolesApp"
         ng-init="getExistingRoles()" ng-cur-school-id="~(curschoolid)" ng-cloak>
         ~[wc:admin_header_css]
@@ -47,9 +47,25 @@
                 <thead>
                     <tr>
                         <th>Staff Name</th>
-                        <th ng-repeat="role in rolesDropDownList">{{role.displayvalue}} Email</th>
+                        <th ng-repeat="roleTitle in rolesDropDownList | orderBy: 'uidisplayorder'">
+                            {{roleTitle.displayvalue}} Email</th>
+                    </tr>
+                    <tr>
+                        <th></th>
+                        <th ng-repeat="roleTitle in rolesDropDownList | orderBy: 'uidisplayorder'" class="center">
+                            <input type="checkbox" ng-click="checkAll(roleTitle.code)" title="Select/Deselect All"
+                                id="{{roleTitle.code}}SelectedAll" />Select/Deselect All
+                        </th>
                     </tr>
                 </thead>
+                <tbody>
+                    <tr ng-repeat="role in roleList">
+                        <td>{{role.lastfirst}}</td>
+                        <td ng-repeat="roleTitle in rolesDropDownList | orderBy: 'uidisplayorder'"><span
+                                ng-show="roleTitle.displayvalue==role.cdol_role">
+                                {{role.email_addr}}</span></td>
+                    </tr>
+                </tbody>
             </table>
         </div>
         ~[wc:admin_footer_css]
