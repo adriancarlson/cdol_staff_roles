@@ -49,11 +49,13 @@
                     <label>Add Staff Role:</label>
                     <select name="" type="text" value="" ng-model="cdolRole.cdol_role">
                         <option></option>
-                        <option value="Powerschool Admin">Powerschool Admin</option>
+                        <option ng-repeat="option in rolesDropDownList" value="{{rolesDropDownList.code}}">
+                            {{rolesDropDownList.displayvalue}}</option>
+                        <!-- <option value="Powerschool Admin">Powerschool Admin</option>
                         <option value="Tech Contact">Tech Contact</option>
                         <option value="Principal">Principal</option>
                         <option value="CAO">CAO</option>
-                        <option value="Counselor">Counselor</option>
+                        <option value="Counselor">Counselor</option> -->
                     </select><button id="btnAddRole" type="button" class="custBtn" ng-click="submitStaffRole()"
                         ng-disabled="invalidNew()">+</button>
                 </div>
