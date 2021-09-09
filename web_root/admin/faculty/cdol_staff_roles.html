@@ -48,7 +48,7 @@
                 <div>
                     <label>Add Staff Role:</label>
                     <select name="" type="text" value="" ng-model="cdolRole.cdol_role">
-                        <option ng-repeat="option in rolesDropDownList" value="{{option.code}}">
+                        <option ng-repeat="option in rolesDropDownList | orderBy: priority" value="{{option.code}}">
                             {{option.displayvalue}}</option>
                     </select><button id="btnAddRole" type="button" class="custBtn" ng-click="submitStaffRole()"
                         ng-disabled="invalidNew()">+</button>
