@@ -23,8 +23,8 @@
         "SchoolStaffDCID": "~(1;JSON)",
         "schoolid":"~(2;JSON)",
         "cdol_role":"~(3;JSON)",
-        "priority":"~(4;JSON)"
-        "lastfirst":"~(5;JSON)"
+        "priority":"~(4;JSON)",
+        "lastfirst":"~(5;JSON)",
         "email_addr":"~(6;JSON)"
     },
 [/tlist_sql]
