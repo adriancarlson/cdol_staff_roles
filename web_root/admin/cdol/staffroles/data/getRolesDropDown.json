@@ -5,9 +5,9 @@
         codeset.displayvalue, 
         codeset.uidisplayorder
     FROM codeset
-    ~[if#SchoolStaffDCID.~(gpv.SchoolStaffDCID)#]
     WHERE 
         codetype ='CDOL Staff Roles'
+    ~[if#SchoolStaffDCID.~(gpv.SchoolStaffDCID)#]
         AND codeset.displayvalue not in 
             (SELECT DISTINCT 
                 U_CDOL_STAFF_ROLES.cdol_role

@@ -1,5 +1,5 @@
 <script>
 	$j(document).ready(function() {
-		$j('h2:contains("Plugins")').after('<h2>Staff</h2><table class="linkDescList"><colgroup><col><col></colgroup><tbody><tr><td><a href="/admin/cdol/staffroles/cdol_staff_roles_list.html">Staff Roles Build Email List</a></td><td>Tool to generate email list for staff with staff roles</td></tr></tbody></table>')
+		$j('h2:contains("Plugins")').before('<h2>Staff</h2><table class="linkDescList"><colgroup><col><col></colgroup><tbody><tr><td><a href="/admin/cdol/staffroles/cdol_staff_roles_list.html">Staff Roles Build Email List</a></td><td>Tool to generate email list for staff with staff roles</td></tr></tbody></table>')
 	});
 </script>
