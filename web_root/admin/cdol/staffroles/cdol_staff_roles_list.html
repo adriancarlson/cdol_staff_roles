@@ -26,9 +26,9 @@
         </style>
     </head>
 
-    <body id="cdolRolesListDiv" ng-controller="cdolRolesListCtrl as mainController"
-        data-require-path="/cdol/staffroles/scripts/cdol_staff_roles_list.js?~[time]"
-        data-module-name="cdolRolesListApp" ng-init="getStaffRoles()" ng-cur-school-id="~(curschoolid)" ng-cloak>
+    <<body id="cdolRolesAppDiv" ng-controller="cdolRolesAppCtrl as mainController"
+        data-require-path="/cdol/staffroles/scripts/cdol_staff_roles.js?~[time]" data-module-name="cdolRolesApp"
+        ng-init="getExistingRoles()" ng-cur-school-id="~(curschoolid)" ng-cloak>
         ~[wc:admin_header_css]
         <div id="breadcrumbs">
             <!-- breadcrumb start -->
