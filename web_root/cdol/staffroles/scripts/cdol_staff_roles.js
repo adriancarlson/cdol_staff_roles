@@ -83,6 +83,11 @@ define(['angular', 'components/shared/index'], function (angular) {
 					$scope.getExistingRoles();
 				});
 			};
+
+			$scope.updateEmailBox = function () {
+				console.log('check');
+				$scope.copyEmailBox = [];
+			};
 		},
 	]);
 });

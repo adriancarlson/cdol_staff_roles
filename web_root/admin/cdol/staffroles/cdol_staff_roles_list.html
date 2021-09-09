@@ -59,15 +59,30 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="role in roleList">
+                    <tr ng-repeat="role in roleList | orderBy: 'lastfirst'">
                         <td>{{role.lastfirst}}</td>
-                        <td ng-repeat="roleTitle in rolesDropDownList | orderBy: 'uidisplayorder'"><span
-                                ng-show="roleTitle.displayvalue==role.cdol_role">
-                                {{role.email_addr}}</span></td>
+                        <td ng-repeat="roleTitle in rolesDropDownList | orderBy: 'uidisplayorder'" class="mailTD"><input
+                                type="checkbox" ng-if="roleTitle.displayvalue==role.cdol_role" /><a
+                                ng-show="roleTitle.displayvalue==role.cdol_role" ng-href="mailto:{{role.email_addr}}"
+                                ng-bind="role.email_addr"></a>
+                        </td>
                     </tr>
                 </tbody>
             </table>
+            <div id="copyDivDialog" class="center">
+                <div style="width:500px;margin-left:auto;margin-right:auto;" class="center">
+                    <p>Once you have selected the addresses, click the "Copy" button, and paste into the To field or
+                        your email, or BCC (blind carbon copy) field of a new email.<br>The BCC field will prevent users
+                        from seeing each others' email addresses, if that is a concern.</p>
+                </div>
+                <div class="center">
+                    <a class="button" ng-click="copyEmails()">Copy</a><br>
+                    <textarea rows="9" cols="100" id="copyEmailBox" ng-bind="copyEmailBox"></textarea>
+                </div>
+
+            </div>
         </div>
+
         ~[wc:admin_footer_css]
     </body>
 
