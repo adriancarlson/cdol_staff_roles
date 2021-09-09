@@ -18,6 +18,9 @@ define(['angular', 'components/shared/index'], function (angular) {
 				if ($scope.cdolRole.cdol_role === '') {
 					return true;
 				}
+				if ($scope.rolesDropDownList.length < 1) {
+					return true;
+				}
 			};
 
 			$scope.getRolesDropDown = function () {
@@ -28,6 +31,7 @@ define(['angular', 'components/shared/index'], function (angular) {
 				}).then(function (response) {
 					$scope.rolesDropDownList = response.data;
 					$scope.rolesDropDownList.pop();
+					$scope.cdolRole.cdol_role = '';
 				});
 			};
 
