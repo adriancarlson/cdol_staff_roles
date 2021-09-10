@@ -33,7 +33,7 @@
         "code":"~(4;JSON)",
         "priority":"~(5;JSON)",
         "lastfirst":"~(6;JSON)",
-        "email_addr":"~(7;JSON)"
+        "email_addr":"~(7;JSON)",
         "school_abbr":"~(8;JSON)"
     },
 [/tlist_sql]
