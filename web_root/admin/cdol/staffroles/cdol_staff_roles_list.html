@@ -23,6 +23,10 @@
             .mailTD {
                 border-left: 0 !important;
             }
+
+            .cpyBx {
+                margin-top: 10px;
+            }
         </style>
     </head>
 
@@ -46,12 +50,12 @@
             <table class="grid">
                 <thead>
                     <tr>
-                        <th>Staff Name</th>
+                        <th rowspan="2" ng-if="cdolRole.schoolid==0">School</th>
+                        <th rowspan="2">Staff Name</th>
                         <th ng-repeat="roleTitle in rolesDropDownList | orderBy: 'uidisplayorder'">
                             {{roleTitle.displayvalue}} Email</th>
                     </tr>
                     <tr>
-                        <th></th>
                         <th ng-repeat="roleTitle in rolesDropDownList | orderBy: 'uidisplayorder'" class="center">
                             <input type="checkbox" ng-click="checkAll(roleTitle.code)" title="Select/Deselect All"
                                 id="{{roleTitle.code}}SelectedAll" />Select/Deselect All
@@ -59,7 +63,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="role in roleList | orderBy: 'lastfirst'">
+                    <tr ng-repeat="role in roleList | orderBy: ['school_abbr','lastfirst']">
+                        <td ng-if="cdolRole.schoolid==0">{{role.school_abbr}}</td>
                         <td>{{role.lastfirst}}</td>
                         <td ng-repeat="roleTitle in rolesDropDownList | orderBy: 'uidisplayorder'" class="mailTD"><input
                                 type="checkbox" ng-if="roleTitle.displayvalue==role.cdol_role"
@@ -77,7 +82,7 @@
                 </div>
                 <div class="center">
                     <a class="button" ng-click="copyEmails()">Copy</a><br>
-                    <textarea rows="9" cols="100" id="copyEmailBox" ng-bind="displayEmails"></textarea>
+                    <textarea class="cpyBx" rows="9" cols="100" id="copyEmailBox" ng-bind="displayEmails"></textarea>
                 </div>
             </div>
         </div>
