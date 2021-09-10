@@ -13,8 +13,9 @@ define(['angular', 'components/shared/index'], function (angular) {
 			};
 			$scope.roleList = [];
 			$scope.rolesDropDownList = [];
-			$scope.copyEmailBox = [];
+			$scope.allEmailArray = [];
 
+			//makes plus button on CDOL Staff Roles inactive if no option selected or no options left
 			$scope.invalidNew = function () {
 				if ($scope.cdolRole.cdol_role === '') {
 					return true;
@@ -23,7 +24,7 @@ define(['angular', 'components/shared/index'], function (angular) {
 					return true;
 				}
 			};
-
+			//pull in availbe staff roles for drop down on CDOL Staff Roles. Also utilized for the repeat of column headers on Staff Roles Build Email List. porbably should have been renamed... but not worth the effort at this time.
 			$scope.getRolesDropDown = function () {
 				$http({
 					url: '/admin/cdol/staffroles/data/getRolesDropDown.json',
@@ -35,7 +36,7 @@ define(['angular', 'components/shared/index'], function (angular) {
 					$scope.cdolRole.cdol_role = '';
 				});
 			};
-
+			//pull in existing  staff roles
 			$scope.getExistingRoles = function () {
 				$http({
 					url: '/admin/cdol/staffroles/data/getExistingRoles.json',
@@ -47,14 +48,13 @@ define(['angular', 'components/shared/index'], function (angular) {
 					$scope.getRolesDropDown();
 				});
 			};
-
+			// API call to add staff role to staff
 			$scope.submitStaffRole = function () {
 				let newRecord = {
 					tables: {
 						U_CDOL_STAFF_ROLES: $scope.cdolRole,
 					},
 				};
-
 				$http({
 					url: '/ws/schema/table/U_CDOL_STAFF_ROLES',
 					method: 'POST',
@@ -71,7 +71,7 @@ define(['angular', 'components/shared/index'], function (angular) {
 					}
 				});
 			};
-
+			//API call to remove staff role from staff
 			$scope.removeStaffRole = function (id) {
 				$http({
 					url: '/ws/schema/table/U_CDOL_STAFF_ROLES/' + id,
@@ -84,26 +84,50 @@ define(['angular', 'components/shared/index'], function (angular) {
 					$scope.getExistingRoles();
 				});
 			};
-
+			// function at top of each roll column on Staff Roles Build Email List togles check mark for individual email checkmarks in the column and adds/removed the emails from the Array.
 			$scope.checkAll = function (code) {
 				let colCheck = '#' + code + 'SelectedAll';
 				let rowCheck = '.' + code + 'CheckBox';
 				var masterCheck = $j(colCheck).prop('checked');
+				//if column header box checked. check individual email boxes and push that email to the allEmailArray
 				if (masterCheck) {
 					$j(rowCheck).prop('checked', true);
 					$scope.roleList.forEach(function (item) {
-						console.log(code);
-						if (item.cdol_role == code) {
-							console.log(item.cdol_role);
+						if (item.code == code) {
+							$scope.allEmailArray.push({ type: item.code, email: item.email_addr });
 						}
 					});
 				} else {
+					//if column header box unchecked. uccheck individual email boxes and filter out that email from the allEmailArray
 					$j(rowCheck).prop('checked', false);
+					let removedEmailsArray = $scope.allEmailArray.filter(function (item) {
+						return item.type != code;
+					});
+					$scope.allEmailArray = removedEmailsArray;
 				}
+				$scope.updateEmailBox();
 			};
 
 			$scope.updateEmailBox = function () {
-				console.log('check');
+				//turns allEmailArray into justEmailsArray that only has the emails nothing else
+				let justEmailsArray = $scope.allEmailArray.map((item) => {
+					return item.email;
+				});
+				//filters out duplicate emails and sets the contents of the emailbox.
+				let uniqueEmailsArray = [];
+				justEmailsArray.forEach((e) => {
+					if (!uniqueEmailsArray.includes(e)) {
+						uniqueEmailsArray.push(e);
+					}
+				});
+				let emailsToString = uniqueEmailsArray.toString().replace(/[,]/g, ';');
+				$scope.displayEmails = emailsToString;
+			};
+			//depricated functionaily to set emails to clipboard ... probably should be updated to use the clipboard API at some point
+			$scope.copyEmails = function () {
+				copyEmailBox.select();
+				document.execCommand('copy');
+				alert('The addresses have been copied to your clipboard');
 			};
 		},
 	]);
