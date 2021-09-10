@@ -13,6 +13,7 @@ define(['angular', 'components/shared/index'], function (angular) {
 			};
 			$scope.roleList = [];
 			$scope.rolesDropDownList = [];
+			$scope.copyEmailBox = [];
 
 			$scope.invalidNew = function () {
 				if ($scope.cdolRole.cdol_role === '') {
@@ -84,9 +85,25 @@ define(['angular', 'components/shared/index'], function (angular) {
 				});
 			};
 
+			$scope.checkAll = function (code) {
+				let colCheck = '#' + code + 'SelectedAll';
+				let rowCheck = '.' + code + 'CheckBox';
+				var masterCheck = $j(colCheck).prop('checked');
+				if (masterCheck) {
+					$j(rowCheck).prop('checked', true);
+					$scope.roleList.forEach(function (item) {
+						console.log(code);
+						if (item.cdol_role == code) {
+							console.log(item.cdol_role);
+						}
+					});
+				} else {
+					$j(rowCheck).prop('checked', false);
+				}
+			};
+
 			$scope.updateEmailBox = function () {
 				console.log('check');
-				$scope.copyEmailBox = [];
 			};
 		},
 	]);

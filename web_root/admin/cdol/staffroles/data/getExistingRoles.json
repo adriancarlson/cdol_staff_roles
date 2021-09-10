@@ -5,10 +5,14 @@
     U_CDOL_STAFF_ROLES.SchoolStaffDCID,
     U_CDOL_STAFF_ROLES.schoolid,
     U_CDOL_STAFF_ROLES.cdol_role,
+    codeset.code,
     U_CDOL_STAFF_ROLES.priority,
     users.lastfirst,
     users.email_addr
     FROM U_CDOL_STAFF_ROLES
+    INNER JOIN CODESET 
+        on U_CDOL_STAFF_ROLES.cdol_role = codeset.displayvalue
+        AND codeset.codetype ='CDOL Staff Roles'
     INNER JOIN schoolstaff 
         ON U_CDOL_STAFF_ROLES.SchoolStaffDCID = schoolstaff.DCID
     INNER JOIN users 
@@ -23,9 +27,10 @@
         "SchoolStaffDCID": "~(1;JSON)",
         "schoolid":"~(2;JSON)",
         "cdol_role":"~(3;JSON)",
-        "priority":"~(4;JSON)",
-        "lastfirst":"~(5;JSON)",
-        "email_addr":"~(6;JSON)"
+        "code":"~(4;JSON)",
+        "priority":"~(5;JSON)",
+        "lastfirst":"~(6;JSON)",
+        "email_addr":"~(7;JSON)"
     },
 [/tlist_sql]
 {}]
