@@ -84,6 +84,40 @@ define(['angular', 'components/shared/index'], function (angular) {
 					$scope.getExistingRoles();
 				});
 			};
+
+			// function on each email input to remove email from list
+			$scope.checkIndividual = function (staffDCID, code) {
+				let individualEmailTd = '#' + staffDCID + code + 'CheckBox';
+				let checkStatus = $j(individualEmailTd).prop('checked');
+				let emailColCheck = '.' + staffDCID + 'CheckBox';
+				let emailsToCheck = $j(emailColCheck);
+				if (checkStatus) {
+					$j(emailsToCheck).prop('checked', true);
+				} else {
+					$j(emailsToCheck).prop('checked', false);
+				}
+
+				// let rowCheck = '.' + code + 'CheckBox';
+				// var masterCheck = $j(colCheck).prop('checked');
+				// //if column header box checked. check individual email boxes and push that email to the allEmailArray
+				// if (masterCheck) {
+				// 	$j(rowCheck).prop('checked', true);
+				// 	$scope.roleList.forEach(function (item) {
+				// 		if (item.code == code) {
+				// 			$scope.allEmailArray.push({ type: item.code, email: item.email_addr });
+				// 		}
+				// 	});
+				// } else {
+				// 	//if column header box unchecked. uccheck individual email boxes and filter out that email from the allEmailArray
+				// 	$j(rowCheck).prop('checked', false);
+				// 	let removedEmailsArray = $scope.allEmailArray.filter(function (item) {
+				// 		return item.type != code;
+				// 	});
+				// 	$scope.allEmailArray = removedEmailsArray;
+				// }
+				// $scope.updateEmailBox();
+			};
+
 			// function at top of each roll column on Staff Roles Build Email List togles check mark for individual email checkmarks in the column and adds/removed the emails from the Array.
 			$scope.checkAll = function (code) {
 				let colCheck = '#' + code + 'SelectedAll';
