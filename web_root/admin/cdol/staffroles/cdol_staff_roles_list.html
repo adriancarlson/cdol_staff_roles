@@ -47,7 +47,9 @@
         ~[wc:admin_navigation_css]
         <h1>Staff Roles Build Email List</h1>
         <div class="box-round">
-            <h4>Select which roles to load:</h4>
+            <h4>Select which roles to load:<span style="text-align:right; font-weight:bold;"
+                    ng-show="cdolRole.schoolid!=0"><input type="checkbox" ng-model="dioCheck"
+                        ng-click="getExistingRoles()" />{{countofColumnChecks}}Show All Diocean Staff</span></h4>
             <p><span class="center" style="margin-right: 15px;"
                     ng-repeat="roleTitle in rolesDropDownList | orderBy: 'uidisplayorder'" class="center"><input
                         ng-model="columnChecks[$index].val" type="checkbox" />{{roleTitle.displayvalue}}</span></p>

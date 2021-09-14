@@ -16,6 +16,8 @@ define(['angular', 'components/shared/index'], function (angular) {
 			$scope.allEmailArray = [];
 			$scope.columnChecks = [];
 
+			$scope.dioCheck = false;
+
 			//makes plus button on CDOL Staff Roles inactive if no option selected or no options left
 			$scope.invalidNew = function () {
 				if ($scope.cdolRole.cdol_role === '') {
@@ -28,18 +30,22 @@ define(['angular', 'components/shared/index'], function (angular) {
 
 			//pull in available staff roles for drop down on CDOL Staff Roles. Also utilized for the repeat of column headers on Staff Roles Build Email List. porbably should have been renamed... but not worth the effort at this time.
 			$scope.getRolesDropDown = function () {
+				let passedSchoolID = $attrs.ngCurSchoolId;
+				if ($scope.dioCheck === true) {
+					passedSchoolID = 0;
+				}
 				$http({
 					url: '/admin/cdol/staffroles/data/getRolesDropDown.json',
 					method: 'GET',
-					params: { SchoolStaffDCID: $attrs.ngUserId, curSchoolID: $attrs.ngCurSchoolId },
+					params: { SchoolStaffDCID: $attrs.ngUserId, curSchoolID: passedSchoolID },
 				}).then(function (response) {
 					$scope.rolesDropDownList = response.data;
 					$scope.rolesDropDownList.pop();
-					//populates the values for the checkboxes to for the ability to choose columns 
+					//populates the values for the checkboxes to for the ability to choose columns
 					$scope.rolesDropDownList.forEach(function (item) {
 						$scope.columnChecks.push({ key: item.code, val: true });
 					});
-					// sets the initial display columns at 4 
+					// sets the initial display columns at 4
 					$scope.columnChecks.forEach(function (item, index) {
 						if (index >= 4) {
 							item.val = false;
@@ -51,16 +57,22 @@ define(['angular', 'components/shared/index'], function (angular) {
 			//pull in existing  staff roles
 			$scope.getExistingRoles = function () {
 				loadingDialog();
+				let passedSchoolID = $attrs.ngCurSchoolId;
+				if ($scope.dioCheck === true) {
+					passedSchoolID = 0;
+				}
+				console.log(passedSchoolID);
 				$http({
 					url: '/admin/cdol/staffroles/data/getExistingRoles.json',
 					method: 'GET',
-					params: { SchoolStaffDCID: $attrs.ngUserId, curSchoolID: $attrs.ngCurSchoolId },
+					params: { SchoolStaffDCID: $attrs.ngUserId, curSchoolID: passedSchoolID },
 				}).then(function (response) {
 					$scope.roleList = response.data;
 					$scope.roleList.pop();
 					$scope.getRolesDropDown();
 				});
 				closeLoading();
+				$scope.countofColumnChecks = $scope.columnChecks.filter((obj) => obj.val === true).length;
 			};
 			// API call to add staff role to staff
 			$scope.submitStaffRole = function () {
