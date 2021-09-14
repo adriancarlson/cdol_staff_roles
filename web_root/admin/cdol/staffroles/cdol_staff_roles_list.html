@@ -46,6 +46,13 @@
         </div>
         ~[wc:admin_navigation_css]
         <h1>Staff Roles Build Email List</h1>
+        <div class="box-round">
+            <h4>Select which roles to load:</h4>
+            <p><span class="center" style="margin-right: 15px;"
+                    ng-repeat="roleTitle in rolesDropDownList | orderBy: 'uidisplayorder'" class="center"><input
+                        type="checkbox" ng-click="checkAll(roleTitle.code)" title="Select/Deselect All"
+                        id="{{roleTitle.code}}SelectedAll" />{{roleTitle.displayvalue}}</span></p>
+        </div>
         <div class="box-round" ng-cloak class="ng-cloak">
             <table class="grid">
                 <thead>

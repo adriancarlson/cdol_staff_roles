@@ -14,6 +14,7 @@ define(['angular', 'components/shared/index'], function (angular) {
 			$scope.roleList = [];
 			$scope.rolesDropDownList = [];
 			$scope.allEmailArray = [];
+			$scope.columnChecks = [];
 
 			//makes plus button on CDOL Staff Roles inactive if no option selected or no options left
 			$scope.invalidNew = function () {
@@ -24,6 +25,7 @@ define(['angular', 'components/shared/index'], function (angular) {
 					return true;
 				}
 			};
+
 			//pull in availbe staff roles for drop down on CDOL Staff Roles. Also utilized for the repeat of column headers on Staff Roles Build Email List. porbably should have been renamed... but not worth the effort at this time.
 			$scope.getRolesDropDown = function () {
 				$http({
@@ -33,11 +35,22 @@ define(['angular', 'components/shared/index'], function (angular) {
 				}).then(function (response) {
 					$scope.rolesDropDownList = response.data;
 					$scope.rolesDropDownList.pop();
+					$scope.rolesDropDownList.forEach(function (item) {
+						$scope.columnChecks.push({ key: item.code, val: true });
+					});
+					console.log('Before:', $scope.columnChecks);
+					$scope.columnChecks.forEach(function (item, index) {
+						if (index >= 3) {
+							item.val = false;
+						}
+					});
 					$scope.cdolRole.cdol_role = '';
+					console.log('After:', $scope.columnChecks);
 				});
 			};
 			//pull in existing  staff roles
 			$scope.getExistingRoles = function () {
+				loadingDialog();
 				$http({
 					url: '/admin/cdol/staffroles/data/getExistingRoles.json',
 					method: 'GET',
@@ -47,6 +60,7 @@ define(['angular', 'components/shared/index'], function (angular) {
 					$scope.roleList.pop();
 					$scope.getRolesDropDown();
 				});
+				closeLoading();
 			};
 			// API call to add staff role to staff
 			$scope.submitStaffRole = function () {
