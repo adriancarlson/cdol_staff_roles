@@ -91,31 +91,23 @@ define(['angular', 'components/shared/index'], function (angular) {
 				let checkStatus = $j(individualEmailTd).prop('checked');
 				let emailColCheck = '.' + uDCID + 'CheckBox';
 				let emailsToCheck = $j(emailColCheck);
+				//if individual email box checked. check all same individual email boxes and push that email to the allEmailArray
 				if (checkStatus) {
 					$j(emailsToCheck).prop('checked', true);
+					$scope.roleList.forEach(function (item) {
+						if (item.usersDCID == uDCID) {
+							$scope.allEmailArray.push({ type: item.code, email: item.email_addr, usersDCID: item.usersDCID });
+						}
+					});
 				} else {
+					//if cindividual email box unchecked. uncheck all same individual email boxes and filter out that email from the allEmailArray
 					$j(emailsToCheck).prop('checked', false);
+					let removedEmailsArray = $scope.allEmailArray.filter(function (item) {
+						return item.usersDCID != uDCID;
+					});
+					$scope.allEmailArray = removedEmailsArray;
 				}
-
-				// let rowCheck = '.' + code + 'CheckBox';
-				// var masterCheck = $j(colCheck).prop('checked');
-				// //if column header box checked. check individual email boxes and push that email to the allEmailArray
-				// if (masterCheck) {
-				// 	$j(rowCheck).prop('checked', true);
-				// 	$scope.roleList.forEach(function (item) {
-				// 		if (item.code == code) {
-				// 			$scope.allEmailArray.push({ type: item.code, email: item.email_addr });
-				// 		}
-				// 	});
-				// } else {
-				// 	//if column header box unchecked. uccheck individual email boxes and filter out that email from the allEmailArray
-				// 	$j(rowCheck).prop('checked', false);
-				// 	let removedEmailsArray = $scope.allEmailArray.filter(function (item) {
-				// 		return item.type != code;
-				// 	});
-				// 	$scope.allEmailArray = removedEmailsArray;
-				// }
-				// $scope.updateEmailBox();
+				$scope.updateEmailBox();
 			};
 
 			// function at top of each roll column on Staff Roles Build Email List togles check mark for individual email checkmarks in the column and adds/removed the emails from the Array.
@@ -128,11 +120,11 @@ define(['angular', 'components/shared/index'], function (angular) {
 					$j(rowCheck).prop('checked', true);
 					$scope.roleList.forEach(function (item) {
 						if (item.code == code) {
-							$scope.allEmailArray.push({ type: item.code, email: item.email_addr });
+							$scope.allEmailArray.push({ type: item.code, email: item.email_addr, usersDCID: item.usersDCID });
 						}
 					});
 				} else {
-					//if column header box unchecked. uccheck individual email boxes and filter out that email from the allEmailArray
+					//if column header box unchecked. uncheck individual email boxes and filter out that email from the allEmailArray
 					$j(rowCheck).prop('checked', false);
 					let removedEmailsArray = $scope.allEmailArray.filter(function (item) {
 						return item.type != code;
@@ -149,6 +141,7 @@ define(['angular', 'components/shared/index'], function (angular) {
 				});
 				//filters out duplicate emails and sets the contents of the emailbox.
 				let uniqueEmailsArray = [];
+
 				justEmailsArray.forEach((e) => {
 					if (!uniqueEmailsArray.includes(e)) {
 						uniqueEmailsArray.push(e);
