@@ -68,9 +68,9 @@
                         <td>{{role.lastfirst}}</td>
                         <td ng-repeat="roleTitle in rolesDropDownList | orderBy: 'uidisplayorder'" class="mailTD"><input
                                 type="checkbox" ng-if="roleTitle.displayvalue==role.cdol_role"
-                                class="{{roleTitle.code}}CheckBox {{role.SchoolStaffDCID}}CheckBox"
-                                id="{{role.SchoolStaffDCID}}{{roleTitle.code}}CheckBox"
-                                ng-click="checkIndividual(role.SchoolStaffDCID, roleTitle.code, role.school_abbr)" /><a
+                                class="{{roleTitle.code}}CheckBox {{role.usersDCID}}CheckBox"
+                                id="{{role.usersDCID}}{{roleTitle.code}}CheckBox"
+                                ng-click="checkIndividual(role.usersDCID, roleTitle.code, role.school_abbr)" /><a
                                 ng-show="roleTitle.displayvalue==role.cdol_role" ng-href="mailto:{{role.email_addr}}"
                                 ng-bind="role.email_addr"></a>
                         </td>

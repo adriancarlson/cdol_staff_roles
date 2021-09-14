@@ -86,10 +86,10 @@ define(['angular', 'components/shared/index'], function (angular) {
 			};
 
 			// function on each email input to remove email from list
-			$scope.checkIndividual = function (staffDCID, code) {
-				let individualEmailTd = '#' + staffDCID + code + 'CheckBox';
+			$scope.checkIndividual = function (uDCID, code) {
+				let individualEmailTd = '#' + uDCID + code + 'CheckBox';
 				let checkStatus = $j(individualEmailTd).prop('checked');
-				let emailColCheck = '.' + staffDCID + 'CheckBox';
+				let emailColCheck = '.' + uDCID + 'CheckBox';
 				let emailsToCheck = $j(emailColCheck);
 				if (checkStatus) {
 					$j(emailsToCheck).prop('checked', true);
