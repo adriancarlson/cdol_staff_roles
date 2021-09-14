@@ -49,16 +49,18 @@
         <div class="box-round">
             <h4>Select which roles to load:<span style="text-align:right; font-weight:bold;"
                     ng-show="cdolRole.schoolid!=0"><input type="checkbox" ng-model="dioCheck"
-                        ng-click="getExistingRoles()" />{{countofColumnChecks}}Show All Diocean Staff</span></h4>
+                        ng-click="getExistingRoles()" />Show All Diocean Staff</span></h4>
             <p><span class="center" style="margin-right: 15px;"
                     ng-repeat="roleTitle in rolesDropDownList | orderBy: 'uidisplayorder'" class="center"><input
-                        ng-model="columnChecks[$index].val" type="checkbox" />{{roleTitle.displayvalue}}</span></p>
+                        ng-model="columnChecks[$index].val" type="checkbox" ng-click="updateCheckCount()"
+                        ng-disabled="columnChecks[$index].val != false && countofColumnChecks == 1" />{{roleTitle.displayvalue}}</span>
+            </p>
         </div>
         <div class="box-round" ng-cloak class="ng-cloak">
             <table class="grid">
                 <thead>
                     <tr>
-                        <th rowspan="2" ng-if="cdolRole.schoolid==0">School</th>
+                        <th rowspan="2" ng-if="cdolRole.schoolid==0 || dioCheck === true">School</th>
                         <th rowspan="2">Staff Name</th>
                         <th ng-show="columnChecks[{{$index}}].val === true"
                             ng-repeat="roleTitle in rolesDropDownList | orderBy: 'uidisplayorder'">
@@ -74,7 +76,7 @@
                 </thead>
                 <tbody>
                     <tr ng-repeat="role in roleList | orderBy: ['school_abbr','lastfirst']">
-                        <td ng-if="cdolRole.schoolid==0">{{role.school_abbr}}</td>
+                        <td ng-if="cdolRole.schoolid==0 || dioCheck === true">{{role.school_abbr}}</td>
                         <td>{{role.lastfirst}}</td>
                         <td ng-show="columnChecks[{{$index}}].val === true"
                             ng-repeat="roleTitle in rolesDropDownList | orderBy: 'uidisplayorder'" class="mailTD"><input

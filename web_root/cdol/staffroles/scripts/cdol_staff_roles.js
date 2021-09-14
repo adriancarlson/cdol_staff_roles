@@ -27,7 +27,9 @@ define(['angular', 'components/shared/index'], function (angular) {
 					return true;
 				}
 			};
-
+			$scope.updateCheckCount = function () {
+				$scope.countofColumnChecks = $scope.columnChecks.filter((obj) => obj.val === true).length;
+			};
 			//pull in available staff roles for drop down on CDOL Staff Roles. Also utilized for the repeat of column headers on Staff Roles Build Email List. porbably should have been renamed... but not worth the effort at this time.
 			$scope.getRolesDropDown = function () {
 				let passedSchoolID = $attrs.ngCurSchoolId;
@@ -61,7 +63,6 @@ define(['angular', 'components/shared/index'], function (angular) {
 				if ($scope.dioCheck === true) {
 					passedSchoolID = 0;
 				}
-				console.log(passedSchoolID);
 				$http({
 					url: '/admin/cdol/staffroles/data/getExistingRoles.json',
 					method: 'GET',
@@ -72,7 +73,6 @@ define(['angular', 'components/shared/index'], function (angular) {
 					$scope.getRolesDropDown();
 				});
 				closeLoading();
-				$scope.countofColumnChecks = $scope.columnChecks.filter((obj) => obj.val === true).length;
 			};
 			// API call to add staff role to staff
 			$scope.submitStaffRole = function () {
