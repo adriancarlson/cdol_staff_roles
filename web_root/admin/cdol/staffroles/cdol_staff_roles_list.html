@@ -15,19 +15,8 @@
             .x-ng-cloak {
                 display: none !important;
             }
-
-            .checkTD {
-                border-right: 0 !important;
-            }
-
-            .mailTD {
-                border-left: 0 !important;
-            }
-
-            .cpyBx {
-                margin-top: 10px;
-            }
         </style>
+        <link href="/cdol/staffroles/scripts/cdol_staff_roles.css?~(f.currenttime)" rel="stylesheet" media="screen">
     </head>
 
     <body id="cdolRolesAppDiv" ng-controller="cdolRolesAppCtrl as mainController"
@@ -47,9 +36,15 @@
         ~[wc:admin_navigation_css]
         <h1>Staff Roles Build Email List</h1>
         <div class="box-round">
-            <h4>Select which roles to load:<span style="text-align:right; font-weight:bold;"
-                    ng-show="cdolRole.schoolid!=0"><input type="checkbox" ng-model="dioCheck"
-                        ng-click="getExistingRoles()" />Show All Diocean Staff</span></h4>
+            <h4>Select which roles to load:
+                <span style="text-align:right; font-weight:bold;" ng-show="cdolRole.schoolid!=0">
+                    <label class="switch">
+                        <input type="checkbox" ng-model="dioCheck" ng-click="getExistingRoles()" />
+                        <span class="slider round"></span>
+                    </label>
+                    Show All Diocesan Staff
+                </span>
+            </h4>
             <p><span class="center" style="margin-right: 15px;"
                     ng-repeat="roleTitle in rolesDropDownList | orderBy: 'uidisplayorder'" class="center"><input
                         ng-model="columnChecks[$index].val" type="checkbox" ng-click="updateCheckCount()"
