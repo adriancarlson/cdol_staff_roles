@@ -50,8 +50,7 @@
             <h4>Select which roles to load:</h4>
             <p><span class="center" style="margin-right: 15px;"
                     ng-repeat="roleTitle in rolesDropDownList | orderBy: 'uidisplayorder'" class="center"><input
-                        type="checkbox" ng-click="checkAll(roleTitle.code)" title="Select/Deselect All"
-                        id="{{roleTitle.code}}SelectedAll" />{{roleTitle.displayvalue}}</span></p>
+                        ng-model="columnChecks[$index].val" type="checkbox" />{{roleTitle.displayvalue}}</span></p>
         </div>
         <div class="box-round" ng-cloak class="ng-cloak">
             <table class="grid">
@@ -59,11 +58,13 @@
                     <tr>
                         <th rowspan="2" ng-if="cdolRole.schoolid==0">School</th>
                         <th rowspan="2">Staff Name</th>
-                        <th ng-repeat="roleTitle in rolesDropDownList | orderBy: 'uidisplayorder'">
+                        <th ng-show="columnChecks[{{$index}}].val === true"
+                            ng-repeat="roleTitle in rolesDropDownList | orderBy: 'uidisplayorder'">
                             {{roleTitle.displayvalue}} Email</th>
                     </tr>
                     <tr>
-                        <th ng-repeat="roleTitle in rolesDropDownList | orderBy: 'uidisplayorder'" class="center">
+                        <th ng-show="columnChecks[{{$index}}].val === true"
+                            ng-repeat="roleTitle in rolesDropDownList | orderBy: 'uidisplayorder'" class="center">
                             <input type="checkbox" ng-click="checkAll(roleTitle.code)" title="Select/Deselect All"
                                 id="{{roleTitle.code}}SelectedAll" />Select/Deselect All
                         </th>
@@ -73,7 +74,8 @@
                     <tr ng-repeat="role in roleList | orderBy: ['school_abbr','lastfirst']">
                         <td ng-if="cdolRole.schoolid==0">{{role.school_abbr}}</td>
                         <td>{{role.lastfirst}}</td>
-                        <td ng-repeat="roleTitle in rolesDropDownList | orderBy: 'uidisplayorder'" class="mailTD"><input
+                        <td ng-show="columnChecks[{{$index}}].val === true"
+                            ng-repeat="roleTitle in rolesDropDownList | orderBy: 'uidisplayorder'" class="mailTD"><input
                                 type="checkbox" ng-if="roleTitle.displayvalue==role.cdol_role"
                                 class="{{roleTitle.code}}CheckBox {{role.usersDCID}}CheckBox"
                                 id="{{role.usersDCID}}{{roleTitle.code}}CheckBox"

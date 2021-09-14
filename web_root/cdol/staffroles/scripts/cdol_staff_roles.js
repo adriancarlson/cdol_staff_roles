@@ -26,7 +26,7 @@ define(['angular', 'components/shared/index'], function (angular) {
 				}
 			};
 
-			//pull in availbe staff roles for drop down on CDOL Staff Roles. Also utilized for the repeat of column headers on Staff Roles Build Email List. porbably should have been renamed... but not worth the effort at this time.
+			//pull in available staff roles for drop down on CDOL Staff Roles. Also utilized for the repeat of column headers on Staff Roles Build Email List. porbably should have been renamed... but not worth the effort at this time.
 			$scope.getRolesDropDown = function () {
 				$http({
 					url: '/admin/cdol/staffroles/data/getRolesDropDown.json',
@@ -35,17 +35,17 @@ define(['angular', 'components/shared/index'], function (angular) {
 				}).then(function (response) {
 					$scope.rolesDropDownList = response.data;
 					$scope.rolesDropDownList.pop();
+					//populates the values for the checkboxes to for the ability to choose columns 
 					$scope.rolesDropDownList.forEach(function (item) {
 						$scope.columnChecks.push({ key: item.code, val: true });
 					});
-					console.log('Before:', $scope.columnChecks);
+					// sets the initial display columns at 4 
 					$scope.columnChecks.forEach(function (item, index) {
-						if (index >= 3) {
+						if (index >= 4) {
 							item.val = false;
 						}
 					});
 					$scope.cdolRole.cdol_role = '';
-					console.log('After:', $scope.columnChecks);
 				});
 			};
 			//pull in existing  staff roles
@@ -114,7 +114,7 @@ define(['angular', 'components/shared/index'], function (angular) {
 						}
 					});
 				} else {
-					//if cindividual email box unchecked. uncheck all same individual email boxes and filter out that email from the allEmailArray
+					//if individual email box unchecked. uncheck all same individual email boxes and filter out that email from the allEmailArray
 					$j(emailsToCheck).prop('checked', false);
 					let removedEmailsArray = $scope.allEmailArray.filter(function (item) {
 						return item.usersDCID != uDCID;
