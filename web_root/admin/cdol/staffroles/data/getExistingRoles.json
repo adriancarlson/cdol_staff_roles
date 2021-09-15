@@ -37,7 +37,7 @@
         "priority":"~(7;JSON)",
         "lastfirst":"~(8;JSON)",
         "email_addr":"~(9;JSON)",
-        "school_abbr":"~(10;JSON)"
+        "school_abbr":"~(10;JSON)",
         "school_name":"~(11;JSON)"
     },
 [/tlist_sql]
