@@ -39,7 +39,7 @@
         <div class="box-round">
             <h4>Select which roles to load:
                 <span class="dioSwitchLabel" ng-show="cdolRole.schoolid!=0">
-                    <label class="switch">
+                    <label class="switch" data-tooltip="This will clear all currently selected emails">
                         <input type="checkbox" ng-model="dioCheck" ng-click="getExistingRoles()" />
                         <span class="slider round"></span>
                     </label>
@@ -73,7 +73,8 @@
                 </thead>
                 <tbody>
                     <tr ng-repeat="role in roleList | orderBy: ['school_abbr','lastfirst']">
-                        <td ng-if="cdolRole.schoolid==0 || dioCheck === true">{{role.school_abbr}}</td>
+                        <td ng-if="cdolRole.schoolid==0 || dioCheck === true" title="{{role.school_name}}">
+                            {{role.school_abbr}}</td>
                         <td class="nowrap">{{role.lastfirst}}</td>
                         <td ng-show="columnChecks[{{$index}}].val === true"
                             ng-repeat="roleTitle in rolesDropDownList | orderBy: 'uidisplayorder'"
@@ -90,7 +91,8 @@
         </div>
         <div id="copyDivDialog" class="box-round">
             <div class="feedback-info">
-                <div>Once you have selected the addresses, click the "Copy" button, and paste into the To: field or BCC (blind carbon copy) field of a new email. The BCC field will prevent users
+                <div>Once you have selected the addresses, click the "Copy" button, and paste into the To: field or BCC
+                    (blind carbon copy) field of a new email. The BCC field will prevent users
                     from seeing each others' email addresses, if that is a concern.</div>
             </div>
             <div class="wrapper">

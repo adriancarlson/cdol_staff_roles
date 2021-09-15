@@ -10,7 +10,8 @@
     U_CDOL_STAFF_ROLES.priority,
     users.lastfirst,
     users.email_addr,
-    schools.abbreviation
+    schools.abbreviation,
+    schools.name
     FROM U_CDOL_STAFF_ROLES
     INNER JOIN CODESET 
         on U_CDOL_STAFF_ROLES.cdol_role = codeset.displayvalue
@@ -37,6 +38,7 @@
         "lastfirst":"~(8;JSON)",
         "email_addr":"~(9;JSON)",
         "school_abbr":"~(10;JSON)"
+        "school_name":"~(11;JSON)"
     },
 [/tlist_sql]
 {}]
