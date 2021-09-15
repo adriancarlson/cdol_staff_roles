@@ -7,25 +7,7 @@
         ~[wc:commonscripts]
         <link href="/images/css/screen.css" rel="stylesheet" media="screen">
         <link href="/images/css/print.css" rel="stylesheet" media="print">
-        <style>
-            .text-muted {
-                opacity: 0.75;
-                font-style: oblique;
-                padding-left: 20px;
-            }
-
-            #removeBtn {
-                margin-left: 10px;
-                padding-left: 10px;
-                padding-right: 10px;
-                background-color: #a94442;
-            }
-
-            .custBtn {
-                font-size: 1.05rem;
-                font-weight: bold;
-            }
-        </style>
+        <link href="/cdol/staffroles/scripts/cdol_staff_roles.css?~(f.currenttime)" rel="stylesheet" media="screen">
     </head>
 
     <body id="cdolRolesAppDiv" ng-controller="cdolRolesAppCtrl as mainController"
@@ -59,7 +41,7 @@
             <table class="grid">
                 <thead>
                     <tr>
-                        <th data-pss-sort-fields="cdol_role|text" class="nowrap" style="text-align:left;">
+                        <th data-pss-sort-fields="cdol_role|text" class="nowrap ta-Left">
                             ~(first_name)'s
                             Role(s)</th>
                     </tr>

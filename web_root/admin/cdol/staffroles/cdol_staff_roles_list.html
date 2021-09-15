@@ -25,19 +25,20 @@
         ~[wc:admin_header_css]
         <div id="breadcrumbs">
             <!-- breadcrumb start -->
-            <a href="/admin/home.html" target="_top">~[text:psx.html.admin_district.home.start_page]</a>
+            <a href="/admin/home.html" target="_top">~[text:psx.html.admin_district.home.start_page]</a>&nbsp;
             ~[if.district.office]&gt;
-            <a href="/admin/district/home.html" target="_top">~[text:psx.html.admin_district.home.district_setup1]</a>
-            [else] &gt;
+            <a href="/admin/district/home.html" target="_top">&nbsp;~[text:psx.html.admin_district.home.district_setup1]
+                &nbsp;</a>
+            [else]&gt;
             <a href="/admin/schoolsetup/home.html"
-                target="_top">~[text:psx.html.admin_schoolsetup.home.school_setup1]</a> [/if]
+                target="_top">&nbsp;~[text:psx.html.admin_schoolsetup.home.school_setup1]&nbsp;</a>[/if]
             &gt; Staff Roles Build Email List
         </div>
         ~[wc:admin_navigation_css]
         <h1>Staff Roles Build Email List</h1>
         <div class="box-round">
             <h4>Select which roles to load:
-                <span style="text-align:right; font-weight:bold;" ng-show="cdolRole.schoolid!=0">
+                <span class="dioSwitchLabel" ng-show="cdolRole.schoolid!=0">
                     <label class="switch">
                         <input type="checkbox" ng-model="dioCheck" ng-click="getExistingRoles()" />
                         <span class="slider round"></span>
@@ -45,9 +46,9 @@
                     Show All Diocesan Staff
                 </span>
             </h4>
-            <p><span class="center" style="margin-right: 15px;"
-                    ng-repeat="roleTitle in rolesDropDownList | orderBy: 'uidisplayorder'" class="center"><input
-                        ng-model="columnChecks[$index].val" type="checkbox" ng-click="updateCheckCount()"
+            <p><span class="colFilterChecks" ng-repeat="roleTitle in rolesDropDownList | orderBy: 'uidisplayorder'"
+                    class="center"><input ng-model="columnChecks[$index].val" type="checkbox"
+                        ng-click="updateCheckCount()"
                         ng-disabled="columnChecks[$index].val != false && countofColumnChecks == 1" />{{roleTitle.displayvalue}}</span>
             </p>
         </div>
@@ -58,12 +59,13 @@
                         <th rowspan="2" ng-if="cdolRole.schoolid==0 || dioCheck === true">School</th>
                         <th rowspan="2">Staff Name</th>
                         <th ng-show="columnChecks[{{$index}}].val === true"
-                            ng-repeat="roleTitle in rolesDropDownList | orderBy: 'uidisplayorder'">
+                            ng-repeat="roleTitle in rolesDropDownList | orderBy: 'uidisplayorder'" class="nowrap">
                             {{roleTitle.displayvalue}} Email</th>
                     </tr>
                     <tr>
                         <th ng-show="columnChecks[{{$index}}].val === true"
-                            ng-repeat="roleTitle in rolesDropDownList | orderBy: 'uidisplayorder'" class="center">
+                            ng-repeat="roleTitle in rolesDropDownList | orderBy: 'uidisplayorder'"
+                            class="center nowrap">
                             <input type="checkbox" ng-click="checkAll(roleTitle.code)" title="Select/Deselect All"
                                 id="{{roleTitle.code}}SelectedAll" />Select/Deselect All
                         </th>
@@ -72,10 +74,10 @@
                 <tbody>
                     <tr ng-repeat="role in roleList | orderBy: ['school_abbr','lastfirst']">
                         <td ng-if="cdolRole.schoolid==0 || dioCheck === true">{{role.school_abbr}}</td>
-                        <td>{{role.lastfirst}}</td>
+                        <td class="nowrap">{{role.lastfirst}}</td>
                         <td ng-show="columnChecks[{{$index}}].val === true"
-                            ng-repeat="roleTitle in rolesDropDownList | orderBy: 'uidisplayorder'" class="mailTD"><input
-                                type="checkbox" ng-if="roleTitle.displayvalue==role.cdol_role"
+                            ng-repeat="roleTitle in rolesDropDownList | orderBy: 'uidisplayorder'"
+                            class="mailTD nowrap"><input type="checkbox" ng-if="roleTitle.displayvalue==role.cdol_role"
                                 class="{{roleTitle.code}}CheckBox {{role.usersDCID}}CheckBox"
                                 id="{{role.usersDCID}}{{roleTitle.code}}CheckBox"
                                 ng-click="checkIndividual(role.usersDCID, roleTitle.code, role.school_abbr)" /><a
@@ -85,16 +87,16 @@
                     </tr>
                 </tbody>
             </table>
-            <div id="copyDivDialog" class="center">
-                <div style="width:500px;margin-left:auto;margin-right:auto;" class="center">
-                    <p>Once you have selected the addresses, click the "Copy" button, and paste into the To field or
-                        your email, or BCC (blind carbon copy) field of a new email.<br>The BCC field will prevent users
-                        from seeing each others' email addresses, if that is a concern.</p>
-                </div>
-                <div class="center">
-                    <a class="button" ng-click="copyEmails()">Copy</a><br>
-                    <textarea class="cpyBx" rows="9" cols="100" id="copyEmailBox" ng-bind="displayEmails"></textarea>
-                </div>
+        </div>
+        <div id="copyDivDialog" class="box-round">
+            <div style="width:500px;margin-left:auto;margin-right:auto;">
+                <p>Once you have selected the addresses, click the "Copy" button, and paste into the To field or
+                    your email, or BCC (blind carbon copy) field of a new email.<br>The BCC field will prevent users
+                    from seeing each others' email addresses, if that is a concern.</p>
+            </div>
+            <div>
+                <a class="button" ng-click="copyEmails()">Copy</a><br>
+                <textarea class="cpyBx" rows="9" cols="100" id="copyEmailBox" ng-bind="displayEmails"></textarea>
             </div>
         </div>
         ~[wc:admin_footer_css]
