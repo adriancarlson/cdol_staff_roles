@@ -89,14 +89,16 @@
             </table>
         </div>
         <div id="copyDivDialog" class="box-round">
-            <div style="width:500px;margin-left:auto;margin-right:auto;">
-                <p>Once you have selected the addresses, click the "Copy" button, and paste into the To field or
-                    your email, or BCC (blind carbon copy) field of a new email.<br>The BCC field will prevent users
-                    from seeing each others' email addresses, if that is a concern.</p>
+            <div class="feedback-info">
+                <div>Once you have selected the addresses, click the "Copy" button, and paste into the To: field or BCC (blind carbon copy) field of a new email. The BCC field will prevent users
+                    from seeing each others' email addresses, if that is a concern.</div>
             </div>
-            <div>
-                <a class="button" ng-click="copyEmails()">Copy</a><br>
-                <textarea class="cpyBx" rows="9" cols="100" id="copyEmailBox" ng-bind="displayEmails"></textarea>
+            <div class="wrapper">
+                <textarea rows="5" cols="500" id="copyEmailBox" ng-bind="displayEmails"></textarea>
+                <div class="flex-parent jc-center">
+                    <button class="cpyBtn" type="button" ng-click="copyEmails()"
+                        ng-disabled="!displayEmails">Copy</button>
+                </div>
             </div>
         </div>
         ~[wc:admin_footer_css]

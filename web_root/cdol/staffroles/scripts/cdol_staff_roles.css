@@ -1,3 +1,4 @@
+/* submit page styles */
 .text-muted {
 	opacity: 0.75;
 	font-style: oblique;
@@ -19,16 +20,14 @@
 .ta-Left {
 	text-align: left;
 }
+
+/* list page styles */
 .checkTD {
 	border-right: 0 !important;
 }
 
 .mailTD {
 	border-left: 0 !important;
-}
-
-.cpyBx {
-	margin-top: 10px;
 }
 
 .dioSwitchLabel {
@@ -38,6 +37,33 @@
 
 .colFilterChecks {
 	margin-right: 15px;
+}
+
+/* text area styles */
+.wrapper {
+	padding: 5px;
+	margin-left: 5px;
+}
+
+textarea {
+	width: calc(100% - 15px);
+	border-radius: 6px;
+}
+.cpyBtn {
+	width: 8%;
+	border-radius: 4px;
+	margin-left: 0px;
+	padding: 9px 5px;
+	line-height: 1.3em;
+	font-size: 18px;
+}
+
+.flex-parent {
+	display: flex;
+}
+
+.jc-center {
+	justify-content: center;
 }
 
 /* The switch - the box around the slider */
@@ -101,4 +127,9 @@ input:checked + .slider:before {
 
 .slider.round:before {
 	border-radius: 50%;
+}
+
+/* feedback spacing override */
+.feedback-info {
+	margin: 7px 10px 5px 10px !important;
 }
