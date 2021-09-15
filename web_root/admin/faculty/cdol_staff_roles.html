@@ -26,6 +26,9 @@
         <div class="fluid-form">
             <div>
                 <div>
+                    ~[if#distCheck.district.office]
+                    <div class="feedback-note">You must be at a school to assign staff roles</div>
+                    [else#distCheck]
                     <label>Add Staff Role:</label>
                     <select name="" type="text" value="" ng-model="cdolRole.cdol_role">
                         <option ng-repeat="option in rolesDropDownList | orderBy: 'uidisplayorder'"
@@ -58,6 +61,7 @@
                 </tbody>
             </table>
         </div>
+        [/if#distCheck]
     </body>
 
 </html>

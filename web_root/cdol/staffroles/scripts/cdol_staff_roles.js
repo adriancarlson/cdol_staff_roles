@@ -59,6 +59,7 @@ define(['angular', 'components/shared/index'], function (angular) {
 			//pull in existing  staff roles
 			$scope.getExistingRoles = function () {
 				loadingDialog();
+				$scope.displayEmails = [];
 				let passedSchoolID = $attrs.ngCurSchoolId;
 				if ($scope.dioCheck === true) {
 					passedSchoolID = 0;
