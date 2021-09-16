@@ -53,6 +53,8 @@ define(['angular', 'components/shared/index'], function (angular) {
 							item.val = false;
 						}
 					});
+					$scope.getExistingRoles();
+
 					$scope.cdolRole.cdol_role = '';
 				});
 			};
@@ -61,17 +63,25 @@ define(['angular', 'components/shared/index'], function (angular) {
 				loadingDialog();
 				$scope.displayEmails = [];
 				let passedSchoolID = $attrs.ngCurSchoolId;
+
 				if ($scope.dioCheck === true) {
 					passedSchoolID = 0;
 				}
+				let rolesToDisplay = [];
+				$scope.columnChecks.forEach(function (item) {
+					if (item.val) {
+						rolesToDisplay.push(item.key);
+					}
+				});
+				rolesToDisplay = rolesToDisplay.toString();
+
 				$http({
 					url: '/admin/cdol/staffroles/data/getExistingRoles.json',
 					method: 'GET',
-					params: { SchoolStaffDCID: $attrs.ngUserId, curSchoolID: passedSchoolID },
+					params: { SchoolStaffDCID: $attrs.ngUserId, curSchoolID: passedSchoolID, displayRoles: rolesToDisplay },
 				}).then(function (response) {
 					$scope.roleList = response.data;
 					$scope.roleList.pop();
-					$scope.getRolesDropDown();
 				});
 				closeLoading();
 			};
