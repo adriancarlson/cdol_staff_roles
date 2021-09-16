@@ -11,6 +11,8 @@ define(['angular', 'components/shared/index'], function (angular) {
 				cdol_role: '',
 				priority: '1',
 			};
+			$scope.listPage = $attrs.ngListPage;
+			console.log($scope.listPage);
 			$scope.roleList = [];
 			$scope.rolesDropDownList = [];
 			$scope.allEmailArray = [];
@@ -41,18 +43,20 @@ define(['angular', 'components/shared/index'], function (angular) {
 					method: 'GET',
 					params: { SchoolStaffDCID: $attrs.ngUserId, curSchoolID: passedSchoolID },
 				}).then(function (response) {
-					$scope.rolesDropDownList = response.data;
-					$scope.rolesDropDownList.pop();
-					//populates the values for the checkboxes to for the ability to choose columns
-					$scope.rolesDropDownList.forEach(function (item) {
-						$scope.columnChecks.push({ key: item.code, val: true });
-					});
-					// sets the initial display columns at 4
-					$scope.columnChecks.forEach(function (item, index) {
-						if (index >= 4) {
-							item.val = false;
-						}
-					});
+					if ($scope.listPage === 'true') {
+						$scope.rolesDropDownList = response.data;
+						$scope.rolesDropDownList.pop();
+						//populates the values for the checkboxes to for the ability to choose columns
+						$scope.rolesDropDownList.forEach(function (item) {
+							$scope.columnChecks.push({ key: item.code, val: true });
+						});
+						// sets the initial display columns at 4
+						$scope.columnChecks.forEach(function (item, index) {
+							if (index >= 4) {
+								item.val = false;
+							}
+						});
+					}
 					$scope.getExistingRoles();
 
 					$scope.cdolRole.cdol_role = '';
@@ -70,7 +74,7 @@ define(['angular', 'components/shared/index'], function (angular) {
 				let rolesToDisplay = [];
 				$scope.columnChecks.forEach(function (item) {
 					if (item.val) {
-						rolesToDisplay.push(item.key);
+						rolesToDisplay.push("'" + item.key + "'");
 					}
 				});
 				rolesToDisplay = rolesToDisplay.toString();
