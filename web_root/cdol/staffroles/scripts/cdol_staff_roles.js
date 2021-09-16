@@ -12,12 +12,11 @@ define(['angular', 'components/shared/index'], function (angular) {
 				priority: '1',
 			};
 			$scope.listPage = $attrs.ngListPage;
-			console.log($scope.listPage);
 			$scope.roleList = [];
 			$scope.rolesDropDownList = [];
 			$scope.allEmailArray = [];
 			$scope.columnChecks = [];
-
+			$scope.timesRun = 0;
 			$scope.dioCheck = false;
 
 			//makes plus button on CDOL Staff Roles inactive if no option selected or no options left
@@ -31,6 +30,7 @@ define(['angular', 'components/shared/index'], function (angular) {
 			};
 			$scope.updateCheckCount = function () {
 				$scope.countofColumnChecks = $scope.columnChecks.filter((obj) => obj.val === true).length;
+				$scope.getRolesDropDown();
 			};
 			//pull in available staff roles for drop down on CDOL Staff Roles. Also utilized for the repeat of column headers on Staff Roles Build Email List. porbably should have been renamed... but not worth the effort at this time.
 			$scope.getRolesDropDown = function () {
@@ -45,15 +45,18 @@ define(['angular', 'components/shared/index'], function (angular) {
 				}).then(function (response) {
 					$scope.rolesDropDownList = response.data;
 					$scope.rolesDropDownList.pop();
+					//populates the values for the checkboxes to for the ability to choose columns
+					$scope.rolesDropDownList.forEach(function (item) {
+						$scope.columnChecks.push({ key: item.code, val: true });
+					});
 					if ($scope.listPage === 'true') {
-						//populates the values for the checkboxes to for the ability to choose columns
-						$scope.rolesDropDownList.forEach(function (item) {
-							$scope.columnChecks.push({ key: item.code, val: true });
-						});
+						$scope.timesRun++;
 						// sets the initial display columns at 4
 						$scope.columnChecks.forEach(function (item, index) {
-							if (index >= 4) {
-								item.val = false;
+							if ($scope.timesRun === 1) {
+								if (index >= 4) {
+									item.val = false;
+								}
 							}
 						});
 					}
@@ -66,6 +69,7 @@ define(['angular', 'components/shared/index'], function (angular) {
 			$scope.getExistingRoles = function () {
 				loadingDialog();
 				$scope.displayEmails = [];
+				$scope.countofColumnChecks = 0;
 				let passedSchoolID = $attrs.ngCurSchoolId;
 
 				if ($scope.dioCheck === true) {

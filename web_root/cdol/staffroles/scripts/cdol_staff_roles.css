@@ -128,9 +128,9 @@ input:checked + .slider:before {
 .slider.round:before {
 	border-radius: 50%;
 }
-/* switch hover */
-.switch::before,
-.switch::after {
+/* tooltip */
+.tooltip::before,
+.tooltip::after {
 	--scale: 0;
 	--tooltip-color: #e7eff3;
 	--arrow-size: 10px;
@@ -142,7 +142,7 @@ input:checked + .slider:before {
 	transition: 200ms transform;
 	transform-origin: top center;
 }
-.switch::before {
+.tooltip::before {
 	--translate-y: calc(100% - var(--arrow-size));
 	content: attr(data-tooltip);
 	color: #075b7f;
@@ -154,11 +154,11 @@ input:checked + .slider:before {
 	border: 1px solid #075b7f;
 }
 
-.switch:hover::before,
-.switch:hover::after {
+.tooltip:hover::before,
+.tooltip:hover::after {
 	--scale: 1;
 }
-.switch::after {
+.tooltip::after {
 	/*--translate-y: calc(-1 * var(--arrow-size));*/
 	content: '';
 	border: var(--arrow-size) solid transparent;

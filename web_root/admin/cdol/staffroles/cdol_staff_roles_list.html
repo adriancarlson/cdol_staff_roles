@@ -40,14 +40,15 @@
         <div class="box-round">
             <h4>Select which roles to load:
                 <span class="dioSwitchLabel" ng-show="cdolRole.schoolid!=0">
-                    <label class="switch" data-tooltip="This will clear all currently selected emails">
+                    <label class="switch tooltip" data-tooltip="Switching will clear all currently selected emails">
                         <input type="checkbox" ng-model="dioCheck" ng-click="getRolesDropDown()" />
                         <span class="slider round"></span>
                     </label>
                     Show All Diocesan Staff
                 </span>
             </h4>
-            <p><span class="colFilterChecks" ng-repeat="roleTitle in rolesDropDownList | orderBy: 'uidisplayorder'"
+            <p class="tooltip" data-tooltip="Checking will clear all currently selected emails"><span
+                    class="colFilterChecks" ng-repeat="roleTitle in rolesDropDownList | orderBy: 'uidisplayorder'"
                     class="center"><input ng-model="columnChecks[$index].val" type="checkbox"
                         ng-click="updateCheckCount()"
                         ng-disabled="columnChecks[$index].val != false && countofColumnChecks == 1" />{{roleTitle.displayvalue}}</span>
@@ -100,7 +101,7 @@
                 <textarea rows="5" cols="500" id="copyEmailBox" ng-bind="displayEmails"></textarea>
                 <div class="flex-parent jc-center">
                     <button class="cpyBtn" type="button" ng-click="copyEmails()"
-                        ng-disabled="!displayEmails">Copy</button>
+                        ng-disabled="displayEmails.length == 0">Copy</button>
                 </div>
             </div>
         </div>
