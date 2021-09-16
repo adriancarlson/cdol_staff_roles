@@ -50,7 +50,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="role in roleListFilt ">
+                    <tr ng-repeat="role in roleListFilt | orderBy: 'uidisplayorder'">
                         <td data-id="{{role.id}}">{{role.cdol_role}}<button class="custBtn" id="removeBtn" type="button"
                                 ng-click="removeStaffRole(role.id)"> - </button></td>
                     </tr>
