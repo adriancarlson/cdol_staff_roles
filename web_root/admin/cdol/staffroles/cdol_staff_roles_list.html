@@ -40,21 +40,25 @@
         <div class="box-round">
             <h4>Select which roles to load:
                 <span class="dioSwitchLabel" ng-show="cdolRole.schoolid!=0">
-                    <label class="switch tooltip" data-tooltip="Switching will clear all currently selected emails">
+                    <label class="switch tooltip switch-hide-box"
+                        data-tooltip="Switching will clear all currently selected emails">
                         <input type="checkbox" ng-model="dioCheck" ng-click="getRolesDropDown()" />
                         <span class="slider round"></span>
                     </label>
                     Show All Diocesan Staff
                 </span>
             </h4>
-            <p class="tooltip" data-tooltip="Checking will clear all currently selected emails"><span
-                    class="colFilterChecks" ng-repeat="roleTitle in rolesDropDownList | orderBy: 'uidisplayorder'"
-                    class="center"><input ng-model="columnChecks[$index].val" type="checkbox"
-                        ng-click="updateCheckCount()"
-                        ng-disabled="columnChecks[$index].val != false && countofColumnChecks == 1" />{{roleTitle.displayvalue}}</span>
+            <p>
+                <span ng-repeat="roleTitle in rolesDropDownList | orderBy: 'uidisplayorder'">
+                    <label class="switch tooltip" data-tooltip="Checking will clear all currently selected emails">
+                        <input type="checkbox" ng-model="columnChecks[$index].val" ng-click="updateCheckCount()"
+                            ng-disabled="columnChecks[$index].val != false && countofColumnChecks == 1" />
+                    </label>
+                    {{roleTitle.displayvalue}}
+                </span>
             </p>
         </div>
-        <div class="box-round" ng-cloak class="ng-cloak">
+        <div class="box-round ng-cloak" ng-cloak>
             <table class="grid">
                 <thead>
                     <tr>

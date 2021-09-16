@@ -75,7 +75,7 @@ textarea {
 }
 
 /* Hide default HTML checkbox */
-.switch input {
+.switch-hide-box input {
 	opacity: 0;
 	width: 0;
 	height: 0;
@@ -169,4 +169,7 @@ input:checked + .slider:before {
 /* feedback spacing override */
 .feedback-info {
 	margin: 7px 10px 5px 10px !important;
+}
+.chkBx {
+	opacity: 100%;
 }
