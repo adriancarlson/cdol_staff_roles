@@ -43,9 +43,9 @@ define(['angular', 'components/shared/index'], function (angular) {
 					method: 'GET',
 					params: { SchoolStaffDCID: $attrs.ngUserId, curSchoolID: passedSchoolID },
 				}).then(function (response) {
+					$scope.rolesDropDownList = response.data;
+					$scope.rolesDropDownList.pop();
 					if ($scope.listPage === 'true') {
-						$scope.rolesDropDownList = response.data;
-						$scope.rolesDropDownList.pop();
 						//populates the values for the checkboxes to for the ability to choose columns
 						$scope.rolesDropDownList.forEach(function (item) {
 							$scope.columnChecks.push({ key: item.code, val: true });
@@ -106,7 +106,7 @@ define(['angular', 'components/shared/index'], function (angular) {
 					},
 				}).then(function (response) {
 					if (response.data.result[0].status == 'SUCCESS') {
-						$scope.getExistingRoles();
+						$scope.getRolesDropDown();
 					} else {
 						psAlert({ message: 'There was an error submitting the record. Changes were not saved', title: 'Error Submitting Record' });
 					}
@@ -122,7 +122,7 @@ define(['angular', 'components/shared/index'], function (angular) {
 						'Content-Type': 'application/json',
 					},
 				}).then(function mySuccess(response) {
-					$scope.getExistingRoles();
+					$scope.getRolesDropDown();
 				});
 			};
 
