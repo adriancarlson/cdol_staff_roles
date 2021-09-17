@@ -76,13 +76,16 @@ define(['angular', 'components/shared/index'], function (angular) {
 					passedSchoolID = 0;
 				}
 				let rolesToDisplay = [];
-				$scope.columnChecks.forEach(function (item) {
-					if (item.val) {
-						rolesToDisplay.push("'" + item.key + "'");
-					}
-				});
-				rolesToDisplay = rolesToDisplay.toString();
+				if ($scope.listPage === 'true') {
+					$scope.columnChecks.forEach(function (item) {
+						if (item.val) {
+							rolesToDisplay.push("'" + item.key + "'");
+						}
+					});
 
+					rolesToDisplay = rolesToDisplay.toString();
+					console.log(rolesToDisplay);
+				}
 				$http({
 					url: '/admin/cdol/staffroles/data/getExistingRoles.json',
 					method: 'GET',
