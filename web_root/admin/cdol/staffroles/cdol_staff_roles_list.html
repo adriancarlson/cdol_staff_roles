@@ -51,7 +51,8 @@
             <p>
                 <span ng-repeat="roleTitle in rolesDropDownList | orderBy: 'uidisplayorder'">
                     <label class="switch tooltip" data-tooltip="Checking will clear all currently selected emails">
-                        <input type="checkbox" ng-model="columnChecks[$index].val" ng-click="updateCheckCount()"
+                        <input type="checkbox" ng-model="columnChecks[$index].val"
+                            ng-click="updateCheckCount(columnChecks[$index].key)"
                             ng-disabled="columnChecks[$index].val != false && countofColumnChecks == 1" />
                     </label>
                     {{roleTitle.displayvalue}}

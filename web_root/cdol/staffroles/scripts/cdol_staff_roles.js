@@ -18,6 +18,8 @@ define(['angular', 'components/shared/index'], function (angular) {
 			$scope.columnChecks = [];
 			$scope.timesRun = 0;
 			$scope.dioCheck = false;
+			$scope.countofColumnChecks = 0;
+			$scope.filterCheck = false;
 
 			//makes plus button on CDOL Staff Roles inactive if no option selected or no options left
 			$scope.invalidNew = function () {
@@ -28,12 +30,14 @@ define(['angular', 'components/shared/index'], function (angular) {
 					return true;
 				}
 			};
-			$scope.updateCheckCount = function () {
+			$scope.updateCheckCount = function (code) {
 				$scope.countofColumnChecks = $scope.columnChecks.filter((obj) => obj.val === true).length;
 				$scope.getRolesDropDown();
+				$scope.catchUnremovedEmails(code);
 			};
 			//pull in available staff roles for drop down on CDOL Staff Roles. Also utilized for the repeat of column headers on Staff Roles Build Email List. porbably should have been renamed... but not worth the effort at this time.
 			$scope.getRolesDropDown = function () {
+			    loadingDialog();
 				let passedSchoolID = $attrs.ngCurSchoolId;
 				if ($scope.dioCheck === true) {
 					passedSchoolID = 0;
@@ -46,11 +50,12 @@ define(['angular', 'components/shared/index'], function (angular) {
 					$scope.rolesDropDownList = response.data;
 					$scope.rolesDropDownList.pop();
 					//populates the values for the checkboxes to for the ability to choose columns
-					$scope.rolesDropDownList.forEach(function (item) {
+					if ($scope.listPage === 'true' && $scope.timesRun < 1) {
+					    
+						$scope.timesRun++;
+						$scope.rolesDropDownList.forEach(function (item) {
 						$scope.columnChecks.push({ key: item.code, val: true });
 					});
-					if ($scope.listPage === 'true') {
-						$scope.timesRun++;
 						// sets the initial display columns at 4
 						$scope.columnChecks.forEach(function (item, index) {
 							if ($scope.timesRun === 1) {
@@ -67,24 +72,22 @@ define(['angular', 'components/shared/index'], function (angular) {
 			};
 			//pull in existing  staff roles
 			$scope.getExistingRoles = function () {
-				loadingDialog();
 				$scope.displayEmails = [];
-				$scope.countofColumnChecks = 0;
 				let passedSchoolID = $attrs.ngCurSchoolId;
-
+				
 				if ($scope.dioCheck === true) {
 					passedSchoolID = 0;
 				}
+				
 				let rolesToDisplay = [];
+				
 				if ($scope.listPage === 'true') {
 					$scope.columnChecks.forEach(function (item) {
 						if (item.val) {
 							rolesToDisplay.push("'" + item.key + "'");
 						}
 					});
-
 					rolesToDisplay = rolesToDisplay.toString();
-					console.log(rolesToDisplay);
 				}
 				$http({
 					url: '/admin/cdol/staffroles/data/getExistingRoles.json',
@@ -93,8 +96,9 @@ define(['angular', 'components/shared/index'], function (angular) {
 				}).then(function (response) {
 					$scope.roleList = response.data;
 					$scope.roleList.pop();
+					closeLoading();
 				});
-				closeLoading();
+				
 			};
 			// API call to add staff role to staff
 			$scope.submitStaffRole = function () {
@@ -162,7 +166,7 @@ define(['angular', 'components/shared/index'], function (angular) {
 			$scope.checkAll = function (code) {
 				let colCheck = '#' + code + 'SelectedAll';
 				let rowCheck = '.' + code + 'CheckBox';
-				var masterCheck = $j(colCheck).prop('checked');
+				let masterCheck = $j(colCheck).prop('checked');
 				//if column header box checked. check individual email boxes and push that email to the allEmailArray
 				if (masterCheck) {
 					$j(rowCheck).prop('checked', true);
@@ -181,7 +185,21 @@ define(['angular', 'components/shared/index'], function (angular) {
 				}
 				$scope.updateEmailBox();
 			};
-
+            // this function removes any emails the user had selected in the column if they then decied to remove the columns
+            $scope.catchUnremovedEmails = function(code){
+                let colCheck = '#' + code + 'SelectedAll';
+				let rowCheck = '.' + code + 'CheckBox';
+				let masterCheck = $j(colCheck).prop('checked');
+				if(masterCheck){
+				    $j(rowCheck).prop('checked', false);
+					let removedEmailsArray = $scope.allEmailArray.filter(function (item) {
+						return item.type != code;
+					});
+					$scope.allEmailArray = removedEmailsArray;
+				}
+				$scope.updateEmailBox();
+            }
+            
 			$scope.updateEmailBox = function () {
 				//turns allEmailArray into justEmailsArray that only has the emails nothing else
 				let justEmailsArray = $scope.allEmailArray.map((item) => {
