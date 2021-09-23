@@ -20,6 +20,9 @@
 .ta-Left {
 	text-align: left !important;
 }
+.past-picture {
+    margin-top: 50px;
+}
 
 /* list page styles */
 .checkTD {
