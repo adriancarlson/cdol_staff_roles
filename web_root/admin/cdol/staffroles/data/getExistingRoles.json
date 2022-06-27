@@ -23,7 +23,9 @@
         ON schoolstaff.schoolid = schools.school_number
     INNER JOIN users 
         ON schoolstaff.users_dcid = users.dcid
-    WHERE  0 = 0 
+    WHERE
+    schoolstaff.status=1 
+    AND 0 = 0 
     ~[if#curSchoolID.~(gpv.curSchoolID)#0] AND U_CDOL_STAFF_ROLES.schoolid = '~(gpv.curSchoolID)' [/if#curSchoolID]
     ~[if#SchoolStaffDCID.~(gpv.SchoolStaffDCID)#] AND U_CDOL_STAFF_ROLES.SchoolStaffDCID = '~(gpv.SchoolStaffDCID)'[/if#SchoolStaffDCID]
     ~[if#displayRoles.~(gpv.displayRoles)#] AND U_CDOL_STAFF_ROLES.cdol_role IN (~(gpv.displayRoles))[/if#displayRoles]
