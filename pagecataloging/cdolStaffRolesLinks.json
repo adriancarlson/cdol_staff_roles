@@ -1,0 +1,24 @@
+{
+	"pages": [
+		{
+			"htmlID": "cdol-staff-roles-email-list",
+			"title": "Staff Roles Build Email List",
+			"pageURL": "/admin/cdol/staffroles/cdol_staff_roles_list.html",
+			"version": "0",
+			"contextType": "main",
+			"districtLevelContext": 0,
+			"sortOrder": 600,
+			"parentHTMLID": "navPeopleStaffReports"
+		},
+		{
+			"htmlID": "cdol-staff-roles",
+			"title": "CDOL Staff Roles",
+			"pageURL": "/admin/faculty/home.html?frn=0052",
+			"version": "0",
+			"contextType": "staff",
+			"districtLevelContext": 1,
+			"sortOrder": 500,
+			"parentHTMLID": "navStaffStaffDetails"
+		}
+	]
+}
