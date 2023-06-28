@@ -13,7 +13,7 @@
 		{
 			"htmlID": "cdol-staff-roles",
 			"title": "CDOL Staff Roles",
-			"pageURL": "/admin/faculty/home.html?frn=0052",
+			"pageURL": "/admin/faculty/cdol_staff_roles.html?frn=~(frn)",
 			"version": "0",
 			"contextType": "staff",
 			"districtLevelContext": 1,
