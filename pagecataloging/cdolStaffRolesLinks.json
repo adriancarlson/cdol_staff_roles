@@ -19,6 +19,16 @@
 			"districtLevelContext": 1,
 			"sortOrder": 500,
 			"parentHTMLID": "navStaffStaffDetails"
+		},
+		{
+			"htmlID": "staff-roles-email-list",
+			"title": "📨 Staff Email List",
+			"pageURL": "/admin/staff_roles/email_list.html",
+			"version": "0",
+			"contextType": "main",
+			"districtLevelContext": 0,
+			"sortOrder": 600,
+			"parentHTMLID": "navPeopleCommunications"
 		}
 	]
 }

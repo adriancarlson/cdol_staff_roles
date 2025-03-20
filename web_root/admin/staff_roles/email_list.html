@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Staff Email List</title>
+        ~[wc:commonscripts]
+        <link href="/images/css/screen.css" rel="stylesheet" media="screen">
+        <link href="/images/css/print.css" rel="stylesheet" media="print">
+        <style>
+            [ng\:cloak],
+            [ng-cloak],
+            [data-ng-cloak],
+            [x-ng-cloak],
+            .ng-cloak,
+            .x-ng-cloak {
+                display: none !important;
+            }
+        </style>
+        <link href="/cdol/staffroles/scripts/cdol_staff_roles.css?~(f.currenttime)" rel="stylesheet" media="screen">
+    </head>
+
+    <body>
+        ~[wc:admin_header_css]
+        ~[wc:admin_navigation_css]
+        <h1>Staff Email List</h1>
+        <div class="box-round" data-require-path="components/staff_roles/index" data-module-name="staffRolesMod"
+            data-ng-controller="emailListCtrl" ng-cur-school-id="~(curschoolid)" ng-cloak>
+            <p>
+                temp: {{hello}} <br>
+                curSchoolId: {{curSchoolId}}
+            </p>
+        </div>
+        ~[wc:admin_footer_css]
+    </body>
+
+</html>
