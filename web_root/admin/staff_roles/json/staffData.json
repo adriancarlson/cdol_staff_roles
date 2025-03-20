@@ -1,0 +1,32 @@
+~[tlist_sql;
+        SELECT 
+    JSON_ARRAYAGG(
+        JSON_OBJECT(
+            'user_dcid' VALUE TO_CHAR(users.dcid),
+            'school_staff_dcid' VALUE TO_CHAR(schoolstaff.dcid),
+            'teachernumber' VALUE users.teachernumber,
+            'lastfirst' VALUE users.lastfirst,
+            'email_addr' VALUE users.email_addr,
+            'school_abbr' VALUE 
+                CASE 
+                    WHEN schools.abbreviation IS NULL THEN 'CDEO' 
+                    ELSE schools.abbreviation 
+                END,
+            'school_name' VALUE schools.name,
+            'school_number' VALUE TO_CHAR(schools.school_number)
+        ) RETURNING CLOB
+    ) AS json_result
+FROM 
+    users
+    LEFT JOIN schoolstaff 
+        ON users.dcid = schoolstaff.users_dcid
+    LEFT JOIN u_users_additional_info 
+        ON users.dcid = u_users_additional_info.usersdcid
+    LEFT JOIN schools 
+        ON users.homeschoolid = schools.school_number
+WHERE 
+    schoolstaff.status = 1
+    AND (
+        users.homeschoolid = ~(curschoolid) 
+        OR ~(curschoolid) = 0)
+;]~(data)[/tlist_sql]
