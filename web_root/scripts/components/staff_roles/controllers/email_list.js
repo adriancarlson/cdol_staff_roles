@@ -21,10 +21,13 @@ define(require => {
 			$scope.loadData = () => {
 				loadingDialog()
 				$scope.setShowColumns()
-				$http({ url: 'json/staffData.json', method: 'GET' }).then(res => {
-					$scope.staffData = res.data
-					$scope.emailListData = $scope.staffData
-					closeLoading()
+				$http({ url: 'json/rolesData.json', method: 'GET' }).then(res => {
+					$scope.rolesData = res.data
+					$http({ url: 'json/staffData.json', method: 'GET' }).then(res => {
+						$scope.staffData = res.data
+						$scope.emailListData = $scope.staffData
+						closeLoading()
+					})
 				})
 			}
 			$scope.loadData()
