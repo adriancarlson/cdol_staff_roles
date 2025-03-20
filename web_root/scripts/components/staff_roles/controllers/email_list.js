@@ -25,8 +25,15 @@ define(require => {
 					$scope.rolesData = res.data
 					$http({ url: 'json/staffData.json', method: 'GET' }).then(res => {
 						$scope.staffData = res.data
-						$scope.emailListData = $scope.staffData
-						closeLoading()
+						$scope.schoolStaffDCIDs = $scope.staffData.map(staff => staff.school_staff_dcid)
+						$http({
+							url: 'json/staffRoles.json',
+							method: 'GET',
+							params: { schoolStaffDCIDs: schoolStaffDCIDs }
+						}).then(res => {
+							$scope.emailListData = $scope.staffData
+							closeLoading()
+						})
 					})
 				})
 			}

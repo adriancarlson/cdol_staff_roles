@@ -20,13 +20,10 @@
 		users
 		LEFT JOIN schoolstaff 
 			ON users.dcid = schoolstaff.users_dcid
-		LEFT JOIN u_users_additional_info 
-			ON users.dcid = u_users_additional_info.usersdcid
 		LEFT JOIN schools 
-			ON users.homeschoolid = schools.school_number
+			ON schoolstaff.schoolid = schools.school_number
 	WHERE 
 		schoolstaff.status = 1
-		AND (
-			users.homeschoolid = ~(curschoolid) 
+		AND (schoolstaff.schoolid = ~(curschoolid) 
 			OR ~(curschoolid) = 0)
 ;]~(data)[/tlist_sql]

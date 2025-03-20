@@ -1,30 +1,17 @@
 ~[tlist_sql;
-    SELECT
-	JSON_ARRAYAGG(
-		JSON_OBJECT(
-			'id' VALUE TO_CHAR(U_CDOL_STAFF_ROLES.id),
-			'SchoolStaffDCID' VALUE TO_CHAR(U_CDOL_STAFF_ROLES.SchoolStaffDCID),
-			'user_dcid' VALUE TO_CHAR(users.dcid),
-			'schoolid' VALUE TO_CHAR(U_CDOL_STAFF_ROLES.schoolid),
-			'role_display' VALUE codeset.displayvalue,
-			'cdol_role' VALUE U_CDOL_STAFF_ROLES.cdol_role,
-			'priority' VALUE TO_CHAR(U_CDOL_STAFF_ROLES.priority),
-			'lastfirst' VALUE users.lastfirst,
-			'email' VALUE users.email_addr,
-			'school_abbreviation' VALUE schools.abbreviation,
-			'school_name' VALUE schools.name,
-			'role_display_order' VALUE TO_CHAR(codeset.uidisplayorder)
-		) RETURNING CLOB
-	) AS json_result
-FROM
-	U_CDOL_STAFF_ROLES
-	INNER JOIN CODESET ON U_CDOL_STAFF_ROLES.cdol_role = codeset.code
-	AND codeset.codetype = 'CDOL Staff Roles'
-	INNER JOIN schoolstaff ON U_CDOL_STAFF_ROLES.SchoolStaffDCID = schoolstaff.DCID
-	INNER JOIN schools ON schoolstaff.schoolid = schools.school_number
-	INNER JOIN users ON schoolstaff.users_dcid = users.dcid
+SELECT 
+    JSON_ARRAYAGG(
+        JSON_OBJECT(
+            'schoolstaffdcid' VALUE TO_CHAR(u_cdol_staff_roles.schoolstaffdcid),
+            'cdol_role' VALUE u_cdol_staff_roles.cdol_role,
+            'priority' VALUE TO_CHAR(u_cdol_staff_roles.priority),
+            'schoolid' VALUE TO_CHAR(u_cdol_staff_roles.schoolid)
+        ) RETURNING CLOB
+    ) AS json_result
+FROM 
+    u_cdol_staff_roles
 WHERE
-	schoolstaff.status = 1
-	AND (~(curschoolid) = 0
-		OR U_CDOL_STAFF_ROLES.schoolid = ~(curschoolid))
+	u_cdol_staff_roles.schoolstaffdcid  IN (~(gpv.schoolStaffDCIDs;onlynumeric))
+	AND  (u_cdol_staff_roles.schoolid = ~(curschoolid) 
+			OR ~(curschoolid) = 0)
 ;]~(data)[/tlist_sql]
