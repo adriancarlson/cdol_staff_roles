@@ -24,12 +24,27 @@
     <body>
         ~[wc:admin_header_css]
         ~[wc:admin_navigation_css]
-        <h1>Staff Email List</h1>
+        <h1>📨 Staff Email List</h1>
         <div class="box-round" data-require-path="components/staff_roles/index" data-module-name="staffRolesMod"
             data-ng-controller="emailListCtrl" ng-cur-school-id="~(curschoolid)" ng-cloak>
-            <p>
-                emailList: {{emailListData}}
-            </p>
+            <div id="emailListrGrid" data-pss-grid-widget data-data="emailListData"
+                data-filtered-data="filteredEmailListData" data-item-type-text="Staff" data-no-grid-box="true">
+                <table class="grid">
+                    <thead>
+                        <tr>
+                            <th class="left" data-pss-sort-fields="lastfirst">Staff Name</th>
+                            <th data-ng-if="showColumns.School" class="center" data-pss-sort-fields="school_name">School
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr data-ng-repeat="staff in filteredEmailListData">
+                            <td>{{staff.lastfirst}}</td>
+                            <td data-ng-if="showColumns.School" class="center">{{staff.school_name}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
         ~[wc:admin_footer_css]
     </body>

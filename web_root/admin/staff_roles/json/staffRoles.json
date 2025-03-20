@@ -27,5 +27,4 @@ WHERE
 	schoolstaff.status = 1
 	AND (~(curschoolid) = 0
 		OR U_CDOL_STAFF_ROLES.schoolid = ~(curschoolid))
-    )
 ;]~(data)[/tlist_sql]
