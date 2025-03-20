@@ -9,6 +9,15 @@ define(require => {
 		function ($scope, $attrs, $http) {
 			$scope.hello = 'world'
 			$scope.curSchoolId = $attrs.ngCurSchoolId
+
+			$scope.loadData = () => {
+				loadingDialog()
+				$http({ url: 'json/staffRoles.json', method: 'GET' }).then(res => {
+					$scope.emailListData = res.data
+					closeLoading()
+				})
+			}
+			$scope.loadData()
 		}
 	])
 })
