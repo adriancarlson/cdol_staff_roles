@@ -26,10 +26,23 @@
         ~[wc:admin_navigation_css]
         <h1>📨 Staff Email List</h1>
         <div class="box-round" data-require-path="components/staff_roles/index" data-module-name="staffRolesMod"
-            data-ng-controller="emailListCtrl" ng-cur-school-id="~(curschoolid)" ng-cloak>
+            data-ng-controller="emailListCtrl" data-ng-cur-school-id="~(curschoolid)" data-ng-cloak>
             <div id="emailListrGrid" data-pss-grid-widget data-data="emailListData"
-                data-filtered-data="filteredEmailListData" data-item-type-text="Staff" data-no-grid-box="true">
-                Roles: {{rolesData}}
+                data-filtered-data="filteredEmailListData" data-item-type-text="Staff" data-no-grid-box="true"
+                style="margin:0;">
+                <div id="grid-colum-options">
+                    <h3>Roles:</h3>
+                    <p>
+                        <span data-ng-repeat="role in RolesData">
+                            <input type="checkbox" data-ng-model="showColumns[role.code]"
+                                data-ng-init="showColumns[role.code] = true">
+                            <span data-ng-click="showColumns[role.code] = !showColumns[role.code]">
+                                {{ role.displayvalue }}
+                            </span>
+                        </span>
+                        <label><input type="checkbox" data-ng-model="showColumns.School"> School</label>
+                    </p>
+                </div>
                 <table class="grid">
                     <thead>
                         <tr>

@@ -12,7 +12,11 @@ define(require => {
 			$scope.curSchoolId = $attrs.ngCurSchoolId
 			$scope.setShowColumns = () => {
 				$scope.showColumns = {
-					Name: true
+					Name: true,
+					psadmin: true,
+					tech: true,
+					coun: true,
+					princ: true
 				}
 				if ($scope.curSchoolId == 0) {
 					$scope.showColumns['School'] = true
