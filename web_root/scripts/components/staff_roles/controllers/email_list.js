@@ -94,6 +94,22 @@ define(require => {
 					staff.isSelected = $scope.toggleAllSelected
 				})
 			}
+
+			$scope.generateEmail = () => {
+				$scope.createEmailList()
+				const bcc = encodeURIComponent($scope.selectedEmailList)
+				const mailtoLink = `mailto:?bcc=${bcc}`
+				window.location.href = mailtoLink
+			}
+			$scope.copyEmailList = () => {
+				$scope.createEmailList()
+				console.log(selectedEmailList)
+			}
+
+			$scope.createEmailList = () => {
+				if (!$scope.filteredEmailListData) return
+				$scope.selectedEmailList = Array.from(new Set($scope.filteredEmailListData.filter(staff => staff.isSelected && staff.email_addr).map(staff => staff.email_addr))).join(', ')
+			}
 		}
 	])
 })
