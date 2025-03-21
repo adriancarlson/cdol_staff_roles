@@ -19,20 +19,21 @@ define(require => {
 				}
 			}
 
+			//This is here for troubleshooting purposes.
+			//Allows us to double click anywhere on the page and logs scope to console
+			$j(document).dblclick(() => console.log($scope))
+
 			$scope.loadData = () => {
 				loadingDialog()
 				$scope.setShowColumns()
 
-				// Fetch rolesData and staffData in parallel
 				$q.all([$http.get('json/rolesData.json'), $http.get('json/staffData.json')])
 					.then(([rolesRes, staffRes]) => {
 						$scope.rolesData = rolesRes.data
 						$scope.staffData = staffRes.data
 
-						// Extract DCIDs after staffData is set
 						$scope.schoolStaffDCIDs = $scope.staffData.map(staff => staff.school_staff_dcid)
 
-						// Now fetch staffRoles using schoolStaffDCIDs
 						return $http({
 							url: 'json/staffRoles.json',
 							method: 'GET',
@@ -40,8 +41,24 @@ define(require => {
 						})
 					})
 					.then(staffRolesRes => {
-						// staffRolesRes contains the roles if you want to use it
-						$scope.emailListData = $scope.staffData
+						$scope.allRoles = staffRolesRes.data
+
+						// Create emailListData with staff_roles attached
+						$scope.emailListData = $scope.staffData.map(staff => {
+							const staffDCID = staff.school_staff_dcid
+
+							// Find matching roles
+							const roles = $scope.allRoles.filter(role => role.schoolstaffdcid === staffDCID).sort((a, b) => parseInt(a.priority) - parseInt(b.priority))
+
+							// Create comma-separated string of displayvalue
+							const roleString = roles.map(r => r.displayvalue).join(', ')
+
+							return {
+								...staff,
+								staff_roles: roleString
+							}
+						})
+
 						closeLoading()
 					})
 					.catch(err => {

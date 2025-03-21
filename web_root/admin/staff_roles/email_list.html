@@ -36,12 +36,14 @@
                             <th class="left" data-pss-sort-fields="lastfirst">Staff Name</th>
                             <th data-ng-if="showColumns.School" class="center" data-pss-sort-fields="school_name">School
                             </th>
+                            <th>Staff Roles</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr data-ng-repeat="staff in filteredEmailListData">
                             <td>{{staff.lastfirst}}</td>
                             <td data-ng-if="showColumns.School" class="center">{{staff.school_name}}</td>
+                            <td>{{staff.staff_roles}}</td>
                         </tr>
                     </tbody>
                 </table>
