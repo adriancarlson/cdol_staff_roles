@@ -6,7 +6,8 @@ define(require => {
 		'$scope',
 		'$attrs',
 		'$http',
-		function ($scope, $attrs, $http) {
+		'$q',
+		function ($scope, $attrs, $http, $q) {
 			$scope.hello = 'world'
 			$scope.curSchoolId = $attrs.ngCurSchoolId
 			$scope.setShowColumns = () => {
@@ -21,21 +22,32 @@ define(require => {
 			$scope.loadData = () => {
 				loadingDialog()
 				$scope.setShowColumns()
-				$http({ url: 'json/rolesData.json', method: 'GET' }).then(res => {
-					$scope.rolesData = res.data
-					$http({ url: 'json/staffData.json', method: 'GET' }).then(res => {
-						$scope.staffData = res.data
+
+				// Fetch rolesData and staffData in parallel
+				$q.all([$http.get('json/rolesData.json'), $http.get('json/staffData.json')])
+					.then(([rolesRes, staffRes]) => {
+						$scope.rolesData = rolesRes.data
+						$scope.staffData = staffRes.data
+
+						// Extract DCIDs after staffData is set
 						$scope.schoolStaffDCIDs = $scope.staffData.map(staff => staff.school_staff_dcid)
-						$http({
+
+						// Now fetch staffRoles using schoolStaffDCIDs
+						return $http({
 							url: 'json/staffRoles.json',
 							method: 'GET',
-							params: { schoolStaffDCIDs: schoolStaffDCIDs }
-						}).then(res => {
-							$scope.emailListData = $scope.staffData
-							closeLoading()
+							params: { schoolStaffDCIDs: $scope.schoolStaffDCIDs }
 						})
 					})
-				})
+					.then(staffRolesRes => {
+						// staffRolesRes contains the roles if you want to use it
+						$scope.emailListData = $scope.staffData
+						closeLoading()
+					})
+					.catch(err => {
+						console.error('Error loading data:', err)
+						closeLoading()
+					})
 			}
 			$scope.loadData()
 		}
