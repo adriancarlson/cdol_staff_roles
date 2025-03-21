@@ -8,7 +8,7 @@ define(require => {
 		'$http',
 		'$q',
 		function ($scope, $attrs, $http, $q) {
-			$scope.hello = 'world'
+			// End multiselect function code
 			$scope.curSchoolId = $attrs.ngCurSchoolId
 			$scope.setShowColumns = () => {
 				$scope.showColumns = {
@@ -78,6 +78,34 @@ define(require => {
 					})
 			}
 			$scope.loadData()
+
+			$scope.roleMap = {
+				'Powerschool Admin': 'psadmin',
+				'Tech Liaison': 'tech',
+				Counselor: 'coun',
+				Principal: 'princ',
+				'Asst. Principal': 'astPrinc',
+				CAO: 'cao',
+				'Office Personnel': 'office',
+				Teacher: 'teach'
+			}
+			//Add function to employees for multiselect function example
+			var multiselectFunction = function (stringDescriptor) {
+				console.log('stringDescriptor')
+				//The this context is the assignment that this function gets attached to.
+				// switch (stringDescriptor) {
+				// 	case 'entry level':
+				// 		return this.timeAtPearson <= 12
+				// 	case 'junior':
+				// 		return this.timeAtPearson > 12 && this.timeAtPearson < 60
+				// 	case 'senior':
+				// 		return this.timeAtPearson >= 60
+				// }
+			}
+
+			for (var staff of $scope.emailListData) {
+				staff.multiselectFunction = multiselectFunction
+			}
 		}
 	])
 })
