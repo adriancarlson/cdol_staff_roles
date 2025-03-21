@@ -10,18 +10,6 @@ define(require => {
 		function ($scope, $attrs, $http, $q) {
 			// End multiselect function code
 			$scope.curSchoolId = $attrs.ngCurSchoolId
-			$scope.setShowColumns = () => {
-				$scope.showColumns = {
-					Name: true,
-					psadmin: true,
-					tech: true,
-					coun: true,
-					princ: true
-				}
-				if ($scope.curSchoolId == 0) {
-					$scope.showColumns['School'] = true
-				}
-			}
 
 			//This is here for troubleshooting purposes.
 			//Allows us to double click anywhere on the page and logs scope to console
@@ -29,7 +17,10 @@ define(require => {
 
 			$scope.loadData = () => {
 				loadingDialog()
-				$scope.setShowColumns()
+
+				if ($scope.curSchoolId == 0) {
+					$scope.showColumns['School'] = true
+				}
 
 				$q.all([$http.get('json/rolesData.json'), $http.get('json/staffData.json')])
 					.then(([rolesRes, staffRes]) => {
@@ -69,6 +60,14 @@ define(require => {
 								roles: roleFlags
 							}
 						})
+						// Add multiselect function to each staff entry using ES6+
+						const multiselectFunction = function (stringDescriptor) {
+							return !!this.roles?.[stringDescriptor]
+						}
+
+						$scope.emailListData.forEach(staff => {
+							staff.multiselectFunction = multiselectFunction
+						})
 
 						closeLoading()
 					})
@@ -88,23 +87,6 @@ define(require => {
 				CAO: 'cao',
 				'Office Personnel': 'office',
 				Teacher: 'teach'
-			}
-			//Add function to employees for multiselect function example
-			var multiselectFunction = function (stringDescriptor) {
-				console.log('stringDescriptor')
-				//The this context is the assignment that this function gets attached to.
-				// switch (stringDescriptor) {
-				// 	case 'entry level':
-				// 		return this.timeAtPearson <= 12
-				// 	case 'junior':
-				// 		return this.timeAtPearson > 12 && this.timeAtPearson < 60
-				// 	case 'senior':
-				// 		return this.timeAtPearson >= 60
-				// }
-			}
-
-			for (var staff of $scope.emailListData) {
-				staff.multiselectFunction = multiselectFunction
 			}
 		}
 	])
