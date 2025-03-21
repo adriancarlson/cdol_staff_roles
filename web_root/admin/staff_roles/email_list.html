@@ -18,7 +18,6 @@
                 display: none !important;
             }
         </style>
-        <!-- <link href="/cdol/staffroles/scripts/cdol_staff_roles.css?~(f.currenttime)" rel="stylesheet" media="screen"> -->
     </head>
 
     <body>
@@ -31,16 +30,13 @@
                 data-filtered-data="filteredEmailListData" data-item-type-text="Staff" data-no-grid-box="true"
                 style="margin:0;">
                 <div id="grid-colum-options">
-                    <h3>Roles:</h3>
                     <p>
-                        <span data-ng-repeat="role in RolesData">
-                            <input type="checkbox" data-ng-model="showColumns[role.code]"
-                                data-ng-init="showColumns[role.code] = true">
+                        <span data-ng-repeat="role in rolesData | orderBy:'uidisplayorder'">
+                            <input type="checkbox" data-ng-model="showColumns[role.code]">
                             <span data-ng-click="showColumns[role.code] = !showColumns[role.code]">
                                 {{ role.displayvalue }}
                             </span>
                         </span>
-                        <label><input type="checkbox" data-ng-model="showColumns.School"> School</label>
                     </p>
                 </div>
                 <table class="grid">
