@@ -27,13 +27,15 @@
         <div class="box-round" data-require-path="components/staff_roles/index" data-module-name="staffRolesMod"
             data-ng-controller="emailListCtrl" data-ng-cur-school-id="~(curschoolid)" data-ng-cloak>
             <div id="emailListrGrid" data-pss-grid-widget data-data="emailListData"
-                data-filtered-data="filteredEmailListData" data-item-type-text="Staff" data-no-grid-box="true"
-                style="margin:0;">
-                <!-- Adding before the table so it will put this filter at the top of the list in the drop down -->
-                <label data-pss-filter-field="multiselectFunction|multiselect" data-filter-info="roleMap">Role</label>
+                data-filtered-data="filteredEmailListData" data-item-type-text="Staff"
+                data-filter-constraint="advanced-only" style="margin:0;">
+                <label data-pss-filter-field="multiselectFunction|multiselect" data-filter-info="roleMap"
+                    data-default-filter="normal">Role</label>
                 <table class="grid">
                     <thead>
                         <tr>
+                            <th class="center" style="width:30px"><input type="checkbox"
+                                    data-ng-checked="toggleAllSelected" data-ng-click="toggleAllFilteredStaff()"></th>
                             <th data-pss-sort-fields="lastfirst" data-primary-sort="ascending">Staff Name
                             </th>
                             <th data-pss-sort-fields="email_addr">Email</th>
@@ -44,6 +46,7 @@
                     </thead>
                     <tbody>
                         <tr data-ng-repeat="staff in filteredEmailListData">
+                            <td class="center"><input type="checkbox" data-ng-model="staff.isSelected"></td>
                             <td>{{staff.lastfirst}}</td>
                             <td class="center"><a data-ng-href="mailto:{{staff.email_addr}}"
                                     data-ng-bind="staff.email_addr"></a></td>

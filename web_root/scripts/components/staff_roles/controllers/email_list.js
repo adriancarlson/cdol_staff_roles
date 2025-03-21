@@ -67,6 +67,7 @@ define(require => {
 
 						$scope.emailListData.forEach(staff => {
 							staff.multiselectFunction = multiselectFunction
+							staff.isSelected = true
 						})
 
 						closeLoading()
@@ -77,7 +78,19 @@ define(require => {
 					})
 			}
 			$scope.loadData()
+			$scope.toggleAllSelected = true
 
+			$scope.toggleAllFilteredStaff = function () {
+				if (!$scope.filteredEmailListData) return
+
+				// Toggle the master flag first
+				$scope.toggleAllSelected = !$scope.toggleAllSelected
+
+				// Apply the new toggle state to each visible staff
+				$scope.filteredEmailListData.forEach(staff => {
+					staff.isSelected = $scope.toggleAllSelected
+				})
+			}
 			$scope.roleMap = {
 				'Powerschool Admin': 'psadmin',
 				'Tech Liaison': 'tech',
