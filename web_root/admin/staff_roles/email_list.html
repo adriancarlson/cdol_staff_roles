@@ -18,7 +18,7 @@
                 display: none !important;
             }
         </style>
-        <link href="/cdol/staffroles/scripts/cdol_staff_roles.css?~(f.currenttime)" rel="stylesheet" media="screen">
+        <!-- <link href="/cdol/staffroles/scripts/cdol_staff_roles.css?~(f.currenttime)" rel="stylesheet" media="screen"> -->
     </head>
 
     <body>
@@ -33,17 +33,21 @@
                 <table class="grid">
                     <thead>
                         <tr>
-                            <th class="left" data-pss-sort-fields="lastfirst">Staff Name</th>
-                            <th data-ng-if="showColumns.School" class="center" data-pss-sort-fields="school_name">School
+                            <th data-pss-sort-fields="lastfirst" data-primary-sort="ascending">Staff Name
                             </th>
-                            <th>Staff Roles</th>
+                            <th data-pss-sort-fields="email_addr">Email</th>
+                            <th>Roles</th>
+                            <th data-ng-if="showColumns.School" class="center" data-pss-sort-fields="school_name">
+                                School
                         </tr>
                     </thead>
                     <tbody>
                         <tr data-ng-repeat="staff in filteredEmailListData">
                             <td>{{staff.lastfirst}}</td>
-                            <td data-ng-if="showColumns.School" class="center">{{staff.school_name}}</td>
+                            <td class="center"><a data-ng-href="mailto:{{staff.email_addr}}"
+                                    data-ng-bind="staff.email_addr"></a></td>
                             <td>{{staff.staff_roles}}</td>
+                            <td data-ng-if="showColumns.School" class="center">{{staff.school_name}}</td>
                         </tr>
                     </tbody>
                 </table>

@@ -41,21 +41,28 @@ define(require => {
 						})
 					})
 					.then(staffRolesRes => {
-						$scope.allRoles = staffRolesRes.data
+						$scope.staffRolesData = staffRolesRes.data
 
 						// Create emailListData with staff_roles attached
 						$scope.emailListData = $scope.staffData.map(staff => {
 							const staffDCID = staff.school_staff_dcid
 
 							// Find matching roles
-							const roles = $scope.allRoles.filter(role => role.schoolstaffdcid === staffDCID).sort((a, b) => parseInt(a.priority) - parseInt(b.priority))
+							const roles = $scope.staffRolesData.filter(role => role.schoolstaffdcid === staffDCID).sort((a, b) => parseInt(a.priority) - parseInt(b.priority))
 
 							// Create comma-separated string of displayvalue
 							const roleString = roles.map(r => r.displayvalue).join(', ')
 
+							// Key-value object for cdol_role presence
+							const roleFlags = {}
+							roles.forEach(role => {
+								roleFlags[role.cdol_role] = true
+							})
+
 							return {
 								...staff,
-								staff_roles: roleString
+								staff_roles: roleString,
+								roles: roleFlags
 							}
 						})
 
