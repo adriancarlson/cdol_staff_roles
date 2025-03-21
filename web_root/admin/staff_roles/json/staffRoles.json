@@ -1,17 +1,20 @@
 ~[tlist_sql;
-SELECT 
-    JSON_ARRAYAGG(
-        JSON_OBJECT(
-            'schoolstaffdcid' VALUE TO_CHAR(u_cdol_staff_roles.schoolstaffdcid),
-            'cdol_role' VALUE u_cdol_staff_roles.cdol_role,
-            'priority' VALUE TO_CHAR(u_cdol_staff_roles.priority),
-            'schoolid' VALUE TO_CHAR(u_cdol_staff_roles.schoolid)
-        ) RETURNING CLOB
-    ) AS json_result
-FROM 
-    u_cdol_staff_roles
-WHERE
-	u_cdol_staff_roles.schoolstaffdcid  IN (~(gpv.schoolStaffDCIDs;onlynumeric))
-	AND  (u_cdol_staff_roles.schoolid = ~(curschoolid) 
-			OR ~(curschoolid) = 0)
+    SELECT
+        JSON_ARRAYAGG(
+            JSON_OBJECT(
+                'schoolstaffdcid' VALUE TO_CHAR(u_cdol_staff_roles.schoolstaffdcid),
+                'cdol_role' VALUE u_cdol_staff_roles.cdol_role,
+                'displayvalue' VALUE codeset.displayvalue,
+                'priority' VALUE TO_CHAR(u_cdol_staff_roles.priority),
+                'schoolid' VALUE TO_CHAR(u_cdol_staff_roles.schoolid)
+            ) RETURNING CLOB
+        ) AS json_result
+    FROM
+        u_cdol_staff_roles
+        LEFT JOIN codeset ON u_cdol_staff_roles.cdol_role = codeset.code
+        AND codeset.codetype = 'CDOL Staff Roles'
+    WHERE
+        u_cdol_staff_roles.schoolstaffdcid IN (~(gpv.schoolStaffDCIDs;onlynumeric))
+        AND (u_cdol_staff_roles.schoolid = ~(curschoolid)
+            OR ~(curschoolid) = 0)
 ;]~(data)[/tlist_sql]

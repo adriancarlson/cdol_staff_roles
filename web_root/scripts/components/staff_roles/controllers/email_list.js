@@ -36,7 +36,7 @@ define(require => {
 						return $http({
 							url: 'json/staffRoles.json',
 							method: 'GET',
-							params: { schoolStaffDCIDs: $scope.schoolStaffDCIDs }
+							params: { schoolStaffDCIDs: $scope.schoolStaffDCIDs.join(',') }
 						})
 					})
 					.then(staffRolesRes => {
