@@ -26,7 +26,10 @@ define(require => {
 					.then(([rolesRes, staffRes]) => {
 						$scope.rolesData = rolesRes.data
 						$scope.staffData = staffRes.data
-
+						$scope.roleMap = {}
+						$scope.rolesData.forEach(role => {
+							$scope.roleMap[role.displayvalue] = role.code
+						})
 						$scope.schoolStaffDCIDs = $scope.staffData.map(staff => staff.school_staff_dcid)
 
 						return $http({
@@ -80,7 +83,7 @@ define(require => {
 			$scope.loadData()
 			$scope.toggleAllSelected = true
 
-			$scope.toggleAllFilteredStaff = function () {
+			$scope.toggleAllFilteredStaff = () => {
 				if (!$scope.filteredEmailListData) return
 
 				// Toggle the master flag first
@@ -90,16 +93,6 @@ define(require => {
 				$scope.filteredEmailListData.forEach(staff => {
 					staff.isSelected = $scope.toggleAllSelected
 				})
-			}
-			$scope.roleMap = {
-				'Powerschool Admin': 'psadmin',
-				'Tech Liaison': 'tech',
-				Counselor: 'coun',
-				Principal: 'princ',
-				'Asst. Principal': 'astPrinc',
-				CAO: 'cao',
-				'Office Personnel': 'office',
-				Teacher: 'teach'
 			}
 		}
 	])
