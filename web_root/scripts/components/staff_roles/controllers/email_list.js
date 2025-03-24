@@ -68,8 +68,9 @@ define(require => {
 								roles: roleFlags
 							}
 						})
+
 						// Add multiselect function to each staff entry using ES6+
-						const multiselectRolesFunction = stringDescriptor => {
+						const multiselectRolesFunction = function (stringDescriptor) {
 							return !!this.roles?.[stringDescriptor]
 						}
 
