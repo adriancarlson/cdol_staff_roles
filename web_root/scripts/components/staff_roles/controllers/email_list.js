@@ -52,7 +52,7 @@ define(require => {
 							const staffDCID = staff.school_staff_dcid
 
 							// Find matching roles
-							const roles = $scope.staffRolesData.filter(role => role.schoolstaffdcid === staffDCID).sort((a, b) => parseInt(a.priority) - parseInt(b.priority))
+							const roles = $scope.staffRolesData.filter(role => role.schoolstaffdcid === staffDCID).sort((a, b) => parseInt(a.uidisplayorder) - parseInt(b.uidisplayorder))
 
 							// Create comma-separated string of displayvalue
 							const roleString = roles.map(r => r.displayvalue).join(', ')
@@ -70,12 +70,12 @@ define(require => {
 							}
 						})
 						// Add multiselect function to each staff entry using ES6+
-						const multiselectFunction = function (stringDescriptor) {
+						const multiselectRolesFunction = stringDescriptor => {
 							return !!this.roles?.[stringDescriptor]
 						}
 
 						$scope.emailListData.forEach(staff => {
-							staff.multiselectFunction = multiselectFunction
+							staff.multiselectRolesFunction = multiselectRolesFunction
 							staff.isSelected = true
 						})
 
