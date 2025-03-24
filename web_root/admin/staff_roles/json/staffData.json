@@ -33,5 +33,6 @@
 	WHERE 
 		schoolstaff.status = 1
 		AND (schoolstaff.schoolid = ~(curschoolid) 
+		AND schoolstaff.schoolid != 0
 			OR ~(curschoolid) = 0)
 ;]~(data)[/tlist_sql]

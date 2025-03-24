@@ -32,7 +32,6 @@ define(require => {
 							$scope.roleMap[role.displayvalue] = role.code
 						})
 
-						$scope.schoolsMap = {}
 						$scope.staffData.forEach(staff => {
 							$scope.schoolMap[staff.school_name] = staff.school_name
 						})
@@ -48,98 +47,35 @@ define(require => {
 					.then(staffRolesRes => {
 						$scope.staffRolesData = staffRolesRes.data
 
-						// Group staffData by user_dcid
-						const groupedStaffMap = {}
+						// Create emailListData with staff_roles attached
+						$scope.emailListData = $scope.staffData.map(staff => {
+							const staffDCID = staff.school_staff_dcid
 
-						$scope.staffData.forEach(staff => {
-							const userDCID = staff.user_dcid
-							if (!groupedStaffMap[userDCID]) {
-								groupedStaffMap[userDCID] = {
-									...staff,
-									school_abbrs: [],
-									school_names: [],
-									school_numbers: [],
-									school_staff_dcids: []
-								}
-							}
-							groupedStaffMap[userDCID].school_abbrs.push(staff.school_abbr)
-							groupedStaffMap[userDCID].school_names.push({
-								name: staff.school_name,
-								number: staff.school_number
-							})
-							groupedStaffMap[userDCID].school_numbers.push(staff.school_number)
-							groupedStaffMap[userDCID].school_staff_dcids.push(staff.school_staff_dcid)
-						})
+							// Find matching roles
+							const roles = $scope.staffRolesData.filter(role => role.schoolstaffdcid === staffDCID).sort((a, b) => parseInt(a.priority) - parseInt(b.priority))
 
-						// Convert grouped map to array
-						$scope.emailListData = Object.values(groupedStaffMap).map(group => {
-							// Sort school_names alphabetically
-							const sortedSchools = group.school_names.sort((a, b) => a.name.localeCompare(b.name))
-							const sortedSchoolNames = sortedSchools.map(s => s.name)
-							const sortedSchoolAbbrs = sortedSchools.map(s => {
-								const idx = group.school_names.findIndex(orig => orig.name === s.name)
-								return group.school_abbrs[idx]
-							})
-							const sortedSchoolNumbers = sortedSchools.map(s => s.number)
+							// Create comma-separated string of displayvalue
+							const roleString = roles.map(r => r.displayvalue).join(', ')
 
-							// Flatten school_staff_dcids for role lookup
-							const roleList = group.school_staff_dcids.flatMap(schoolStaffDCID => $scope.staffRolesData.filter(role => role.schoolstaffdcid === schoolStaffDCID))
-
-							// Group roles by cdol_role and track which schools have them
-							const roleMap = {}
-							roleList.forEach(role => {
-								const key = role.cdol_role
-								if (!roleMap[key]) {
-									roleMap[key] = {
-										displayvalue: role.displayvalue,
-										schools: new Set()
-									}
-								}
-								roleMap[key].schools.add(role.schoolabbr)
-							})
-
-							// Build final role string with school_abbr if needed
-							const roleString = Object.values(roleMap)
-								.sort((a, b) => a.displayvalue.localeCompare(b.displayvalue))
-								.map(role => {
-									if (role.schools.size > 1) {
-										// Same role at multiple schools — no need to tag
-										return role.displayvalue
-									} else {
-										const [abbr] = Array.from(role.schools)
-										return `${role.displayvalue} (${abbr})`
-									}
-								})
-								.join(', ')
-
-							// Build roleFlags (for display toggles)
+							// Key-value object for cdol_role presence
 							const roleFlags = {}
-							Object.keys(roleMap).forEach(key => {
-								roleFlags[key] = true
+							roles.forEach(role => {
+								roleFlags[role.cdol_role] = true
 							})
 
 							return {
-								...group,
-								school_abbr: sortedSchoolAbbrs.join(', '),
-								school_name: sortedSchoolNames.join(', '),
-								school_number: sortedSchoolNumbers.join(', '),
+								...staff,
 								staff_roles: roleString,
 								roles: roleFlags
 							}
 						})
 						// Add multiselect function to each staff entry using ES6+
-						const multiselectRolesFunction = stringDescriptor => {
+						const multiselectFunction = function (stringDescriptor) {
 							return !!this.roles?.[stringDescriptor]
 						}
 
-						// Add multiselect function to each staff entry using ES6+
-						const multiselectSchoolsFunction = stringDescriptor => {
-							return !!this.school_name?.[stringDescriptor]
-						}
-
 						$scope.emailListData.forEach(staff => {
-							staff.multiselectRolesFunction = multiselectRolesFunction
-							staff.multiselectSchoolsFunction = multiselectSchoolsFunction
+							staff.multiselectFunction = multiselectFunction
 							staff.isSelected = true
 						})
 

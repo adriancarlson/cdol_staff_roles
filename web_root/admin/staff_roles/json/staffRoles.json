@@ -5,6 +5,7 @@
                 'schoolstaffdcid' VALUE TO_CHAR(u_cdol_staff_roles.schoolstaffdcid),
                 'cdol_role' VALUE u_cdol_staff_roles.cdol_role,
                 'displayvalue' VALUE codeset.displayvalue,
+                'uidisplayorder' VALUE TO_CHAR(codeset.uidisplayorder),
                 'priority' VALUE TO_CHAR(u_cdol_staff_roles.priority),
                 'schoolid' VALUE TO_CHAR(u_cdol_staff_roles.schoolid)
             ) RETURNING CLOB
