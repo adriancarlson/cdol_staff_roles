@@ -16,7 +16,6 @@ define(require => {
 
 			$scope.loadData = () => {
 				loadingDialog()
-
 				$scope.showColumns = {}
 				if ($scope.curSchoolId == 0) {
 					$scope.showColumns['School'] = true
@@ -35,7 +34,6 @@ define(require => {
 						)
 					}
 					return $q.all(requests).then(responses => {
-						// Flatten all data arrays from each response
 						return responses.flatMap(res => res.data)
 					})
 				}
@@ -44,6 +42,7 @@ define(require => {
 					.then(([rolesRes, staffRes]) => {
 						$scope.rolesData = rolesRes.data
 						$scope.staffData = staffRes.data
+
 						$scope.roleMap = {}
 						$scope.schoolMap = {}
 						$scope.rolesData.forEach(role => {
@@ -61,17 +60,18 @@ define(require => {
 					.then(allStaffRoles => {
 						$scope.staffRolesData = allStaffRoles
 
-						// Create emailListData with staff_roles attached
-						$scope.emailListData = $scope.staffData.map(staff => {
+						const rawEmailList = $scope.staffData.map(staff => {
 							const staffDCID = staff.school_staff_dcid
+							const userDCID = staff.user_dcid
 
-							// Find matching roles
 							const roles = $scope.staffRolesData.filter(role => role.schoolstaffdcid === staffDCID).sort((a, b) => parseInt(a.uidisplayorder) - parseInt(b.uidisplayorder))
 
-							// Create comma-separated string of displayvalue
-							const roleString = roles.map(r => r.displayvalue).join(', ')
+							const roleString = roles
+								.map(r => r.displayvalue)
+								.filter(v => typeof v === 'string' && v.trim().length > 0)
+								.map(v => v.trim())
+								.join(', ')
 
-							// Key-value object for cdol_role presence
 							const roleFlags = {}
 							roles.forEach(role => {
 								roleFlags[role.cdol_role] = true
@@ -80,18 +80,63 @@ define(require => {
 							return {
 								...staff,
 								staff_roles: roleString,
-								roles: roleFlags
+								roles: roleFlags,
+								isSelected: true
 							}
 						})
 
-						// Add multiselect function to each staff entry
+						const mergedMap = {}
+
+						rawEmailList.forEach(entry => {
+							const key = entry.user_dcid
+							if (!mergedMap[key]) {
+								mergedMap[key] = { ...entry }
+							} else {
+								// Merge school_name
+								if (!mergedMap[key].school_name.includes(entry.school_name)) {
+									mergedMap[key].school_name += `, ${entry.school_name}`
+								}
+
+								// Merge roles
+								Object.entries(entry.roles).forEach(([k, v]) => {
+									if (v) mergedMap[key].roles[k] = true
+								})
+
+								// Merge and sort staff_roles
+								const roleSet = new Set()
+
+								// Add current roles
+								;(mergedMap[key].staff_roles || '')
+									.split(',')
+									.map(r => r.trim())
+									.filter(Boolean)
+									.forEach(r => roleSet.add(r))
+
+								// Add new roles
+								;(entry.staff_roles || '')
+									.split(',')
+									.map(r => r.trim())
+									.filter(Boolean)
+									.forEach(r => roleSet.add(r))
+
+								const sortedRoles = Array.from(roleSet).sort((a, b) => {
+									const aOrder = $scope.rolesData.find(r => r.displayvalue === a)?.uidisplayorder ?? 999
+									const bOrder = $scope.rolesData.find(r => r.displayvalue === b)?.uidisplayorder ?? 999
+									return parseInt(aOrder) - parseInt(bOrder)
+								})
+
+								mergedMap[key].staff_roles = sortedRoles.join(', ')
+							}
+						})
+
+						$scope.emailListData = Object.values(mergedMap)
+
 						const multiselectRolesFunction = function (stringDescriptor) {
 							return !!this.roles?.[stringDescriptor]
 						}
 
 						$scope.emailListData.forEach(staff => {
 							staff.multiselectRolesFunction = multiselectRolesFunction
-							staff.isSelected = true
 						})
 
 						closeLoading()
