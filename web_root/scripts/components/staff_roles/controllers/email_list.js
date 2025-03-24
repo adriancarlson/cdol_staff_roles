@@ -17,7 +17,7 @@ define(require => {
 
 			$scope.loadData = () => {
 				loadingDialog()
-
+				$scope.showColumns = {}
 				if ($scope.curSchoolId == 0) {
 					$scope.showColumns['School'] = true
 				}
