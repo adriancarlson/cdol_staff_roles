@@ -44,11 +44,11 @@ define(require => {
 						$scope.staffData = psUtils.htmlEntitiesToCharCode(staffRes.data)
 
 						$scope.roleMap = {}
-						$scope.schoolMap = {}
 						$scope.rolesData.forEach(role => {
 							$scope.roleMap[role.displayvalue] = role.code
 						})
-
+						$scope.roleMap['No Roles'] = 'none'
+						$scope.schoolMap = {}
 						$scope.staffData
 							.slice() // clone array to avoid mutating original
 							.sort((a, b) => a.school_name.localeCompare(b.school_name))
@@ -135,6 +135,9 @@ define(require => {
 						$scope.emailListData = Object.values(mergedMap)
 
 						const multiselectRolesFunction = function (stringDescriptor) {
+							if (stringDescriptor === 'none') {
+								return !this.roles || Object.keys(this.roles).length === 0
+							}
 							return !!this.roles?.[stringDescriptor]
 						}
 
