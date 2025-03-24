@@ -8,7 +8,6 @@ define(require => {
 		'$http',
 		'$q',
 		function ($scope, $attrs, $http, $q) {
-			// End multiselect function code
 			$scope.curSchoolId = $attrs.ngCurSchoolId
 
 			//This is here for troubleshooting purposes.
