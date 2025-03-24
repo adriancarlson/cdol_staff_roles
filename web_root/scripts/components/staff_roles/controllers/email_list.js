@@ -27,10 +27,17 @@ define(require => {
 						$scope.rolesData = rolesRes.data
 						$scope.staffData = staffRes.data
 						$scope.roleMap = {}
+						$scope.schoolMap = {}
 						$scope.rolesData.forEach(role => {
 							$scope.roleMap[role.displayvalue] = role.code
 						})
-						$scope.schoolStaffDCIDs = $scope.staffData.map(staff => staff.school_staff_dcid)
+
+						$scope.schoolsMap = {}
+						$scope.staffData.forEach(staff => {
+							$scope.schoolMap[staff.school_name] = staff.school_name
+						})
+
+						$scope.schoolStaffDCIDs = $scope.staffData.map(staff => staff.school_staff_dcid).slice(0, 999)
 
 						return $http({
 							url: 'json/staffRoles.json',
@@ -41,35 +48,74 @@ define(require => {
 					.then(staffRolesRes => {
 						$scope.staffRolesData = staffRolesRes.data
 
-						// Create emailListData with staff_roles attached
-						$scope.emailListData = $scope.staffData.map(staff => {
-							const staffDCID = staff.school_staff_dcid
+						// Group staffData by user_dcid
+						const groupedStaffMap = {}
 
-							// Find matching roles
-							const roles = $scope.staffRolesData.filter(role => role.schoolstaffdcid === staffDCID).sort((a, b) => parseInt(a.priority) - parseInt(b.priority))
+						$scope.staffData.forEach(staff => {
+							const userDCID = staff.user_dcid
+							if (!groupedStaffMap[userDCID]) {
+								groupedStaffMap[userDCID] = {
+									...staff,
+									school_abbrs: [],
+									school_names: [],
+									school_numbers: [],
+									school_staff_dcids: []
+								}
+							}
+							groupedStaffMap[userDCID].school_abbrs.push(staff.school_abbr)
+							groupedStaffMap[userDCID].school_names.push({
+								name: staff.school_name,
+								number: staff.school_number
+							})
+							groupedStaffMap[userDCID].school_numbers.push(staff.school_number)
+							groupedStaffMap[userDCID].school_staff_dcids.push(staff.school_staff_dcid)
+						})
 
-							// Create comma-separated string of displayvalue
-							const roleString = roles.map(r => r.displayvalue).join(', ')
+						// Convert grouped map to array
+						$scope.emailListData = Object.values(groupedStaffMap).map(group => {
+							// Sort school_names alphabetically
+							const sortedSchools = group.school_names.sort((a, b) => a.name.localeCompare(b.name))
+							const sortedSchoolNames = sortedSchools.map(s => s.name)
+							const sortedSchoolAbbrs = sortedSchools.map(s => {
+								const idx = group.school_names.findIndex(orig => orig.name === s.name)
+								return group.school_abbrs[idx]
+							})
+							const sortedSchoolNumbers = sortedSchools.map(s => s.number)
 
-							// Key-value object for cdol_role presence
+							// Flatten school_staff_dcids for role lookup
+							const roleList = group.school_staff_dcids.flatMap(schoolStaffDCID => $scope.staffRolesData.filter(role => role.schoolstaffdcid === schoolStaffDCID))
+
+							// Sort roles by priority and create display string
+							const sortedRoles = roleList.sort((a, b) => parseInt(a.priority) - parseInt(b.priority))
+							const roleString = sortedRoles.map(r => r.displayvalue).join(', ')
+
 							const roleFlags = {}
-							roles.forEach(role => {
+							sortedRoles.forEach(role => {
 								roleFlags[role.cdol_role] = true
 							})
 
 							return {
-								...staff,
+								...group,
+								school_abbr: sortedSchoolAbbrs.join(', '),
+								school_name: sortedSchoolNames.join(', '),
+								school_number: sortedSchoolNumbers.join(', '),
 								staff_roles: roleString,
 								roles: roleFlags
 							}
 						})
 						// Add multiselect function to each staff entry using ES6+
-						const multiselectFunction = function (stringDescriptor) {
+						const multiselectRolesFunction = stringDescriptor => {
 							return !!this.roles?.[stringDescriptor]
 						}
 
+						// Add multiselect function to each staff entry using ES6+
+						const multiselectSchoolsFunction = stringDescriptor => {
+							return !!this.school_name?.[stringDescriptor]
+						}
+
 						$scope.emailListData.forEach(staff => {
-							staff.multiselectFunction = multiselectFunction
+							staff.multiselectRolesFunction = multiselectRolesFunction
+							staff.multiselectSchoolsFunction = multiselectSchoolsFunction
 							staff.isSelected = true
 						})
 

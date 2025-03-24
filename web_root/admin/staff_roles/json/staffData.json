@@ -12,8 +12,16 @@
 						WHEN schools.abbreviation IS NULL THEN 'CDEO' 
 						ELSE schools.abbreviation 
 					END,
-				'school_name' VALUE schools.name,
-				'school_number' VALUE TO_CHAR(schools.school_number)
+				'school_name' VALUE 
+					CASE 
+						WHEN schools.name IS NULL THEN 'Diocesan Office' 
+						ELSE schools.name 
+					END,
+				'school_number' VALUE 
+				CASE 
+						WHEN schools.school_number IS NULL THEN TO_CHAR(0)
+						ELSE TO_CHAR(schools.school_number)
+					END
 			) RETURNING CLOB
 		) AS json_result
 	FROM 
