@@ -34,14 +34,14 @@ define(require => {
 						)
 					}
 					return $q.all(requests).then(responses => {
-						return responses.flatMap(res => res.data)
+						return responses.flatMap(res => psUtils.htmlEntitiesToCharCode(res.data))
 					})
 				}
 
 				$q.all([$http.get('json/rolesData.json'), $http.get('json/staffData.json')])
 					.then(([rolesRes, staffRes]) => {
-						$scope.rolesData = rolesRes.data
-						$scope.staffData = staffRes.data
+						$scope.rolesData = psUtils.htmlEntitiesToCharCode(rolesRes.data)
+						$scope.staffData = psUtils.htmlEntitiesToCharCode(staffRes.data)
 
 						$scope.roleMap = {}
 						$scope.schoolMap = {}
@@ -49,9 +49,12 @@ define(require => {
 							$scope.roleMap[role.displayvalue] = role.code
 						})
 
-						$scope.staffData.forEach(staff => {
-							$scope.schoolMap[staff.school_name] = staff.school_name
-						})
+						$scope.staffData
+							.slice() // clone array to avoid mutating original
+							.sort((a, b) => a.school_name.localeCompare(b.school_name))
+							.forEach(staff => {
+								$scope.schoolMap[staff.school_name] = staff.school_name
+							})
 
 						$scope.schoolStaffDCIDs = $scope.staffData.map(staff => staff.school_staff_dcid)
 
@@ -135,8 +138,13 @@ define(require => {
 							return !!this.roles?.[stringDescriptor]
 						}
 
+						const multiselectSchoolsFunction = function (stringDescriptor) {
+							return this.school_name?.toLowerCase().includes(stringDescriptor.toLowerCase())
+						}
+
 						$scope.emailListData.forEach(staff => {
 							staff.multiselectRolesFunction = multiselectRolesFunction
+							staff.multiselectSchoolsFunction = multiselectSchoolsFunction
 						})
 
 						closeLoading()
