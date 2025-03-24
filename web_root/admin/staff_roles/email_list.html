@@ -42,12 +42,14 @@
                 data-filter-constraint="advanced-only" style="margin:0;">
                 <label data-pss-filter-field="multiselectRolesFunction|multiselect" data-filter-info="roleMap"
                     data-default-filter="normal">Role</label>
+
                 <table class="grid">
                     <thead class="sticky-header">
                         <tr>
                             <th class="center" style="width:30px"><input type="checkbox"
                                     data-ng-checked="toggleAllSelected" data-ng-click="toggleAllFilteredStaff()"></th>
-                            <th data-pss-sort-fields="school_name,lastfirst" data-primary-sort="ascending">Staff Name
+                            <th data-pss-sort-fields="school_name,lastfirst" data-filter-field="lastfirst"
+                                data-primary-sort="ascending">Staff Name
                             </th>
                             <th data-pss-sort-fields="email_addr">Email</th>
                             <th>Roles</th>

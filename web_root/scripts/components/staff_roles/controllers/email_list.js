@@ -16,9 +16,28 @@ define(require => {
 
 			$scope.loadData = () => {
 				loadingDialog()
+
 				$scope.showColumns = {}
 				if ($scope.curSchoolId == 0) {
 					$scope.showColumns['School'] = true
+				}
+
+				const getBatchedStaffRoles = (dcids, batchSize = 1000) => {
+					const requests = []
+					for (let i = 0; i < dcids.length; i += batchSize) {
+						const batch = dcids.slice(i, i + batchSize)
+						requests.push(
+							$http({
+								url: 'json/staffRoles.json',
+								method: 'GET',
+								params: { schoolStaffDCIDs: batch.join(',') }
+							})
+						)
+					}
+					return $q.all(requests).then(responses => {
+						// Flatten all data arrays from each response
+						return responses.flatMap(res => res.data)
+					})
 				}
 
 				$q.all([$http.get('json/rolesData.json'), $http.get('json/staffData.json')])
@@ -35,16 +54,12 @@ define(require => {
 							$scope.schoolMap[staff.school_name] = staff.school_name
 						})
 
-						$scope.schoolStaffDCIDs = $scope.staffData.map(staff => staff.school_staff_dcid).slice(0, 999)
+						$scope.schoolStaffDCIDs = $scope.staffData.map(staff => staff.school_staff_dcid)
 
-						return $http({
-							url: 'json/staffRoles.json',
-							method: 'GET',
-							params: { schoolStaffDCIDs: $scope.schoolStaffDCIDs.join(',') }
-						})
+						return getBatchedStaffRoles($scope.schoolStaffDCIDs)
 					})
-					.then(staffRolesRes => {
-						$scope.staffRolesData = staffRolesRes.data
+					.then(allStaffRoles => {
+						$scope.staffRolesData = allStaffRoles
 
 						// Create emailListData with staff_roles attached
 						$scope.emailListData = $scope.staffData.map(staff => {
@@ -69,7 +84,7 @@ define(require => {
 							}
 						})
 
-						// Add multiselect function to each staff entry using ES6+
+						// Add multiselect function to each staff entry
 						const multiselectRolesFunction = function (stringDescriptor) {
 							return !!this.roles?.[stringDescriptor]
 						}
@@ -86,6 +101,7 @@ define(require => {
 						closeLoading()
 					})
 			}
+
 			$scope.loadData()
 			$scope.toggleAllSelected = true
 
