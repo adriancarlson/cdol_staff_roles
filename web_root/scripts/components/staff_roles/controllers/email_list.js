@@ -85,13 +85,37 @@ define(require => {
 							// Flatten school_staff_dcids for role lookup
 							const roleList = group.school_staff_dcids.flatMap(schoolStaffDCID => $scope.staffRolesData.filter(role => role.schoolstaffdcid === schoolStaffDCID))
 
-							// Sort roles by priority and create display string
-							const sortedRoles = roleList.sort((a, b) => parseInt(a.priority) - parseInt(b.priority))
-							const roleString = sortedRoles.map(r => r.displayvalue).join(', ')
+							// Group roles by cdol_role and track which schools have them
+							const roleMap = {}
+							roleList.forEach(role => {
+								const key = role.cdol_role
+								if (!roleMap[key]) {
+									roleMap[key] = {
+										displayvalue: role.displayvalue,
+										schools: new Set()
+									}
+								}
+								roleMap[key].schools.add(role.schoolabbr)
+							})
 
+							// Build final role string with school_abbr if needed
+							const roleString = Object.values(roleMap)
+								.sort((a, b) => a.displayvalue.localeCompare(b.displayvalue))
+								.map(role => {
+									if (role.schools.size > 1) {
+										// Same role at multiple schools — no need to tag
+										return role.displayvalue
+									} else {
+										const [abbr] = Array.from(role.schools)
+										return `${role.displayvalue} (${abbr})`
+									}
+								})
+								.join(', ')
+
+							// Build roleFlags (for display toggles)
 							const roleFlags = {}
-							sortedRoles.forEach(role => {
-								roleFlags[role.cdol_role] = true
+							Object.keys(roleMap).forEach(key => {
+								roleFlags[key] = true
 							})
 
 							return {
