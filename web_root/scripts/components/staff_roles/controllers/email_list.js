@@ -10,28 +10,18 @@ define(require => {
 		function ($scope, $attrs, $http, $q) {
 			let psDialogHolder = null
 
-			$scope.openDialog = function () {
+			$scope.openDialog = () => {
 				psDialogHolder = $j('#dialogPopUp').detach()
 
 				psDialog({
-					type: 'dialogC',
-					width: 650,
+					type: 'dialogR',
+					width: 850,
 					title: 'Email List',
 					content: psDialogHolder,
-					close: function () {
+					close: () => {
 						// Move View back to a holder so that it won't be lost if another type of dialog is opened.
 						$j(`#dialogContainer`).append(psDialogHolder)
-					},
-					buttons: [
-						{
-							id: 'saveDialogButton',
-							text: 'OK',
-							title: 'OK',
-							click: function () {
-								psDialogClose()
-							}
-						}
-					]
+					}
 				})
 			}
 
@@ -207,8 +197,7 @@ define(require => {
 				window.location.href = mailtoLink
 			}
 			$scope.copyEmailList = () => {
-				$scope.createEmailList()
-				console.log(selectedEmailList)
+				console.log($scope.selectedEmailList)
 			}
 
 			$scope.createEmailList = () => {
