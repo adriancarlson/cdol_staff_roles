@@ -40,11 +40,10 @@
             <div id="emailListrGrid" data-pss-grid-widget data-data="emailListData"
                 data-filtered-data="filteredEmailListData" data-item-type-text="Staff"
                 data-filter-constraint="advanced-only" style="margin:0;">
-                <label data-pss-filter-field="multiselectRolesFunction|multiselect" data-filter-info="roleMap"
+                <label data-pss-filter-field="multiselectRolesFunction|multiselect" data-filter-info="roleMap" data-ng-if="roleMap"
                     data-default-filter="fixed">Role</label>
-                <label data-pss-filter-field="multiselectSchoolsFunction|multiselect-dropdown"
-                    data-filter-info="schoolMap"
-                    data-ng-attr-data-default-filter="{{ showColumns.School && 'normal' }}">
+                <label data-pss-filter-field="multiselectSchoolsFunction|multiselect-dropdown" data-filter-info="schoolMap"
+                    data-ng-if="schoolMap" data-ng-attr-data-default-filter="{{ showColumns.School && 'normal' }}">
                     School
                 </label>
                 <table class="grid">
