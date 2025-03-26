@@ -28,6 +28,27 @@
                 line-height: 1.3em;
                 font-size: 18px;
             }
+
+            .sticky-button-bar {
+                position: sticky;
+                top: -1px;
+                z-index: 1;
+                background-color: white;
+                margin: 0;
+                padding: 0;
+                height: 28px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .sticky-header2 {
+                position: sticky;
+                top: 26px;
+                /* match height of .sticky-button-bar */
+                z-index: 2;
+                background-color: white;
+            }
         </style>
     </head>
 
@@ -40,7 +61,7 @@
             <div id="emailListrGrid" data-pss-grid-widget data-data="emailListData"
                 data-filtered-data="filteredEmailListData" data-item-type-text="Staff"
                 data-filter-constraint="advanced-only" style="margin:0;">
-                <div class="center" style="margin-top:-22px !important;">
+                <div class="center sticky-button-bar">
                     <button data-ng-click="createEmailList()">Build Email List</button>
                 </div>
                 <label data-pss-filter-field="multiselectRolesFunction|multiselect" data-filter-info="roleMap"
@@ -51,7 +72,7 @@
                     School
                 </label>
                 <table class="grid">
-                    <thead class="sticky-header">
+                    <thead class="sticky-header2">
                         <tr>
                             <th class="center" style="width:30px" data-exclude-from-filter="true"><input type="checkbox"
                                     data-ng-checked="toggleAllSelected" data-ng-click="toggleAllFilteredStaff()"></th>
