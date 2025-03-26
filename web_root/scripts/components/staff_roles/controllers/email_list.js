@@ -8,6 +8,33 @@ define(require => {
 		'$http',
 		'$q',
 		function ($scope, $attrs, $http, $q) {
+			let psDialogHolder = null
+
+			$scope.openDialog = function () {
+				psDialogHolder = $j('#dialogPopUp').detach()
+
+				psDialog({
+					type: 'dialogC',
+					width: 650,
+					title: 'Email List',
+					content: psDialogHolder,
+					close: function () {
+						// Move View back to a holder so that it won't be lost if another type of dialog is opened.
+						$j(`#dialogContainer`).append(psDialogHolder)
+					},
+					buttons: [
+						{
+							id: 'saveDialogButton',
+							text: 'OK',
+							title: 'OK',
+							click: function () {
+								psDialogClose()
+							}
+						}
+					]
+				})
+			}
+
 			$scope.curSchoolId = $attrs.ngCurSchoolId
 
 			//This is here for troubleshooting purposes.
@@ -187,6 +214,7 @@ define(require => {
 			$scope.createEmailList = () => {
 				if (!$scope.filteredEmailListData) return
 				$scope.selectedEmailList = Array.from(new Set($scope.filteredEmailListData.filter(staff => staff.isSelected && staff.email_addr).map(staff => staff.email_addr))).join(', ')
+				$scope.openDialog()
 			}
 		}
 	])

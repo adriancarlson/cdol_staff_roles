@@ -40,10 +40,14 @@
             <div id="emailListrGrid" data-pss-grid-widget data-data="emailListData"
                 data-filtered-data="filteredEmailListData" data-item-type-text="Staff"
                 data-filter-constraint="advanced-only" style="margin:0;">
-                <label data-pss-filter-field="multiselectRolesFunction|multiselect" data-filter-info="roleMap" data-ng-if="roleMap"
-                    data-default-filter="fixed">Role</label>
-                <label data-pss-filter-field="multiselectSchoolsFunction|multiselect-dropdown" data-filter-info="schoolMap"
-                    data-ng-if="schoolMap" data-ng-attr-data-default-filter="{{ showColumns.School && 'normal' }}">
+                <div class="button-row" style="margin-top:-22px !important;">
+                    <button data-ng-click="createEmailList()">Build Email List</button>
+                </div>
+                <label data-pss-filter-field="multiselectRolesFunction|multiselect" data-filter-info="roleMap"
+                    data-ng-if="roleMap" data-default-filter="fixed">Role</label>
+                <label data-pss-filter-field="multiselectSchoolsFunction|multiselect-dropdown"
+                    data-filter-info="schoolMap" data-ng-if="schoolMap"
+                    data-ng-attr-data-default-filter="{{ showColumns.School && 'normal' }}">
                     School
                 </label>
                 <table class="grid">
@@ -73,19 +77,24 @@
                         </tr>
                     </tbody>
                 </table>
-                <div>
-                    <div class="feedback-info">
-                        <div>
-                            Click <strong>Copy</strong> to copy the selected email addresses, then paste them into the
-                            <strong>To:</strong> or <strong>BCC</strong> field of a new email.
-                            Or click <strong>Generate Email</strong> to open your email app with the addresses in the
-                            <strong>BCC</strong> field.
-                            <em>Use <strong>BCC</strong> to keep recipient addresses private.</em>
+                <div class="hide" id="dialogContainer">
+                    <div id="dialogPopUp">
+                        <div class="feedback-info">
+                            <div>
+                                Click <strong>Copy</strong> to copy the selected email addresses, then paste them into
+                                the
+                                <strong>To:</strong> or <strong>BCC</strong> field of a new email.
+                                Or click <strong>Generate Email</strong> to open your email app with the addresses in
+                                the
+                                <strong>BCC</strong> field.
+                                <em>Use <strong>BCC</strong> to keep recipient addresses private.</em>
+                            </div>
                         </div>
-                    </div>
-                    <div class="d-flex justify-content-center">
-                        <button class="emailBtns" type="button" data-ng-click="copyEmailList()">Copy</button>
-                        <button class="emailBtns" type="button" data-ng-click="generateEmail()">Generate Email</button>
+                        <div class="d-flex justify-content-center">
+                            <button class="emailBtns" type="button" data-ng-click="copyEmailList()">Copy</button>
+                            <button class="emailBtns" type="button" data-ng-click="generateEmail()">Generate
+                                Email</button>
+                        </div>
                     </div>
                 </div>
             </div>
