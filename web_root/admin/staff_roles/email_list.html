@@ -20,14 +20,14 @@
                 display: none !important;
             }
 
-            .emailBtns {
-                width: 8%;
-                border-radius: 4px;
-                margin: 7px;
-                padding: 8px 5px;
-                line-height: 1.3em;
-                font-size: 18px;
-            }
+            /*.emailBtns {*/
+            /*    width: 8%;*/
+            /*    border-radius: 4px;*/
+            /*    margin: 7px;*/
+            /*    padding: 8px 5px;*/
+            /*    line-height: 1.3em;*/
+            /*    font-size: 18px;*/
+            /*}*/
 
             .sticky-button-bar {
                 position: sticky;
@@ -49,6 +49,21 @@
                 z-index: 2;
                 background-color: white;
             }
+
+            .custom-email-btn {
+                background-color: #0066A5;
+                color: #ffffff;
+                border: none;
+                border-radius: 6px;
+                font-size: 16px;
+                font-weight: 500;
+                transition: background-color 0.2s ease;
+            }
+
+            .custom-email-btn:hover {
+                background-color: #00427C;
+                color: #FFFFFF;
+            }
         </style>
     </head>
 
@@ -62,7 +77,7 @@
                 data-filtered-data="filteredEmailListData" data-item-type-text="Staff"
                 data-filter-constraint="advanced-only" style="margin:0;">
                 <div class="center sticky-button-bar">
-                    <button data-ng-click="createEmailList()">Build Email List</button>
+                    <button data-ng-click="createEmailList()">Build Email List ✉️</button>
                 </div>
                 <label data-pss-filter-field="multiselectRolesFunction|multiselect" data-filter-info="roleMap"
                     data-ng-if="roleMap" data-default-filter="fixed">Role</label>
@@ -109,13 +124,19 @@
                                     private.</em>
                             </div>
                         </div>
-                        <div>
-                            <textarea id="selectedEmails" class="mx-4" data-ng-model="selectedEmailList"></textarea>
+                        <div class="px-3 my-3">
+                            <textarea id="selectedEmails" class="form-control" style="height: 300px !important;"
+                                data-ng-model="selectedEmailList"></textarea>
                         </div>
-                        <div class="d-flex justify-content-center">
-                            <button class="emailBtns" type="button" data-ng-click="copyEmailList()">Copy</button>
-                            <button class="emailBtns" type="button" data-ng-click="generateEmail()">Generate
-                                Email</button>
+                        <div class="d-flex justify-content-center gap-2 my-3">
+                            <button class="btn px-3 py-2 custom-email-btn" type="button"
+                                data-ng-click="generateEmail()">
+                                Open in Email App 📩
+                            </button>
+                            <button class="btn px-3 py-2 custom-email-btn" type="button"
+                                data-ng-click="copyEmailList()">
+                                Copy Emails 📋
+                            </button>
                         </div>
                     </div>
                 </div>
