@@ -20,15 +20,6 @@
                 display: none !important;
             }
 
-            /*.emailBtns {*/
-            /*    width: 8%;*/
-            /*    border-radius: 4px;*/
-            /*    margin: 7px;*/
-            /*    padding: 8px 5px;*/
-            /*    line-height: 1.3em;*/
-            /*    font-size: 18px;*/
-            /*}*/
-
             .sticky-button-bar {
                 position: sticky;
                 top: -1px;
@@ -71,72 +62,81 @@
         ~[wc:admin_header_css]
         ~[wc:admin_navigation_css]
         <h1>📨 Staff Email List</h1>
-        <div class="box-round" data-require-path="components/staff_roles/index" data-module-name="staffRolesMod"
+        <div data-require-path="components/staff_roles/index" data-module-name="staffRolesMod"
             data-ng-controller="emailListCtrl" data-ng-cur-school-id="~(curschoolid)" data-ng-cloak>
-            <div id="emailListrGrid" data-pss-grid-widget data-data="emailListData"
-                data-filtered-data="filteredEmailListData" data-item-type-text="Staff"
-                data-filter-constraint="advanced-only" style="margin:0;">
-                <div class="center sticky-button-bar">
-                    <button data-ng-click="createEmailList()">Build Email List ✉️</button>
-                </div>
-                <label data-pss-filter-field="multiselectRolesFunction|multiselect" data-filter-info="roleMap"
-                    data-ng-if="roleMap" data-default-filter="fixed">Role</label>
-                <label data-pss-filter-field="multiselectSchoolsFunction|multiselect-dropdown"
-                    data-filter-info="schoolMap" data-ng-if="schoolMap"
-                    data-ng-attr-data-default-filter="{{ showColumns.School && 'normal' }}">
-                    School
-                </label>
-                <table class="grid">
-                    <thead class="sticky-header2">
-                        <tr>
-                            <th class="center" style="width:30px" data-exclude-from-filter="true"><input type="checkbox"
-                                    data-ng-checked="toggleAllSelected" data-ng-click="toggleAllFilteredStaff()"></th>
-                            <th data-pss-sort-fields="school_name,lastfirst" data-filter-field="lastfirst"
-                                data-primary-sort="ascending">Staff Name
-                            </th>
-                            <th data-pss-sort-fields="email_addr">Email</th>
-                            <th>Roles</th>
-                            <th data-ng-if="showColumns.School" class="center" data-pss-sort-fields="school_name"
-                                data-exclude-from-filter="true">
-                                School
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr data-ng-repeat="staff in filteredEmailListData">
-                            <td class="center"><input type="checkbox" data-ng-model="staff.isSelected"></td>
-                            <td> <a href="/admin/faculty/edit.html?frn=005{{staff.school_staff_dcid}}"
-                                    target="_blank">{{staff.lastfirst}}</a></td>
-                            <td class="center"><a data-ng-href="mailto:{{staff.email_addr}}"
-                                    data-ng-bind="staff.email_addr"></a></td>
-                            <td>{{staff.staff_roles}}</td>
-                            <td data-ng-if="showColumns.School" class="center">{{staff.school_name}}</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <div class="hide" id="dialogContainer">
-                    <div id="dialogPopUp">
-                        <div class="feedback-info">
-                            <div>
-                                Click <strong>Copy</strong> to copy the selected email addresses, then paste them into
-                                the <strong>To:</strong> or <strong>BCC</strong> field of a new email.
-                                Or click <strong>Generate Email</strong> to open your email app with the addresses in
-                                the <strong>BCC</strong> field. <em>Use <strong>BCC</strong> to keep recipient addresses
-                                    private.</em>
+            <div data-ng-if="confirmMessage" class="feedback-confirm">The email addresses have been copied to your
+                clipboard!</div>
+            <div class="box-round">
+                <div id="emailListrGrid" data-pss-grid-widget data-data="emailListData"
+                    data-filtered-data="filteredEmailListData" data-item-type-text="Staff"
+                    data-filter-constraint="advanced-only" style="margin:0;">
+                    <div class="center sticky-button-bar">
+                        <button data-ng-click="createEmailList()">Build Email List ✉️</button>
+                    </div>
+                    <label data-pss-filter-field="multiselectRolesFunction|multiselect" data-filter-info="roleMap"
+                        data-ng-if="roleMap" data-default-filter="fixed">Role</label>
+                    <label data-pss-filter-field="multiselectSchoolsFunction|multiselect-dropdown"
+                        data-filter-info="schoolMap" data-ng-if="schoolMap"
+                        data-ng-attr-data-default-filter="{{ showColumns.School && 'normal' }}">
+                        School
+                    </label>
+                    <table class="grid">
+                        <thead class="sticky-header2">
+                            <tr>
+                                <th class="center" style="width:30px" data-exclude-from-filter="true"><input
+                                        type="checkbox" data-ng-checked="toggleAllSelected"
+                                        data-ng-click="toggleAllFilteredStaff()"></th>
+                                <th data-pss-sort-fields="school_name,lastfirst" data-filter-field="lastfirst"
+                                    data-primary-sort="ascending">Staff Name
+                                </th>
+                                <th data-pss-sort-fields="email_addr">Email</th>
+                                <th>Roles</th>
+                                <th data-ng-if="showColumns.School" class="center" data-pss-sort-fields="school_name"
+                                    data-exclude-from-filter="true">
+                                    School
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr data-ng-repeat="staff in filteredEmailListData">
+                                <td class="center"><input type="checkbox" data-ng-model="staff.isSelected"></td>
+                                <td> <a href="/admin/faculty/edit.html?frn=005{{staff.school_staff_dcid}}"
+                                        target="_blank">{{staff.lastfirst}}</a></td>
+                                <td class="center"><a data-ng-href="mailto:{{staff.email_addr}}"
+                                        data-ng-bind="staff.email_addr"></a></td>
+                                <td>{{staff.staff_roles}}</td>
+                                <td data-ng-if="showColumns.School" class="center">{{staff.school_name}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="hide" id="dialogContainer">
+                        <div id="dialogPopUp">
+                            <div class="feedback-info">
+                                <div>
+                                    Click <strong>Copy</strong> to copy the selected email addresses, then paste them
+                                    into
+                                    the <strong>To:</strong> or <strong>BCC</strong> field of a new email.
+                                    <span data-ng-if="selectedEmailList.length < 1500">Or click <strong>Generate
+                                            Email</strong> to open your email app with the addresses in
+                                        the <strong>BCC</strong> field.</span> <em>Use <strong>BCC</strong> to keep
+                                        recipient addresses
+                                        private.</em>
+                                </div>
                             </div>
-                        </div>
-                        <div class="px-3 my-3">
-                            <textarea id="selectedEmails" class="form-control" style="height: 300px !important;"
-                                data-ng-model="selectedEmailList"></textarea>
-                        </div>
-                        <div class="d-flex justify-content-center gap-2 my-3">
-                            <button class="btn px-3 py-2 custom-email-btn" type="button"
-                                data-ng-click="generateEmail()">
-                                Open in Email App 📩
-                            </button>
-                            <button class="btn px-3 py-2 custom-email-btn" type="button"
-                                data-ng-click="copyEmailList()">
-                                Copy Emails 📋
-                            </button>
+                            <div class="px-3 my-3">
+                                <textarea id="selectedEmails" class="form-control" style="height: 300px !important;"
+                                    data-ng-model="selectedEmailList"></textarea>
+                            </div>
+                            <div class="d-flex justify-content-center gap-2 my-3">
+                                <button data-ng-if="selectedEmailList.length < 1500"
+                                    class="btn px-3 py-2 custom-email-btn" type="button"
+                                    data-ng-click="generateEmail()">
+                                    Open in Email App 📩
+                                </button>
+                                <button class="btn px-3 py-2 custom-email-btn" type="button"
+                                    data-ng-click="copyEmailList()">
+                                    Copy Emails 📋
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>

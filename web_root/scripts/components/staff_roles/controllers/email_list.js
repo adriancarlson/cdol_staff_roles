@@ -7,7 +7,8 @@ define(require => {
 		'$attrs',
 		'$http',
 		'$q',
-		function ($scope, $attrs, $http, $q) {
+		'$timeout',
+		function ($scope, $attrs, $http, $q, $timeout) {
 			let psDialogHolder = null
 
 			$scope.openDialog = () => {
@@ -191,18 +192,31 @@ define(require => {
 			}
 
 			$scope.generateEmail = () => {
-				$scope.createEmailList()
 				const bcc = encodeURIComponent($scope.selectedEmailList)
 				const mailtoLink = `mailto:?bcc=${bcc}`
 				window.location.href = mailtoLink
 			}
+
 			$scope.copyEmailList = () => {
-				console.log($scope.selectedEmailList)
+				const textToCopy = $scope.selectedEmailList
+				if (!textToCopy) return
+
+				navigator.clipboard
+					.writeText(textToCopy)
+					.then(() => console.log('Copied to clipboard'))
+					.catch(err => console.error('Failed to copy', err))
+				$scope.confirmMessage = true
+				psDialogClose()
+
+				$timeout(() => {
+					$scope.confirmMessage = false
+				}, 5000)
 			}
 
 			$scope.createEmailList = () => {
 				if (!$scope.filteredEmailListData) return
 				$scope.selectedEmailList = Array.from(new Set($scope.filteredEmailListData.filter(staff => staff.isSelected && staff.email_addr).map(staff => staff.email_addr))).join(', ')
+
 				$scope.openDialog()
 			}
 		}
