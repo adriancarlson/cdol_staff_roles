@@ -39,14 +39,27 @@ define(require => {
 			$j(document).dblclick(() => console.log($scope))
 
 			$scope.initializeEmailListApp = () => {
-				loadingDialog()
-				$scope.loadRolesData()
-				$scope.loadGridData()
-				closeLoading()
+				$scope.loadRolesData().then(() => {
+					$scope.loadGridData()
+				})
 			}
+
 			$scope.loadRolesData = () => {
 				loadingDialog()
-				closeLoading()
+				return $http
+					.get('json/rolesData.json')
+					.then(rolesRes => {
+						$scope.rolesData = psUtils.htmlEntitiesToCharCode(rolesRes.data)
+
+						$scope.roleMap = {}
+						$scope.rolesData
+							.sort((a, b) => a.uidisplayorder - b.uidisplayorder)
+							.forEach(role => {
+								$scope.roleMap[role.displayvalue] = role.code
+							})
+						$scope.roleMap['No Roles'] = 'none'
+					})
+					.finally(() => closeLoading())
 			}
 
 			$scope.loadGridData = () => {
@@ -73,19 +86,10 @@ define(require => {
 					})
 				}
 
-				$q.all([$http.get('json/rolesData.json'), $http.get('json/staffData.json')])
-					.then(([rolesRes, staffRes]) => {
-						$scope.rolesData = psUtils.htmlEntitiesToCharCode(rolesRes.data)
+				$http
+					.get('json/staffData.json')
+					.then(staffRes => {
 						$scope.staffData = psUtils.htmlEntitiesToCharCode(staffRes.data)
-
-						$scope.roleMap = {}
-						$scope.rolesData
-							.sort((a, b) => a.uidisplayorder - b.uidisplayorder)
-							.forEach(role => {
-								$scope.roleMap[role.displayvalue] = role.code
-							})
-						$scope.roleMap['No Roles'] = 'none'
-
 						$scope.schoolMap = {}
 						$scope.staffData
 							.slice() // clone array to avoid mutating original
