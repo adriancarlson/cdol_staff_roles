@@ -27,15 +27,21 @@ define(require => {
 			}
 
 			$scope.curSchoolId = $attrs.ngCurSchoolId
+			$scope.includeAllStaff = false
+			$scope.showColumns = {}
+
+			if ($scope.curSchoolId == 0) {
+				$scope.includeAllStaff = true
+			}
 
 			//This is here for troubleshooting purposes.
 			//Allows us to double click anywhere on the page and logs scope to console
 			$j(document).dblclick(() => console.log($scope))
 
-			$scope.loadData = () => {
+			$scope.loadGridData = () => {
 				loadingDialog()
-				$scope.showColumns = {}
-				if ($scope.curSchoolId == 0) {
+
+				if ($scope.includeAllStaff) {
 					$scope.showColumns['School'] = true
 				}
 
@@ -179,7 +185,7 @@ define(require => {
 					})
 			}
 
-			$scope.loadData()
+			$scope.loadGridData()
 			$scope.toggleAllSelected = true
 
 			$scope.toggleAllFilteredStaff = () => {
