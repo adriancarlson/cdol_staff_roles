@@ -100,9 +100,9 @@
                     </div>
                     <label data-pss-filter-field="multiselectRolesFunction|multiselect" data-filter-info="roleMap"
                         data-ng-if="roleMap" data-default-filter="fixed">Role</label>
-                    <label data-pss-filter-field="multiselectSchoolsFunction|multiselect-dropdown"
+                    <label data-pss-filter-field="multiselectSchoolsFunction|multiselect-dropdown-selectAll"
                         data-filter-info="schoolMap" data-ng-if="schoolMap"
-                        data-ng-attr-data-default-filter="{{ getSchoolFilterDefault() }}">
+                        data-ng-attr-data-default-filter="{{ showColumns.School && 'normal' }}">
                         School
                     </label>
                     <table class="grid">
