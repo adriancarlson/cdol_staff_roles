@@ -62,10 +62,13 @@ define(require => {
 						$scope.staffData = psUtils.htmlEntitiesToCharCode(staffRes.data)
 
 						$scope.roleMap = {}
-						$scope.rolesData.forEach(role => {
-							$scope.roleMap[role.displayvalue] = role.code
-						})
+						$scope.rolesData
+							.sort((a, b) => a.uidisplayorder - b.uidisplayorder)
+							.forEach(role => {
+								$scope.roleMap[role.displayvalue] = role.code
+							})
 						$scope.roleMap['No Roles'] = 'none'
+
 						$scope.schoolMap = {}
 						$scope.staffData
 							.slice() // clone array to avoid mutating original
