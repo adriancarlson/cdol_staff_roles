@@ -38,6 +38,17 @@ define(require => {
 			//Allows us to double click anywhere on the page and logs scope to console
 			$j(document).dblclick(() => console.log($scope))
 
+			$scope.initializeEmailListApp = () => {
+				loadingDialog()
+				$scope.loadRolesData()
+				$scope.loadGridData()
+				closeLoading()
+			}
+			$scope.loadRolesData = () => {
+				loadingDialog()
+				closeLoading()
+			}
+
 			$scope.loadGridData = () => {
 				loadingDialog()
 
@@ -177,6 +188,7 @@ define(require => {
 							staff.multiselectSchoolsFunction = multiselectSchoolsFunction
 						})
 
+						$scope.toggleAllSelected = true
 						closeLoading()
 					})
 					.catch(err => {
@@ -185,8 +197,7 @@ define(require => {
 					})
 			}
 
-			$scope.loadGridData()
-			$scope.toggleAllSelected = true
+			$scope.initializeEmailListApp()
 
 			$scope.toggleAllFilteredStaff = () => {
 				if (!$scope.filteredEmailListData) return
