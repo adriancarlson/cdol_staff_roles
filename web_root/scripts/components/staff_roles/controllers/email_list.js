@@ -38,6 +38,12 @@ define(require => {
 			//Allows us to double click anywhere on the page and logs scope to console
 			$j(document).dblclick(() => console.log($scope))
 
+			$scope.toggleIncludeAllStaff = () => {
+				$scope.includeAllStaff = !$scope.includeAllStaff
+				$scope.showColumns['School'] = $scope.includeAllStaff
+				$scope.loadGridData()
+			}
+
 			$scope.loadGridData = () => {
 				loadingDialog()
 
