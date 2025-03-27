@@ -84,15 +84,15 @@
             data-ng-controller="emailListCtrl" data-ng-cur-school-id="~(curschoolid)" data-ng-cloak>
             <div data-ng-if="confirmMessage" class="feedback-confirm">The email addresses have been copied to your
                 clipboard!</div>
-            <div class="box-round">
+            <div class="box-round" data-ng-show="emailListData">
                 <div id="emailListrGrid" data-pss-grid-widget data-data="emailListData"
                     data-filtered-data="filteredEmailListData" data-item-type-text="Staff"
-                    data-filter-constraint="advanced-only" data-ng-cloak style="margin:0;">
-                    <div data-ng-if="curSchoolId == 0" class="d-flex justify-content-end pe-3"
+                    data-filter-constraint="advanced-only" style="margin:0;">
+                    <div data-ng-if="curSchoolId != 0" class="d-flex justify-content-end pe-3"
                         style="margin-top:-22px !important;">
                         <div class="form-check form-switch">
                             <input class="form-check-input" type="checkbox" id="toggleSwitch"
-                                data-ng-model="includeAllStaff" data-ng-change="loadGridData()">
+                                data-ng-checked="includeAllStaff" data-ng-click="toggleIncludeAllStaff()">
                             <label class="form-check-label" for="toggleSwitch">Show All Diocesan Staff</label>
                         </div>
                     </div>

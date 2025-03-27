@@ -38,6 +38,12 @@ define(require => {
 			//Allows us to double click anywhere on the page and logs scope to console
 			$j(document).dblclick(() => console.log($scope))
 
+			$scope.toggleIncludeAllStaff = () => {
+				$scope.includeAllStaff = !$scope.includeAllStaff
+				$scope.showColumns['School'] = $scope.includeAllStaff
+				$scope.loadGridData()
+			}
+
 			$scope.initializeEmailListApp = () => {
 				$scope.loadRolesData().then(() => {
 					$scope.loadGridData()
@@ -64,10 +70,9 @@ define(require => {
 
 			$scope.loadGridData = () => {
 				loadingDialog()
+				console.log('$scope.includeAllStaff', $scope.includeAllStaff)
 
-				if ($scope.includeAllStaff) {
-					$scope.showColumns['School'] = true
-				}
+				console.log('$scope.showColumns', $scope.showColumns)
 
 				const getBatchedStaffRoles = (dcids, batchSize = 1000) => {
 					const requests = []
@@ -193,6 +198,7 @@ define(require => {
 						})
 
 						$scope.toggleAllSelected = true
+						$timeout()
 						closeLoading()
 					})
 					.catch(err => {
