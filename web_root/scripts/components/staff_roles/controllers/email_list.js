@@ -38,41 +38,12 @@ define(require => {
 			//Allows us to double click anywhere on the page and logs scope to console
 			$j(document).dblclick(() => console.log($scope))
 
-			$scope.toggleIncludeAllStaff = () => {
-				$scope.includeAllStaff = !$scope.includeAllStaff
-				$scope.showColumns['School'] = $scope.includeAllStaff
-				$scope.loadGridData()
-			}
-
-			$scope.initializeEmailListApp = () => {
-				$scope.loadRolesData().then(() => {
-					$scope.loadGridData()
-				})
-			}
-
-			$scope.loadRolesData = () => {
-				loadingDialog()
-				return $http
-					.get('json/rolesData.json')
-					.then(rolesRes => {
-						$scope.rolesData = psUtils.htmlEntitiesToCharCode(rolesRes.data)
-
-						$scope.roleMap = {}
-						$scope.rolesData
-							.sort((a, b) => a.uidisplayorder - b.uidisplayorder)
-							.forEach(role => {
-								$scope.roleMap[role.displayvalue] = role.code
-							})
-						$scope.roleMap['No Roles'] = 'none'
-					})
-					.finally(() => closeLoading())
-			}
-
 			$scope.loadGridData = () => {
 				loadingDialog()
-				console.log('$scope.includeAllStaff', $scope.includeAllStaff)
 
-				console.log('$scope.showColumns', $scope.showColumns)
+				if ($scope.includeAllStaff) {
+					$scope.showColumns['School'] = true
+				}
 
 				const getBatchedStaffRoles = (dcids, batchSize = 1000) => {
 					const requests = []
@@ -90,19 +61,26 @@ define(require => {
 						return responses.flatMap(res => psUtils.htmlEntitiesToCharCode(res.data))
 					})
 				}
+
 				let paramSchoolIds
 				if ($scope.includeAllStaff) {
 					paramSchoolIds = 0
 				} else {
 					paramSchoolIds = $scope.curSchoolId
 				}
-				$http({
-					url: 'json/staffData.json',
-					method: 'GET',
-					params: { curSchoolIds: paramSchoolIds }
-				})
-					.then(staffRes => {
+				$q.all([$http.get('json/rolesData.json'), $http.get('json/staffData.json', { params: { curSchoolIds: paramSchoolIds } })])
+					.then(([rolesRes, staffRes]) => {
+						$scope.rolesData = psUtils.htmlEntitiesToCharCode(rolesRes.data)
 						$scope.staffData = psUtils.htmlEntitiesToCharCode(staffRes.data)
+
+						$scope.roleMap = {}
+						$scope.rolesData
+							.sort((a, b) => a.uidisplayorder - b.uidisplayorder)
+							.forEach(role => {
+								$scope.roleMap[role.displayvalue] = role.code
+							})
+						$scope.roleMap['No Roles'] = 'none'
+
 						$scope.schoolMap = {}
 						$scope.staffData
 							.slice() // clone array to avoid mutating original
@@ -206,7 +184,6 @@ define(require => {
 						})
 
 						$scope.toggleAllSelected = true
-						$timeout()
 						closeLoading()
 					})
 					.catch(err => {
@@ -215,7 +192,7 @@ define(require => {
 					})
 			}
 
-			$scope.initializeEmailListApp()
+			$scope.loadGridData()
 
 			$scope.toggleAllFilteredStaff = () => {
 				if (!$scope.filteredEmailListData) return
