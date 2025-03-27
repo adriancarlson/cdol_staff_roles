@@ -33,6 +33,7 @@
 	WHERE 
 		schoolstaff.status = 1
 		AND users.homeschoolid != 0
-		AND (schoolstaff.schoolid = ~(curschoolid) 
-			OR ~(curschoolid) = 0)
+		~[if.~[f.in;value=~(gpv.curSchoolIds;onlynumeric);in=0]=0]
+		AND schoolstaff.schoolid IN (~(gpv.curSchoolIds;onlynumeric))
+		[/if]
 ;]~(data)[/tlist_sql]

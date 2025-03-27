@@ -90,9 +90,17 @@ define(require => {
 						return responses.flatMap(res => psUtils.htmlEntitiesToCharCode(res.data))
 					})
 				}
-
-				$http
-					.get('json/staffData.json')
+				let paramSchoolIds
+				if ($scope.includeAllStaff) {
+					paramSchoolIds = 0
+				} else {
+					paramSchoolIds = $scope.curSchoolId
+				}
+				$http({
+					url: 'json/staffData.json',
+					method: 'GET',
+					params: { curSchoolIds: paramSchoolIds }
+				})
 					.then(staffRes => {
 						$scope.staffData = psUtils.htmlEntitiesToCharCode(staffRes.data)
 						$scope.schoolMap = {}
