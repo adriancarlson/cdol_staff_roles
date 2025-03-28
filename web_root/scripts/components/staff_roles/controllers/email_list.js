@@ -33,6 +33,38 @@ define(require => {
 			if ($scope.curSchoolId == 0) {
 				$scope.includeAllStaff = true
 			}
+			$scope.schoolMap = {
+				'All Saints Catholic School Holdrege': 'All Saints Catholic School Holdrege',
+				'Aquinas Catholic Elementary': 'Aquinas Catholic Elementary',
+				'Aquinas Catholic Middle/High': 'Aquinas Catholic Middle/High',
+				'Bishop Neumann Catholic Jr/Sr High School': 'Bishop Neumann Catholic Jr/Sr High School',
+				'Blessed Sacrament School': 'Blessed Sacrament School',
+				'Cathedral of the Risen Christ School': 'Cathedral of the Risen Christ School',
+				'Falls City Sacred Heart Elementary': 'Falls City Sacred Heart Elementary',
+				'Falls City Sacred Heart Jr/Sr High School': 'Falls City Sacred Heart Jr/Sr High School',
+				'Lourdes Central Catholic Elementary School': 'Lourdes Central Catholic Elementary School',
+				'Lourdes Central Catholic Middle/High School': 'Lourdes Central Catholic Middle/High School',
+				'North American Martyrs School': 'North American Martyrs School',
+				'Pius X High School': 'Pius X High School',
+				'St. Andrew Tecumseh': 'St. Andrew Tecumseh',
+				'St. Cecilia Middle & High School': 'St. Cecilia Middle & High School',
+				'St. James Crete': 'St. James Crete',
+				'St. John Lincoln': 'St. John Lincoln',
+				'St. John Nepomucene Weston': 'St. John Nepomucene Weston',
+				'St. John the Baptist School': 'St. John the Baptist School',
+				'St. Joseph Beatrice': 'St. Joseph Beatrice',
+				'St. Joseph Lincoln': 'St. Joseph Lincoln',
+				'St. Joseph York': 'St. Joseph York',
+				'St. Michael Hastings': 'St. Michael Hastings',
+				'St. Michael Lincoln': 'St. Michael Lincoln',
+				'St. Patrick Lincoln': 'St. Patrick Lincoln',
+				'St. Patrick McCook': 'St. Patrick McCook',
+				'St. Peter Catholic School': 'St. Peter Catholic School',
+				'St. Teresa Elementary School': 'St. Teresa Elementary School',
+				'St. Vincent de Paul Seward': 'St. Vincent de Paul Seward',
+				'St. Wenceslaus Wahoo': 'St. Wenceslaus Wahoo',
+				'Villa Marie School': 'Villa Marie School'
+			}
 
 			//This is here for troubleshooting purposes.
 			//Allows us to double click anywhere on the page and logs scope to console
@@ -86,13 +118,14 @@ define(require => {
 							})
 						$scope.roleMap['No Roles'] = 'none'
 
-						$scope.schoolMap = {}
-						$scope.staffData
-							.slice() // clone array to avoid mutating original
-							.sort((a, b) => a.school_name.localeCompare(b.school_name))
-							.forEach(staff => {
-								$scope.schoolMap[staff.school_name] = staff.school_name
-							})
+						// dynamic school map. Now hard coding
+						// $scope.schoolMap = {}
+						// $scope.staffData
+						// 	.slice() // clone array to avoid mutating original
+						// 	.sort((a, b) => a.school_name.localeCompare(b.school_name))
+						// 	.forEach(staff => {
+						// 		$scope.schoolMap[staff.school_name] = staff.school_name
+						// 	})
 
 						$scope.schoolStaffDCIDs = $scope.staffData.map(staff => staff.school_staff_dcid)
 
