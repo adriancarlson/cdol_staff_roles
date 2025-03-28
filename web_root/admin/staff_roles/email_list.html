@@ -88,7 +88,8 @@
                 <div id="emailListrGrid" data-pss-grid-widget data-data="emailListData"
                     data-filtered-data="filteredEmailListData" data-item-type-text="Staff"
                     data-filter-constraint="advanced-only" style="margin:0;">
-                    <div class="d-flex justify-content-end pe-3" style="margin-top:-22px !important;">
+                    <div data-ng-if="curSchoolId != 0" class="d-flex justify-content-end pe-3"
+                        style="margin-top:-22px !important;">
                         <div class="form-check form-switch">
                             <input class="form-check-input" type="checkbox" id="toggleSwitch"
                                 data-ng-model="includeAllStaff" data-ng-change="toggleIncludeAllStaff()">
