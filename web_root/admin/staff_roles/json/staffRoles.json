@@ -16,6 +16,7 @@
         AND codeset.codetype = 'CDOL Staff Roles'
     WHERE
         u_cdol_staff_roles.schoolstaffdcid IN (~(gpv.schoolStaffDCIDs;onlynumeric))
-        AND (u_cdol_staff_roles.schoolid = ~(curschoolid)
-            OR ~(curschoolid) = 0)
+        ~[if.~[f.in;value=~(gpv.curSchoolIds;onlynumeric);in=0]=0]
+        AND u_cdol_staff_roles.schoolid = ~(curschoolid)
+        [/if]
 ;]~(data)[/tlist_sql]

@@ -50,7 +50,12 @@ define(require => {
 				if ($scope.includeAllStaff) {
 					$scope.showColumns['School'] = true
 				}
-
+				let paramSchoolIds
+				if ($scope.includeAllStaff) {
+					paramSchoolIds = 0
+				} else {
+					paramSchoolIds = $scope.curSchoolId
+				}
 				const getBatchedStaffRoles = (dcids, batchSize = 1000) => {
 					const requests = []
 					for (let i = 0; i < dcids.length; i += batchSize) {
@@ -59,7 +64,7 @@ define(require => {
 							$http({
 								url: 'json/staffRoles.json',
 								method: 'GET',
-								params: { schoolStaffDCIDs: batch.join(',') }
+								params: { curSchoolIds: paramSchoolIds, schoolStaffDCIDs: batch.join(',') }
 							})
 						)
 					}
@@ -68,12 +73,6 @@ define(require => {
 					})
 				}
 
-				let paramSchoolIds
-				if ($scope.includeAllStaff) {
-					paramSchoolIds = 0
-				} else {
-					paramSchoolIds = $scope.curSchoolId
-				}
 				$q.all([$http.get('json/rolesData.json'), $http.get('json/staffData.json', { params: { curSchoolIds: paramSchoolIds } })])
 					.then(([rolesRes, staffRes]) => {
 						$scope.rolesData = psUtils.htmlEntitiesToCharCode(rolesRes.data)
