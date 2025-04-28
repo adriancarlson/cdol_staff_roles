@@ -138,17 +138,17 @@
                         <div id="dialogPopUp">
                             <div class="feedback-info">
                                 <div>
-                                    Click <strong>Copy</strong> to copy the selected email addresses, then paste them
+                                    Click <strong>Copy</strong> to copy the selected email addresses. Then paste them
                                     into
-                                    the <strong>To:</strong> or <strong>BCC</strong> field of a new email.
+                                    the <strong>To:</strong> or <strong>BCC:</strong> field of a new email.
                                     <span data-ng-if="selectedEmailList.length < 1500">Or click <strong>Generate
-                                            Email</strong> to open your email app with the addresses in
-                                        the <strong>BCC</strong> field.</span> <em>Use <strong>BCC</strong> to keep
-                                        recipient addresses
-                                        private.</em>
+                                            Email</strong> to open your email app with the addresses pre-filled in the
+                                        <strong>BCC</strong> field.</span> <em>For privacy, it is recommended to use
+                                        <strong>BCC</strong>.</em>
                                 </div>
                             </div>
                             <div class="px-3 my-3">
+                                <label>Selected Email Count: {{selectedEmailCount}}</label>
                                 <textarea id="selectedEmails" class="form-control" style="height: 300px !important;"
                                     data-ng-model="selectedEmailList"></textarea>
                             </div>

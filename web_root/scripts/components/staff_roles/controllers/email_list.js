@@ -17,6 +17,7 @@ define(require => {
 				psDialog({
 					type: 'dialogR',
 					width: 850,
+					height: 550,
 					title: 'Email List',
 					content: psDialogHolder,
 					close: () => {
@@ -268,7 +269,10 @@ define(require => {
 
 			$scope.createEmailList = () => {
 				if (!$scope.filteredEmailListData) return
-				$scope.selectedEmailList = Array.from(new Set($scope.filteredEmailListData.filter(staff => staff.isSelected && staff.email_addr).map(staff => staff.email_addr))).join(', ')
+				const emails = Array.from(new Set($scope.filteredEmailListData.filter(staff => staff.isSelected && staff.email_addr).map(staff => staff.email_addr)))
+
+				$scope.selectedEmailList = emails.join(', ')
+				$scope.selectedEmailCount = emails.length
 
 				$scope.openDialog()
 			}
