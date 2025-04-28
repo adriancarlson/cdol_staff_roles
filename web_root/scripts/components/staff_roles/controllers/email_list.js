@@ -30,6 +30,8 @@ define(require => {
 			$scope.curSchoolId = $attrs.ngCurSchoolId
 			$scope.includeAllStaff = false
 			$scope.showColumns = {}
+			$scope.rolesData = []
+			$scope.roleMap = {}
 
 			if ($scope.curSchoolId == 0) {
 				$scope.includeAllStaff = true
@@ -66,6 +68,26 @@ define(require => {
 				'St. Wenceslaus Wahoo': 'St. Wenceslaus Wahoo',
 				'Villa Marie School': 'Villa Marie School'
 			}
+			$http
+				.get('json/rolesData.json')
+				.then(res => {
+					$scope.rolesData = psUtils.htmlEntitiesToCharCode(res.data)
+					$scope.roleMap = {}
+
+					$scope.rolesData
+						.sort((a, b) => a.uidisplayorder - b.uidisplayorder)
+						.forEach(role => {
+							$scope.roleMap[role.displayvalue] = role.code
+						})
+
+					$scope.roleMap['No Roles'] = 'none'
+
+					// After roles are ready, load the rest of the data
+					$scope.loadGridData()
+				})
+				.catch(err => {
+					console.error('Error loading roles data:', err)
+				})
 
 			//This is here for troubleshooting purposes.
 			//Allows us to double click anywhere on the page and logs scope to console
@@ -106,28 +128,10 @@ define(require => {
 					})
 				}
 
-				$q.all([$http.get('json/rolesData.json'), $http.get('json/staffData.json', { params: { curSchoolIds: paramSchoolIds } })])
-					.then(([rolesRes, staffRes]) => {
-						$scope.rolesData = psUtils.htmlEntitiesToCharCode(rolesRes.data)
+				$http
+					.get('json/staffData.json', { params: { curSchoolIds: paramSchoolIds } })
+					.then(staffRes => {
 						$scope.staffData = psUtils.htmlEntitiesToCharCode(staffRes.data)
-
-						$scope.roleMap = {}
-						$scope.rolesData
-							.sort((a, b) => a.uidisplayorder - b.uidisplayorder)
-							.forEach(role => {
-								$scope.roleMap[role.displayvalue] = role.code
-							})
-						$scope.roleMap['No Roles'] = 'none'
-
-						// dynamic school map. Now hard coding
-						// $scope.schoolMap = {}
-						// $scope.staffData
-						// 	.slice() // clone array to avoid mutating original
-						// 	.sort((a, b) => a.school_name.localeCompare(b.school_name))
-						// 	.forEach(staff => {
-						// 		$scope.schoolMap[staff.school_name] = staff.school_name
-						// 	})
-
 						$scope.schoolStaffDCIDs = $scope.staffData.map(staff => staff.school_staff_dcid)
 
 						return getBatchedStaffRoles($scope.schoolStaffDCIDs)
@@ -230,8 +234,6 @@ define(require => {
 						closeLoading()
 					})
 			}
-
-			$scope.loadGridData()
 
 			$scope.toggleAllFilteredStaff = () => {
 				if (!$scope.filteredEmailListData) return
