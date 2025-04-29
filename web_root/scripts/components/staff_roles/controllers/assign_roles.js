@@ -74,15 +74,17 @@ define(require => {
 					}
 				}).then(response => {
 					if (response.data.result[0].status == 'SUCCESS') {
+						$scope.rolePayload.cdol_role = ''
 						$scope.loadGridData()
 					} else {
 						psAlert({ message: 'There was an error submitting the record. Changes were not saved', title: 'Error Submitting Record' })
 					}
 				})
 			}
+
 			$scope.removeStaffRole = id => {
 				$http({
-					url: '/ws/schema/table/U_CDOL_STAFF_ROLES/' + id,
+					url: `/ws/schema/table/U_CDOL_STAFF_ROLES/${id}`,
 					method: 'DELETE',
 					headers: {
 						Accept: 'application/json',

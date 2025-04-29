@@ -12,23 +12,13 @@
 			"parentHTMLID": "navPeopleStaffReports"
 		},
 		{
-			"htmlID": "cdol-staff-roles",
-			"title": "CDOL Staff Roles",
-			"pageURL": "/admin/faculty/cdol_staff_roles.html?frn=~(frn)",
-			"version": "0",
-			"contextType": "staff",
-			"districtLevelContext": 1,
-			"sortOrder": 500,
-			"parentHTMLID": "navStaffStaffDetails"
-		},
-		{
 			"htmlID": "assign-roles",
 			"title": "Staff Roles",
 			"pageURL": "/admin/faculty/assign_roles.html?frn=~(frn)",
 			"version": "0",
 			"contextType": "staff",
 			"districtLevelContext": 1,
-			"sortOrder": 600,
+			"sortOrder": 500,
 			"parentHTMLID": "navStaffStaffDetails"
 		},
 		{
