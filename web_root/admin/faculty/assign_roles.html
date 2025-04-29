@@ -14,35 +14,17 @@
         <link href="/images/css/cdol_print.css?~[time]" rel="stylesheet" media="print"> -->
         <style>
             .cust-btn-success {
-                font-size: 1.05rem;
-                font-weight: bold;
                 background-color: #0066A5;
             }
 
-            .cust-btn-danger {
-                font-size: 1.15rem;
-                font-weight: bold;
+            .cust-btn-remove {
+
                 background-color: #a94442;
             }
 
-            .cust-danger-hover {
-                cursor: pointer;
-                /* Makes it look clickable */
-                transition: background-color 0.2s ease, color 0.2s ease;
-                /* Smooth hover effect */
-            }
-
-            .cust-danger-hover:hover {
-                background-color: #d9534f;
-                /* Bootstrap danger hover color */
-                color: #fff;
-                /* Ensure text remains visible */
-            }
-
-            .cust-danger-hover:active {
-                background-color: #c9302c;
-                /* Bootstrap danger active color */
-                color: #fff;
+            .cust-btn {
+                font-size: 1.05rem;
+                font-weight: bold;
             }
         </style>
     </head>
@@ -72,7 +54,7 @@
                                         </option>
                                     </select>
                                     <label class="input-group-text btn " id="btnAddRole"
-                                        data-ng-class="{'btn-primary': selectedRole, 'cust-btn-success': selectedRole,'btn-secondary': !selectedRole}"
+                                        data-ng-class="{'btn-primary': selectedRole, 'cust-btn': selectedRole,'cust-btn-success': selectedRole, 'btn-secondary': !selectedRole}"
                                         data-ng-click="submitStaffRole()" data-ng-disabled="!selectedRole"
                                         data-ng-style="{'opacity': !selectedRole ? '0.5' : '1', 'pointer-events': !selectedRole ? 'none' : 'auto'}">
                                         +
@@ -82,13 +64,15 @@
                         </div>
                         <div class="row align-items-center">
                             <label for="basic-url" class="form-label">~(first_name)'s Staff Roles: </label>
-                            <div class="col-auto">
-                                <ul class="list-group list-group-horizontal m-0 mb-3">
-                                    <li class="list-group-item">An item</li>
-                                    <li
-                                        class="list-group-item list-group-item-danger text-light cust-btn-danger cust-danger-hover">
-                                        - </li>
-                                </ul>
+                            <div class="col-2 ">
+                                <table class="table table-sm table-striped table-bordered border m-0 mb-3">
+                                    <tr data-ng-repeat="staffRole in staffRolesData">
+                                        <td>{{staffRole.displayvalue}} </td>
+                                        <td class="right"><button
+                                                class="btn btn-danger cust-btn cust-btn-remove m-0 p-0 px-2"
+                                                type="button" ng-click="removeStaffRole(staffRole.id)"> - </button></td>
+                                    </tr>
+                                </table>
                             </div>
                         </div>
                     </div>

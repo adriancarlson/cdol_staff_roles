@@ -2,6 +2,7 @@
     SELECT
         JSON_ARRAYAGG(
             JSON_OBJECT(
+                'id' VALUE TO_CHAR(u_cdol_staff_roles.id),
                 'schoolstaffdcid' VALUE TO_CHAR(u_cdol_staff_roles.schoolstaffdcid),
                 'cdol_role' VALUE u_cdol_staff_roles.cdol_role,
                 'displayvalue' VALUE codeset.displayvalue,
