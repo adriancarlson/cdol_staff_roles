@@ -6,29 +6,41 @@ define(require => {
 		'$scope',
 		'$attrs',
 		'$http',
-		function ($scope, $attrs, $http) {
-			$scope.testMessage = 'Hello World!'
-
+		'$q', // Corrected from #q to $q
+		function ($scope, $attrs, $http, $q) {
 			$scope.curSchoolId = $attrs.ngCurSchoolId
+			$scope.schoolStaffDCID = $attrs.schoolStaffDCID
 
-			//This is here for troubleshooting purposes.
-			//Allows us to double click anywhere on the page and logs scope to console
+			// This is here for troubleshooting purposes.
+			// Allows us to double click anywhere on the page and logs scope to console
 			$j(document).dblclick(() => console.log($scope))
-
-			$http
-				.get('/admin/staff_roles/json/rolesData.json')
-				.then(res => {
-					$scope.rolesData = psUtils.htmlEntitiesToCharCode(res.data).sort((a, b) => a.uidisplayorder - b.uidisplayorder)
-					$scope.loadGridData()
-				})
-				.catch(err => {
-					console.error('Error loading roles data:', err)
-				})
 
 			$scope.loadGridData = () => {
 				loadingDialog()
 
-				closeLoading()
+				// Use $q.all to handle multiple HTTP requests
+				$q.all([
+					$http.get('/admin/staff_roles/json/rolesData.json'),
+					$http.get('/admin/staff_roles/json/staffRoles.json', {
+						params: { curSchoolIds: $scope.curSchoolId, schoolStaffDCID: $scope.schoolStaffDCID }
+					})
+				])
+					.then(responses => {
+						const rolesResponse = responses[0]
+						const staffResponse = responses[1]
+
+						// Process roles data
+						$scope.rolesData = psUtils.htmlEntitiesToCharCode(rolesResponse.data).sort((a, b) => a.uidisplayorder - b.uidisplayorder)
+
+						// Process staff roles data
+						$scope.staffRolesData = psUtils.htmlEntitiesToCharCode(staffResponse.data)
+					})
+					.catch(err => {
+						console.error('Error loading data:', err)
+					})
+					.finally(() => {
+						closeLoading()
+					})
 			}
 		}
 	])

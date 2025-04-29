@@ -13,10 +13,36 @@
         <!-- <link href="/images/css/cdol.css?~[time]" rel="stylesheet" media="screen">
         <link href="/images/css/cdol_print.css?~[time]" rel="stylesheet" media="print"> -->
         <style>
-            .cust-btn {
+            .cust-btn-success {
                 font-size: 1.05rem;
                 font-weight: bold;
                 background-color: #0066A5;
+            }
+
+            .cust-btn-danger {
+                font-size: 1.15rem;
+                font-weight: bold;
+                background-color: #a94442;
+            }
+
+            .cust-danger-hover {
+                cursor: pointer;
+                /* Makes it look clickable */
+                transition: background-color 0.2s ease, color 0.2s ease;
+                /* Smooth hover effect */
+            }
+
+            .cust-danger-hover:hover {
+                background-color: #d9534f;
+                /* Bootstrap danger hover color */
+                color: #fff;
+                /* Ensure text remains visible */
+            }
+
+            .cust-danger-hover:active {
+                background-color: #c9302c;
+                /* Bootstrap danger active color */
+                color: #fff;
             }
         </style>
     </head>
@@ -26,14 +52,15 @@
         ~[wc:admin_navigation_frame_css]
         <h1>Staff Roles: ~(first_name) ~(last_name) - ~(schoolname) </h1>
         <div data-require-path="components/staff_roles/index" data-module-name="staffRolesMod"
-            data-ng-controller="assignRolesCtrl" data-ng-cur-school-id="~(curschoolid)" data-ng-cloak>
+            data-ng-controller="assignRolesCtrl" data-ng-cur-school-id="~(curschoolid)"
+            data-ng-school-staff-dcid="~(rn)" data-ng-cloak>
             <div class="feedback-note" data-ng-if="curSchoolId == 0">You must be at a school to assign staff roles</div>
             <div class="container-fluid">
                 <div class="card">
                     <div class="card-header  text-dark fw-semibold">
                         Add Staff Role:</div>
                     <div class="card-body pb-0">
-                        <div class="row align-items-center mb-3 gx-2">
+                        <div class="row align-items-center">
                             <div class="col-auto">
                                 <div class="input-group mb-3">
                                     <select id="rolesDropDownList" class="form-select form-select-sm"
@@ -45,7 +72,7 @@
                                         </option>
                                     </select>
                                     <label class="input-group-text btn " id="btnAddRole"
-                                        data-ng-class="{'btn-primary': selectedRole, 'cust-btn': selectedRole,'btn-secondary': !selectedRole}"
+                                        data-ng-class="{'btn-primary': selectedRole, 'cust-btn-success': selectedRole,'btn-secondary': !selectedRole}"
                                         data-ng-click="submitStaffRole()" data-ng-disabled="!selectedRole"
                                         data-ng-style="{'opacity': !selectedRole ? '0.5' : '1', 'pointer-events': !selectedRole ? 'none' : 'auto'}">
                                         +
@@ -53,57 +80,15 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row align-items-center mb-4 gx-2">
-                            <div class="card p-0">
-                                <div class="card-header fw-semibold p-0">
-                                    <div class="container-fluid">
-                                        <div class="row my-1">
-                                            <div class="col-auto me-auto ps-2 pt-1">~(first_name)'s Staff Roles: </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card-body" data-ng-if="!certList.length">
-                                    <p class="card-title"><strong>No Certifications on File</strong></p>
-                                </div>
-                                <div id="cert-grid" class="m-2" data-ng-if="certList.length" data-pss-grid-widget
-                                    data-data="certList" data-filtered-data="filteredcertList"
-                                    data-client-side-pagination="false" data-filter-constraint="no-filters"
-                                    data-no-grid-box="true">
-                                    <table class="grid my-2 mx-1">
-                                        <thead>
-                                            <tr>
-                                                <th>Certificate Type</th>
-                                                <th>Certificate Rank </th>
-                                                <th data-pss-sort-fields="emp_start_date|date"
-                                                    data-primary-sort="descending">
-                                                    Certificate Expiration Date
-                                                </th>
-                                                <th>Notes</th>
-                                                <th style="width: 100px;">Actions</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr data-ng-show="!certList.length">
-                                                <td colspan="100%">No Certifications on File</td>
-                                            </tr>
-                                            <tr data-ng-repeat="cert in filteredcertList" data-id="{{cert.id}}">
-                                                <td>{{cert.cert_type}}</td>
-                                                <td>{{cert.cert_rank}}</td>
-                                                <td class="center">{{cert.cert_exp_date | date :
-                                                    'MM/dd/yyyy'}}</td>
-                                                <td>{{cert.notes}}</td>
-                                                <td class="actions center">
-                                                    <button type="button" id="mod-btn-{{cert.id}}" pss-dialog-drawer
-                                                        edit-button-icon="true" drawer-title="Edit Certification"
-                                                        template-url="views/cert_drawer.html" data-data="cert"></button>
-                                                    <button type="button" id="delBtn"
-                                                        data-ng-click="delConfirm(cert.id, 'cert')"><em
-                                                            class="ui-icon-white ui-icon ui-icon-minusthick"></em></button>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
+                        <div class="row align-items-center">
+                            <label for="basic-url" class="form-label">~(first_name)'s Staff Roles: </label>
+                            <div class="col-auto">
+                                <ul class="list-group list-group-horizontal m-0 mb-3">
+                                    <li class="list-group-item">An item</li>
+                                    <li
+                                        class="list-group-item list-group-item-danger text-light cust-btn-danger cust-danger-hover">
+                                        - </li>
+                                </ul>
                             </div>
                         </div>
                     </div>
