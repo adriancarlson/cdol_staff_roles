@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Staff Roles</title>
+        <!-- <link href="/images/css/cdol_bootstrap.css?~[time]" rel="stylesheet" media="screen"> -->
+        ~[wc:commonscripts]
+        <link href="/images/css/screen.css?~[time]" rel="stylesheet" media="screen">
+        <link href="/images/css/print.css?~[time]" rel="stylesheet" media="print">
+        <!-- <link href="/images/css/cdol.css?~[time]" rel="stylesheet" media="screen">
+        <link href="/images/css/cdol_print.css?~[time]" rel="stylesheet" media="print"> -->
+
+
+    </head>
+
+    <body data-require-path="components/cdol_employment/index" data-module-name="employmentMod"
+        data-ng-controller="employmentCtrl" data-ng-selected-user-dcid="~([Teachers]users_dcid)"
+        data-ng-cur-school-id="~(curschoolid)" data-ng-cur-date="~[date]"
+        data-ng-religion="~([Users.S_USR_NCEA_X]ReligiousAffiliation)" data-ng-cloak>
+        ~[wc:admin_header_frame_css]
+        ~[wc:admin_navigation_frame_css]
+        ~[wc:changes_saved_or_deleted_header]
+        <h1>Staff Roles: ~(first_name) ~(last_name) - ~(schoolname) </h1>
+        <div data-require-path="components/staff_roles/index" data-module-name="staffRolesMod"
+            data-ng-controller="assignRolesCtrl" data-ng-cur-school-id="~(curschoolid)" data-ng-cloak>
+
+            <p>{{testMessage}} : {{curSchoolId}}</p>
+        </div>
+
+
+        ~[wc:admin_footer_frame_css]
+    </body>
+
+</html>

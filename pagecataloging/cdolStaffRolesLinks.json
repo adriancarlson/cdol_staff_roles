@@ -22,6 +22,16 @@
 			"parentHTMLID": "navStaffStaffDetails"
 		},
 		{
+			"htmlID": "assign-roles",
+			"title": "Staff Roles",
+			"pageURL": "/admin/faculty/assign_roles.html?frn=~(frn)",
+			"version": "0",
+			"contextType": "staff",
+			"districtLevelContext": 1,
+			"sortOrder": 600,
+			"parentHTMLID": "navStaffStaffDetails"
+		},
+		{
 			"htmlID": "staff-roles-email-list",
 			"title": "📨 Staff Email List",
 			"pageURL": "/admin/staff_roles/email_list.html",
