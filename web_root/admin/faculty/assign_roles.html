@@ -6,31 +6,93 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Staff Roles</title>
-        <!-- <link href="/images/css/cdol_bootstrap.css?~[time]" rel="stylesheet" media="screen"> -->
+        <link href="/images/css/cdol_bootstrap.css?~[time]" rel="stylesheet" media="screen">
         ~[wc:commonscripts]
         <link href="/images/css/screen.css?~[time]" rel="stylesheet" media="screen">
         <link href="/images/css/print.css?~[time]" rel="stylesheet" media="print">
         <!-- <link href="/images/css/cdol.css?~[time]" rel="stylesheet" media="screen">
         <link href="/images/css/cdol_print.css?~[time]" rel="stylesheet" media="print"> -->
-
-
     </head>
 
-    <body data-require-path="components/cdol_employment/index" data-module-name="employmentMod"
-        data-ng-controller="employmentCtrl" data-ng-selected-user-dcid="~([Teachers]users_dcid)"
-        data-ng-cur-school-id="~(curschoolid)" data-ng-cur-date="~[date]"
-        data-ng-religion="~([Users.S_USR_NCEA_X]ReligiousAffiliation)" data-ng-cloak>
+    <body>
         ~[wc:admin_header_frame_css]
         ~[wc:admin_navigation_frame_css]
-        ~[wc:changes_saved_or_deleted_header]
         <h1>Staff Roles: ~(first_name) ~(last_name) - ~(schoolname) </h1>
         <div data-require-path="components/staff_roles/index" data-module-name="staffRolesMod"
             data-ng-controller="assignRolesCtrl" data-ng-cur-school-id="~(curschoolid)" data-ng-cloak>
-
-            <p>{{testMessage}} : {{curSchoolId}}</p>
+            <div class="feedback-note" data-ng-if="curSchoolId == 0">You must be at a school to assign staff roles</div>
+            <div class="container-fluid">
+                <div class="card">
+                    <div class="card-header  text-dark fw-semibold">
+                        Add Staff Role:</div>
+                    <div class="card-body pb-0">
+                        <div class="row align-items-center mb-3 gx-2">
+                            <div class="col-auto">
+                                <select id="rolesDropDownList" class="form-select form-select-sm" aria-label="rolesData"
+                                    data-ng-model="rolesData">
+                                    <option ng-repeat="role in rolesData | orderBy: 'uidisplayorder'"
+                                        value="{{role.code}}">
+                                        {{role.displayvalue}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row align-items-center mb-4 gx-2">
+                            <div class="card p-0">
+                                <div class="card-header fw-semibold p-0">
+                                    <div class="container-fluid">
+                                        <div class="row my-1">
+                                            <div class="col-auto me-auto ps-2 pt-1">~(first_name)'s Staff Roles: </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body" data-ng-if="!certList.length">
+                                    <p class="card-title"><strong>No Certifications on File</strong></p>
+                                </div>
+                                <div id="cert-grid" class="m-2" data-ng-if="certList.length" data-pss-grid-widget
+                                    data-data="certList" data-filtered-data="filteredcertList"
+                                    data-client-side-pagination="false" data-filter-constraint="no-filters"
+                                    data-no-grid-box="true">
+                                    <table class="grid my-2 mx-1">
+                                        <thead>
+                                            <tr>
+                                                <th>Certificate Type</th>
+                                                <th>Certificate Rank </th>
+                                                <th data-pss-sort-fields="emp_start_date|date"
+                                                    data-primary-sort="descending">
+                                                    Certificate Expiration Date
+                                                </th>
+                                                <th>Notes</th>
+                                                <th style="width: 100px;">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr data-ng-show="!certList.length">
+                                                <td colspan="100%">No Certifications on File</td>
+                                            </tr>
+                                            <tr data-ng-repeat="cert in filteredcertList" data-id="{{cert.id}}">
+                                                <td>{{cert.cert_type}}</td>
+                                                <td>{{cert.cert_rank}}</td>
+                                                <td class="center">{{cert.cert_exp_date | date :
+                                                    'MM/dd/yyyy'}}</td>
+                                                <td>{{cert.notes}}</td>
+                                                <td class="actions center">
+                                                    <button type="button" id="mod-btn-{{cert.id}}" pss-dialog-drawer
+                                                        edit-button-icon="true" drawer-title="Edit Certification"
+                                                        template-url="views/cert_drawer.html" data-data="cert"></button>
+                                                    <button type="button" id="delBtn"
+                                                        data-ng-click="delConfirm(cert.id, 'cert')"><em
+                                                            class="ui-icon-white ui-icon ui-icon-minusthick"></em></button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-
-
         ~[wc:admin_footer_frame_css]
     </body>
 

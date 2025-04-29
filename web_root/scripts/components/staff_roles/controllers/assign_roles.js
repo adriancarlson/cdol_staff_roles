@@ -15,11 +15,16 @@ define(require => {
 			//Allows us to double click anywhere on the page and logs scope to console
 			$j(document).dblclick(() => console.log($scope))
 
-			$scope.toggleIncludeAllStaff = () => {
-				$scope.includeAllStaff = !$scope.includeAllStaff
-				$scope.showColumns['School'] = $scope.includeAllStaff
-				$scope.loadGridData()
-			}
+			$http
+				.get('json/rolesData.json')
+				.then(res => {
+					$scope.rolesData = psUtils.htmlEntitiesToCharCode(res.data).sort((a, b) => a.uidisplayorder - b.uidisplayorder)
+
+					$scope.loadGridData()
+				})
+				.catch(err => {
+					console.error('Error loading roles data:', err)
+				})
 
 			$scope.loadGridData = () => {
 				loadingDialog()
