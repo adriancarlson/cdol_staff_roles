@@ -2,12 +2,13 @@
 	"pages": [
 		{
 			"htmlID": "cdol-staff-roles-email-list",
-			"title": "Staff Roles Build Email List",
-			"pageURL": "/admin/cdol/staffroles/cdol_staff_roles_list.html",
+			"title": "📨 Staff Email List",
+			"pageURL": "/admin/staff_roles/email_list.html?staff=1",
 			"version": "0",
 			"contextType": "main",
 			"districtLevelContext": 0,
 			"sortOrder": 600,
+			"checkParams": true,
 			"parentHTMLID": "navPeopleStaffReports"
 		},
 		{
@@ -28,6 +29,7 @@
 			"contextType": "main",
 			"districtLevelContext": 0,
 			"sortOrder": 600,
+			"checkParams": true,
 			"parentHTMLID": "navPeopleCommunications"
 		}
 	]
