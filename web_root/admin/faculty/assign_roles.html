@@ -46,7 +46,7 @@
                             <div class="col-auto">
                                 <div class="input-group mb-3">
                                     <select id="rolesDropDownList" class="form-select form-select-sm"
-                                        aria-label="selectedRole" data-ng-model="selectedRole">
+                                        aria-label="selectedRole" data-ng-model="rolePayload.cdol_role">
                                         <option value="" selected></option>
                                         <option ng-repeat="role in rolesData | orderBy: 'uidisplayorder'"
                                             value="{{role.code}}">
@@ -54,9 +54,9 @@
                                         </option>
                                     </select>
                                     <label class="input-group-text btn " id="btnAddRole"
-                                        data-ng-class="{'btn-primary': selectedRole, 'cust-btn': selectedRole,'cust-btn-success': selectedRole, 'btn-secondary': !selectedRole}"
-                                        data-ng-click="submitStaffRole()" data-ng-disabled="!selectedRole"
-                                        data-ng-style="{'opacity': !selectedRole ? '0.5' : '1', 'pointer-events': !selectedRole ? 'none' : 'auto'}">
+                                        data-ng-class="{'btn-primary': rolePayload.cdol_role, 'cust-btn': rolePayload.cdol_role,'cust-btn-success': rolePayload.cdol_role, 'btn-secondary': !rolePayload.cdol_role}"
+                                        data-ng-click="submitStaffRole()" data-ng-disabled="!rolePayload.cdol_role"
+                                        data-ng-style="{'opacity': !rolePayload.cdol_role ? '0.5' : '1', 'pointer-events': !rolePayload.cdol_role ? 'none' : 'auto'}">
                                         +
                                     </label>
                                 </div>
