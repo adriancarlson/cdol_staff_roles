@@ -9,7 +9,7 @@ define(require => {
 		'$q', // Corrected from #q to $q
 		function ($scope, $attrs, $http, $q) {
 			$scope.curSchoolId = $attrs.ngCurSchoolId
-			$scope.schoolStaffDCID = $attrs.schoolStaffDCID
+			$scope.schoolStaffDcid = $attrs.ngSchoolStaffDcid
 
 			// This is here for troubleshooting purposes.
 			// Allows us to double click anywhere on the page and logs scope to console
@@ -22,26 +22,37 @@ define(require => {
 				$q.all([
 					$http.get('/admin/staff_roles/json/rolesData.json'),
 					$http.get('/admin/staff_roles/json/staffRoles.json', {
-						params: { curSchoolIds: $scope.curSchoolId, schoolStaffDCID: $scope.schoolStaffDCID }
+						params: { curSchoolIds: $scope.curSchoolId, schoolStaffDCIDs: $scope.schoolStaffDcid }
 					})
 				])
 					.then(responses => {
-						const rolesResponse = responses[0]
-						const staffResponse = responses[1]
+						const rolesResponse = responses[0];
+						const staffResponse = responses[1];
 
 						// Process roles data
-						$scope.rolesData = psUtils.htmlEntitiesToCharCode(rolesResponse.data).sort((a, b) => a.uidisplayorder - b.uidisplayorder)
+						const allRolesData = psUtils.htmlEntitiesToCharCode(rolesResponse.data).sort(
+							(a, b) => a.uidisplayorder - b.uidisplayorder
+						);
 
 						// Process staff roles data
-						$scope.staffRolesData = psUtils.htmlEntitiesToCharCode(staffResponse.data)
+						const staffRolesData = psUtils.htmlEntitiesToCharCode(staffResponse.data);
+
+						// Filter rolesData to exclude roles already in staffRolesData
+						$scope.rolesData = allRolesData.filter(role => {
+							return !staffRolesData.some(staffRole => staffRole.cdol_role === role.code);
+						});
+
+						// Assign staffRolesData to scope
+						$scope.staffRolesData = staffRolesData;
 					})
 					.catch(err => {
-						console.error('Error loading data:', err)
+						console.error('Error loading data:', err);
 					})
 					.finally(() => {
-						closeLoading()
-					})
+						closeLoading();
+					});
 			}
+			$scope.loadGridData()
 		}
 	])
 })
