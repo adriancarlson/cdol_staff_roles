@@ -16,10 +16,9 @@ define(require => {
 			$j(document).dblclick(() => console.log($scope))
 
 			$http
-				.get('json/rolesData.json')
+				.get('/admin/staff_roles/json/rolesData.json')
 				.then(res => {
 					$scope.rolesData = psUtils.htmlEntitiesToCharCode(res.data).sort((a, b) => a.uidisplayorder - b.uidisplayorder)
-
 					$scope.loadGridData()
 				})
 				.catch(err => {

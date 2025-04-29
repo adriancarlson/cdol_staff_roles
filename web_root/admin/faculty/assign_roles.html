@@ -12,6 +12,13 @@
         <link href="/images/css/print.css?~[time]" rel="stylesheet" media="print">
         <!-- <link href="/images/css/cdol.css?~[time]" rel="stylesheet" media="screen">
         <link href="/images/css/cdol_print.css?~[time]" rel="stylesheet" media="print"> -->
+        <style>
+            .cust-btn {
+                font-size: 1.05rem;
+                font-weight: bold;
+                background-color: #0066A5;
+            }
+        </style>
     </head>
 
     <body>
@@ -28,12 +35,22 @@
                     <div class="card-body pb-0">
                         <div class="row align-items-center mb-3 gx-2">
                             <div class="col-auto">
-                                <select id="rolesDropDownList" class="form-select form-select-sm" aria-label="rolesData"
-                                    data-ng-model="rolesData">
-                                    <option ng-repeat="role in rolesData | orderBy: 'uidisplayorder'"
-                                        value="{{role.code}}">
-                                        {{role.displayvalue}}</option>
-                                </select>
+                                <div class="input-group mb-3">
+                                    <select id="rolesDropDownList" class="form-select form-select-sm"
+                                        aria-label="selectedRole" data-ng-model="selectedRole">
+                                        <option value="" selected></option>
+                                        <option ng-repeat="role in rolesData | orderBy: 'uidisplayorder'"
+                                            value="{{role.code}}">
+                                            {{role.displayvalue}}
+                                        </option>
+                                    </select>
+                                    <label class="input-group-text btn " id="btnAddRole"
+                                        data-ng-class="{'btn-primary': selectedRole, 'cust-btn': selectedRole,'btn-secondary': !selectedRole}"
+                                        data-ng-click="submitStaffRole()" data-ng-disabled="!selectedRole"
+                                        data-ng-style="{'opacity': !selectedRole ? '0.5' : '1', 'pointer-events': !selectedRole ? 'none' : 'auto'}">
+                                        +
+                                    </label>
+                                </div>
                             </div>
                         </div>
                         <div class="row align-items-center mb-4 gx-2">
