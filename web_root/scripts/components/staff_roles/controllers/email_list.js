@@ -118,6 +118,7 @@ define(require => {
 				$scope.includeOtherSchool = !$scope.includeOtherSchool
 
 				if ($scope.includeOtherSchool) {
+					$scope.includeAllStaff = false
 					// Append the mapped school ID to curSchoolId as a comma-separated list
 					const otherSchoolId = schoolSwitchMap[$scope.curSchoolId]
 					if (otherSchoolId) {
