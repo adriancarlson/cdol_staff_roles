@@ -302,7 +302,7 @@ define(require => {
 
 				$timeout(() => {
 					$scope.confirmMessage = false
-				}, 5000)
+				}, 10000)
 			}
 
 			$scope.createEmailList = () => {
