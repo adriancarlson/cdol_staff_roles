@@ -90,7 +90,24 @@
                     data-filter-constraint="advanced-only" style="margin:0;">
                     <div data-ng-if="curSchoolId != 0" class="d-flex justify-content-end pe-3"
                         style="margin-top:-22px !important;">
-                        <div class="form-check form-switch">
+                        <div class="form-check form-switch me-3"
+                            data-ng-if="['130', '131', '210', '211', '264', '160', '189', '437'].includes(curSchoolId) && !includeAllStaff">
+                            <input class="form-check-input" type="checkbox" id="toggleOtherSchoolSwitch"
+                                data-ng-model="includeOtherSchool" data-ng-change="toggleIncludeOtherSchool()">
+                            <label class="form-check-label" for="toggleOtherSchoolSwitch">Show <span
+                                    data-ng-switch="curSchoolId">
+                                    <span data-ng-switch-when="130">Lourdes Elementary</span>
+                                    <span data-ng-switch-when="131">Lourdes MS/HS</span>
+                                    <span data-ng-switch-when="160">Aquinas Elementary</span>
+                                    <span data-ng-switch-when="189">St. Michael</span>
+                                    <span data-ng-switch-when="210">Falls City Elementary</span>
+                                    <span data-ng-switch-when="211">Falls City MS/HS</span>
+                                    <span data-ng-switch-when="264">Aquinas MS/HS</span>
+                                    <span data-ng-switch-when="437">St. Cecilia</span>
+                                    <span data-ng-switch-default>Show Other School</span>
+                                </span> Staff</label>
+                        </div>
+                        <div class="form-check form-switch" data-ng-if="!includeOtherSchool || includeAllStaff">
                             <input class="form-check-input" type="checkbox" id="toggleSwitch"
                                 data-ng-model="includeAllStaff" data-ng-change="toggleIncludeAllStaff()">
                             <label class="form-check-label" for="toggleSwitch">Show All Diocesan Staff</label>

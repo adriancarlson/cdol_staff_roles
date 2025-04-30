@@ -68,6 +68,18 @@ define(require => {
 				'St. Wenceslaus Wahoo': 'St. Wenceslaus Wahoo',
 				'Villa Marie School': 'Villa Marie School'
 			}
+
+			const schoolSwitchMap = {
+				130: '131',
+				131: '130',
+				210: '211',
+				211: '210',
+				264: '160',
+				160: '264',
+				189: '437',
+				437: '189'
+			}
+
 			$http
 				.get('json/rolesData.json')
 				.then(res => {
@@ -95,7 +107,28 @@ define(require => {
 
 			$scope.toggleIncludeAllStaff = () => {
 				$scope.includeAllStaff = !$scope.includeAllStaff
+				if ($scope.includeAllStaff) {
+					$scope.includeOtherSchool = false // Reset the "Show Other School" switch
+				}
 				$scope.showColumns['School'] = $scope.includeAllStaff
+				$scope.loadGridData()
+			}
+
+			$scope.toggleIncludeOtherSchool = () => {
+				$scope.includeOtherSchool = !$scope.includeOtherSchool
+
+				if ($scope.includeOtherSchool) {
+					// Append the mapped school ID to curSchoolId as a comma-separated list
+					const otherSchoolId = schoolSwitchMap[$scope.curSchoolId]
+					if (otherSchoolId) {
+						$scope.curSchoolId = `${$scope.curSchoolId},${otherSchoolId}`
+					}
+				} else {
+					// Reset curSchoolId to its original value
+					$scope.curSchoolId = $attrs.ngCurSchoolId
+				}
+
+				$scope.showColumns['School'] = $scope.includeOtherSchool
 				$scope.loadGridData()
 			}
 

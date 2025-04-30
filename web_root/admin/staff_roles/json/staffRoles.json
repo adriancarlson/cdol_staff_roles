@@ -18,6 +18,6 @@
     WHERE
         u_cdol_staff_roles.schoolstaffdcid IN (~(gpv.schoolStaffDCIDs;onlynumeric))
         ~[if.~[f.in;value=~(gpv.curSchoolIds;onlynumeric);in=0]=0]
-        AND u_cdol_staff_roles.schoolid = ~(curschoolid)
+        AND u_cdol_staff_roles.schoolid IN ~(curschoolid;onlynumeric)
         [/if]
 ;]~(data)[/tlist_sql]
