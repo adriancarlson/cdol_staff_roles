@@ -261,10 +261,12 @@ define(require => {
 						})
 
 						$scope.toggleAllSelected = true
+						$scope.curSchoolId = $attrs.ngCurSchoolId
 						closeLoading()
 					})
 					.catch(err => {
 						console.error('Error loading data:', err)
+						$scope.curSchoolId = $attrs.ngCurSchoolId
 						closeLoading()
 					})
 			}
