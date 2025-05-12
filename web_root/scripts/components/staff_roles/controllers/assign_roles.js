@@ -10,6 +10,7 @@ define(require => {
 		function ($scope, $attrs, $http, $q) {
 			$scope.curSchoolId = $attrs.ngCurSchoolId
 			$scope.schoolStaffDcid = $attrs.ngSchoolStaffDcid
+
 			$scope.rolePayload = {
 				SchoolStaffDCID: $scope.schoolStaffDcid,
 				schoolid: $scope.curSchoolId,
@@ -39,7 +40,11 @@ define(require => {
 						const allRolesData = psUtils.htmlEntitiesToCharCode(rolesResponse.data).sort((a, b) => a.uidisplayorder - b.uidisplayorder)
 
 						// Process staff roles data
-						const staffRolesData = psUtils.htmlEntitiesToCharCode(staffResponse.data)
+						let staffRolesData = psUtils.htmlEntitiesToCharCode(staffResponse.data)
+
+						if (!Array.isArray(staffRolesData)) {
+							staffRolesData = []
+						}
 
 						// Filter rolesData to exclude roles already in staffRolesData
 						$scope.rolesData = allRolesData.filter(role => {
